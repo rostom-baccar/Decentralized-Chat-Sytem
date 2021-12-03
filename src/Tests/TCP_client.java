@@ -10,20 +10,20 @@ import java.io.*;
 public class TCP_client {
 
 	public static void main(String[] args) {
-		//Côté client
-		//déclarations
+		//Cete client
+		//declarations
 		String host = "10.1.5.154";
 		int port = 5000;
-		//création du message à envoyer
+		//crï¿½ation du message a envoyer
 		Scanner s = new Scanner(System.in);
 		Socket client_socket;
 		String msg;
 		PrintWriter out = null;
 
-		//création du socket
+		//creation du socket
 
-		//déclaration d'un socket de type TCP (autre synthaxe pour un socket UDP)
-		//écrire un message dans le client socket, dans le outputstream du clinet_socket
+		//declaration d'un socket de type TCP (autre synthaxe pour un socket UDP)
+		//ecrire un message dans le client socket, dans le outputstream du clinet_socket
 
 
 		try {
@@ -38,11 +38,11 @@ public class TCP_client {
 		}
 
 
-		//le tunnel a été créé
+		//le tunnel a ete cree
 
 
 
-		while(true) { //loop pour créer des messages à envoyer à chaque fois
+		while(true) { //loop pour creer des messages a envoyer a chaque fois
 			msg=s.nextLine();
 			//on place msg dans out
 			out.println(msg);
