@@ -6,12 +6,18 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-public class UDP_server
+public class UDP_server extends Thread
 {
-	public static void main(String[] args) throws IOException
+	public void run() 
 	{
 
-		DatagramSocket dgramSocket = new DatagramSocket(1234);
+		DatagramSocket dgramSocket = null;
+		try {
+			dgramSocket = new DatagramSocket(1234);
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		byte[] buffer = new byte[65535];
 
 		DatagramPacket inPacket = null;
@@ -20,7 +26,12 @@ public class UDP_server
 
 			inPacket = new DatagramPacket(buffer, buffer.length);
 
-			dgramSocket.receive(inPacket);
+			try {
+				dgramSocket.receive(inPacket);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			System.out.println("Client:-" + data(buffer));
 

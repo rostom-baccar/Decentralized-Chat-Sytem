@@ -4,15 +4,15 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class TCP_server {
+public class TCP_server extends Thread {
 
-    public static void main(String[] args) {
-        //déclarations
+    public void run() {
+        //declarations
         int port = 5000;
 
 
-        //Côté serveur
-        //on crée un socket server qui va écouter en donnant le port
+        //Cote serveur
+        //on cree un socket server qui va ecouter en donnant le port
 
 
         ServerSocket server_socket = null;
@@ -39,7 +39,7 @@ public class TCP_server {
             e2.printStackTrace();
         }
         //inputstreamreader donne le msg en bytes
-        //bufferedreader le convertit en caractères
+        //bufferedreader le convertit en caracteres
 
         //Affichage du message
         String msg = null;
@@ -48,7 +48,7 @@ public class TCP_server {
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
-        } //on le décare à l'extérieur du loop car on en a besoin de la vérification
+        } //on le decare a l'exterieur du loop car on en a besoin de la verification
         while (msg!=null) {
             System.out.println("Client: " + msg);
             try {
