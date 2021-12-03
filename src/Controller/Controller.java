@@ -25,7 +25,7 @@ private Interface interf;
 	    System.out.println("Enter nickname");
 	    pseudo=s.nextLine();
 		while(!(this.pseudoValidity(pseudo))) { 
-			System.out.println("Nickname taken: Enter another nockname");
+			System.out.println("Nickname taken: Enter another nickname");
 			pseudo=s.nextLine();  
 		}
 		System.out.println("The nickname is valid");
