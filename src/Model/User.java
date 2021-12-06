@@ -11,7 +11,7 @@ private int TCPport;
 
 public User(String pseudo, boolean active, InetAddress addr, int TCPport){
 	this.pseudo=pseudo;
-	this.active=active;
+	this.active=false;
 	this.addr=addr;
 	this.TCPport=TCPport;
 }
