@@ -17,7 +17,7 @@ public User(String pseudo, boolean active, InetAddress addr, int TCPport){
 }
 
 public String getPseudo() {
-	return pseudo;
+	return this.pseudo;
 }
 
 public void setPseudo(String pseudo) {
@@ -25,7 +25,7 @@ public void setPseudo(String pseudo) {
 }
 
 public boolean isActive() {
-	return active;
+	return this.active;
 }
 
 public void setActive(boolean active) {
@@ -33,7 +33,7 @@ public void setActive(boolean active) {
 }
 
 public InetAddress getAddr() {
-	return addr;
+	return this.addr;
 }
 
 public void setAddr(InetAddress addr) {
@@ -41,11 +41,11 @@ public void setAddr(InetAddress addr) {
 }
 
 public int getTCPport() {
-	return TCPport;
+	return this.TCPport;
 }
 
-public void setTCPport(int tCPport) {
-	TCPport = tCPport;
+public void setTCPport(int TCPport) {
+	this.TCPport = TCPport;
 }
 
 
