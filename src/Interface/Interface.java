@@ -2,6 +2,9 @@ package Interface;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import Controller.*;
 
 public class Interface extends JFrame implements ActionListener{
@@ -19,7 +22,7 @@ public class Interface extends JFrame implements ActionListener{
 	public Interface(Controller controller) {
 		this.controller=controller;
 		
-        converterFrame = new JFrame("Convert Celsius to Fahrenheit");
+        converterFrame = new JFrame("Authentification");
         converterFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         converterFrame.setSize(new Dimension(120, 40));
 	}
@@ -104,4 +107,10 @@ public class Interface extends JFrame implements ActionListener{
             }
         });
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
