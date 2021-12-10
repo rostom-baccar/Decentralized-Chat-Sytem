@@ -34,5 +34,12 @@ public class LocalUser extends User {
 	public void setUDPport_sending(int UDPport_sending) {
 		this.UDPport_sending = UDPport_sending;
 	}
+	
+	@Override
+	public String toString() {
+		return "User "+ this.pseudo + ", addIP=" + this.addr + ", TCPport=" + this.TCPport +
+				"active:" + this.isActive();
+				
+	}
 
 }

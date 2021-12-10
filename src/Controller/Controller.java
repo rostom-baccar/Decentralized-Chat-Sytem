@@ -15,7 +15,7 @@ final static int UDPport_listening_local = 5001;
 final static int UDPport_sending_local = 6001;
 
 private LocalUser local_user;
-private Interface interf;
+//private Authentification auth_interf;
 
 
 
@@ -25,7 +25,11 @@ private Interface interf;
 				TCPport_local,UDPport_listening_local,UDPport_sending_local);
 	}
 
-
+	public void test() {
+		System.out.println("test");
+	}
+	
+	
 	public boolean pseudoValidity(String pseudo) throws IOException {
 		//constructeur permettant de renseigner le port UDP et l'adresse de l'utilisateur
 		DatagramSocket dgramSocket = new DatagramSocket(this.local_user.getUDPport_sending(),this.local_user.getAddr());
@@ -69,6 +73,15 @@ private Interface interf;
 			
 		
 		}
+	
+	/*
+	public static void main(String[] args) throws UnknownHostException {
+        LocalUser user1 = new LocalUser("Default",false,null,0,0,0);
+        Controller controller = new Controller(user1);
+
+	}
+	*/
+	
 	}
 
 	

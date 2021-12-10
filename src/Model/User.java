@@ -4,10 +4,10 @@ import java.net.*;
 
 public class User {
 	
-private String pseudo;
-private boolean active;
-private InetAddress addr;
-private int TCPport;
+protected String pseudo;
+protected boolean active;
+protected InetAddress addr;
+protected int TCPport;
 
 public User(String pseudo, boolean active, InetAddress addr, int TCPport){
 	this.pseudo=pseudo;
