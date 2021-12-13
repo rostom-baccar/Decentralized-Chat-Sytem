@@ -14,7 +14,7 @@ final static int TCPport_local = 4001;
 final static int UDPport_listening_local = 5001;
 final static int UDPport_sending_local = 6001;
 
-private LocalUser local_user;
+public LocalUser local_user;
 //private Authentification auth_interf;
 
 
@@ -48,6 +48,21 @@ private LocalUser local_user;
 		
 		
 		return false;
+	}
+	
+	public void changePseudo(String newPseudo) {
+		if (!local_user.getPseudo().equals(newPseudo)){
+			try {
+				if (pseudoValidity(newPseudo)) {
+					local_user.setPseudo(newPseudo);
+					//notify all users
+				}
+				else System.out.println("Le pseudo choisi n'est pas disponible");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else System.out.println("Veuillez saisir un pseudo différent que celui que vous avez");
 	}
 	
 	public String initPseudo() throws IOException {

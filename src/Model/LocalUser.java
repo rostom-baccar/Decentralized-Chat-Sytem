@@ -37,8 +37,9 @@ public class LocalUser extends User {
 	
 	@Override
 	public String toString() {
-		return "User "+ this.pseudo + ", addIP=" + this.addr + ", TCPport=" + this.TCPport +
-				"active:" + this.isActive();
+		return "User "+ this.pseudo + ", addIP= " + this.addr + ", TCPport= " + this.TCPport +
+				", active: " + this.isActive() + ", UDPport listening= "+ this.UDPport_listening +
+				", UDPport sending= "+ this.UDPport_sending;
 				
 	}
 
