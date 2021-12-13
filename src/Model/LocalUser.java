@@ -1,6 +1,8 @@
 package Model;
 
 import java.net.*;
+import java.util.ArrayList;
+
 
 public class LocalUser extends User {
 	
@@ -10,6 +12,7 @@ public class LocalUser extends User {
 	//pas besoin de connaitre les ports UDP d'un remote user
 	private int UDPport_listening;
 	private int UDPport_sending;
+	private ArrayList<RemoteUser> remoteUsersList = new ArrayList<RemoteUser>();
 
 	public LocalUser(String pseudo, boolean active, InetAddress addr, int TCPport,
 			int UDPport_listening, int UDPport_sending) {

@@ -27,6 +27,9 @@ private Interface interf;
 
 
 	public boolean pseudoValidity(String pseudo) throws IOException {
+		boolean valid = true ;
+		int timeout = 3000;
+		
 		//constructeur permettant de renseigner le port UDP et l'adresse de l'utilisateur
 		DatagramSocket dgramSocket = new DatagramSocket(this.local_user.getUDPport_sending(),this.local_user.getAddr());
 		String message = "pseudo_validity"+"*"+pseudo+"*"+this.local_user.getAddr();
@@ -37,11 +40,29 @@ private Interface interf;
 		byte buffer[] = new byte[65535];
 		String response = null;
 		
-		DatagramPacket inPacket= new DatagramPacket(buffer, buffer.length);
+		/*DatagramPacket inPacket= new DatagramPacket(buffer, buffer.length);
 		dgramSocket.receive(inPacket);
 		buffer = inPacket.getData();
-		response = new String(buffer);
+		response = new String(buffer);*/
+		DatagramPacket inPacket = null;
 		
+		
+		while (valid && timeout>0)
+		{
+			
+			inPacket = new DatagramPacket(buffer, buffer.length);
+			
+			try {
+				dgramSocket.receive(inPacket);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			response = new String(inPacket.getData(), 0, inPacket.getLength());
+			
+			
+			buffer = new byte[65535];
+		}
 		
 		return false;
 	}
@@ -68,8 +89,14 @@ private Interface interf;
 		dgramSocket.send(packet);	
 			
 		
-		}
 	}
+	
+	
+	
+	
+	
+
+}
 
 	
 
