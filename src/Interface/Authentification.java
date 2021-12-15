@@ -27,8 +27,8 @@ public class Authentification implements ActionListener {
 
         loginFrame = new JFrame("Authentification");
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        loginFrame.setSize(new Dimension(1200, 400));
-        loginPanel = new JPanel(new GridLayout(7, 7));
+        loginFrame.setSize(new Dimension(2000, 500));
+        loginPanel = new JPanel(new GridLayout(10,10));
 
         addComponents();
 
@@ -41,7 +41,7 @@ public class Authentification implements ActionListener {
     
     private void addComponents() {
 
-        pseudoField = new JTextField(20);
+        pseudoField = new JTextField(40);
         pseudoLabel = new JLabel("Pseudo", SwingConstants.LEFT);
         loginButton = new JButton("Login");
 
@@ -65,6 +65,9 @@ public class Authentification implements ActionListener {
 			cont1 = new Controller(user1);
 			cont1.local_user.setPseudo(pseudo);
 			System.out.println(cont1.local_user);
+			loginFrame.setVisible(false);
+	        Main_Window window = null;
+	        window = new Main_Window(controller);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}

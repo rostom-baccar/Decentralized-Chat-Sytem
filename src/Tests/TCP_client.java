@@ -8,12 +8,18 @@ import java.util.Scanner;
 import java.io.*;
 
 public class TCP_client extends Thread {
+	String test;
+	String addr;
+	public TCP_client(String test, String addr) {
+		this.test=test;
+		this.addr=addr;
+	}
 
 	public void run() {
 		//Cote client
 		//declarations
 		//String host = "10.1.5.154";
-		String host = "127.0.0.1";
+		String host = addr;
 		int port = 5000;
 		//creation du message a envoyer
 		Scanner s = new Scanner(System.in);
@@ -39,7 +45,7 @@ public class TCP_client extends Thread {
 
 		while(true) { //loop pour creer des messages a envoyer a chaque fois
 			//msg=s.nextLine();
-			msg="test_tcp";
+			msg=this.test;
 			//on place msg dans out
 			out.println(msg);
 			out.flush(); //
