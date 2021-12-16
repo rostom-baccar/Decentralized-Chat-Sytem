@@ -10,7 +10,6 @@ import javax.swing.*;
 import Controller.Controller_Interface;
 import Tests.TCP_client;
 import Tests.TCP_server;
-import Interface.MessageInterface;
 
 public class Main_Window extends JFrame implements ActionListener{
 	

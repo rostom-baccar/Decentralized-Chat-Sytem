@@ -7,19 +7,25 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.io.*;
 
-public class TCP_client extends Thread {
+//public class TCP_client extends Thread {
+public class TCP_client{
 	String test;
 	String addr;
+	Scanner s = new Scanner(System.in);
+
+		/*
 	public TCP_client(String test, String addr) {
 		this.test=test;
 		this.addr=addr;
 	}
-
-	public void run() {
+		*/
+	
+	//public void run() {
+	public static void main(String[] args) {
 		//Cote client
 		//declarations
-		//String host = "10.1.5.154";
-		String host = addr;
+		String host = "10.1.5.34";
+		//String host = addr;
 		int port = 5000;
 		//creation du message a envoyer
 		Scanner s = new Scanner(System.in);
@@ -44,8 +50,8 @@ public class TCP_client extends Thread {
 
 
 		while(true) { //loop pour creer des messages a envoyer a chaque fois
-			//msg=s.nextLine();
-			msg=this.test;
+			msg=s.nextLine();
+			//msg=this.test;
 			//on place msg dans out
 			out.println(msg);
 			out.flush(); //
