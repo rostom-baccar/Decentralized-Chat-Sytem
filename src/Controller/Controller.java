@@ -14,8 +14,8 @@ final static int TCPport_local = 4001;
 final static int UDPport_listening_local = 5001;
 final static int UDPport_sending_local = 6001;
 
-private LocalUser local_user;
-private Interface interf;
+public LocalUser local_user;
+//private Authentification auth_interf;
 
 
 
@@ -25,11 +25,12 @@ private Interface interf;
 				TCPport_local,UDPport_listening_local,UDPport_sending_local);
 	}
 
-
+	public void test() {
+		System.out.println("test");
+	}
+	
+	
 	public boolean pseudoValidity(String pseudo) throws IOException {
-		boolean valid = true ;
-		int timeout = 3000;
-		
 		//constructeur permettant de renseigner le port UDP et l'adresse de l'utilisateur
 		DatagramSocket dgramSocket = new DatagramSocket(this.local_user.getUDPport_sending(),this.local_user.getAddr());
 		String message = "pseudo_validity"+"*"+pseudo+"*"+this.local_user.getAddr();
@@ -40,31 +41,28 @@ private Interface interf;
 		byte buffer[] = new byte[65535];
 		String response = null;
 		
-		/*DatagramPacket inPacket= new DatagramPacket(buffer, buffer.length);
+		DatagramPacket inPacket= new DatagramPacket(buffer, buffer.length);
 		dgramSocket.receive(inPacket);
 		buffer = inPacket.getData();
-		response = new String(buffer);*/
-		DatagramPacket inPacket = null;
+		response = new String(buffer);
 		
-		
-		while (valid && timeout>0)
-		{
-			
-			inPacket = new DatagramPacket(buffer, buffer.length);
-			
-			try {
-				dgramSocket.receive(inPacket);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			response = new String(inPacket.getData(), 0, inPacket.getLength());
-			
-			
-			buffer = new byte[65535];
-		}
 		
 		return false;
+	}
+	
+	public void changePseudo(String newPseudo) {
+		if (!local_user.getPseudo().equals(newPseudo)){
+			try {
+				if (pseudoValidity(newPseudo)) {
+					local_user.setPseudo(newPseudo);
+					//notify all users
+				}
+				else System.out.println("Le pseudo choisi n'est pas disponible");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else System.out.println("Veuillez saisir un pseudo différent que celui que vous avez");
 	}
 	
 	public String initPseudo() throws IOException {
@@ -89,15 +87,14 @@ private Interface interf;
 		dgramSocket.send(packet);	
 			
 		
+		}
+	
+	/*
+	public static void main(String[] args) throws UnknownHostException {
+        LocalUser user1 = new LocalUser("Default",false,null,0,0,0);
+        Controller controller = new Controller(user1);
+
 	}
+	*/
 	
-	
-	
-	
-	
-
-}
-
-	
-
-
+	}

@@ -9,6 +9,14 @@ public class RemoteUser extends User{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString() {
+		return "RemoteUser [toString()=" + super.toString() + "]";
+	}
 
+	public void setPortTCP(int tCPport) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
