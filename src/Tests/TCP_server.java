@@ -4,9 +4,11 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+//public class TCP_server extends Thread {
 public class TCP_server{
 
-    public void run() {
+    //public void run() {
+	public static void main(String[] args) {
         //declarations
         int port = 5000;
 

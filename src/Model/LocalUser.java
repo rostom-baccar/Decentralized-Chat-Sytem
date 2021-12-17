@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class LocalUser extends User {
 	
-	//chaque utilisateur local a un port UDP sur lequel il va écouter les
-	//requêtes broadcast, et un port UDP sur lequel il va envoyer ses requêtes
-	//broadcast. Ces attributs ne sont cohérents qu'avec un user local car on n'a
+	//chaque utilisateur local a un port UDP sur lequel il va ï¿½couter les
+	//requï¿½tes broadcast, et un port UDP sur lequel il va envoyer ses requï¿½tes
+	//broadcast. Ces attributs ne sont cohï¿½rents qu'avec un user local car on n'a
 	//pas besoin de connaitre les ports UDP d'un remote user
 	
 	private int UDPport_listening;

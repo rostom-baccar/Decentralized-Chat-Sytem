@@ -34,10 +34,10 @@ public LocalUser local_user;
 		//constructeur permettant de renseigner le port UDP et l'adresse de l'utilisateur
 		DatagramSocket dgramSocket = new DatagramSocket(this.local_user.getUDPport_sending(),this.local_user.getAddr());
 		String message = "pseudo_validity"+"*"+pseudo+"*"+this.local_user.getAddr();
-		//on n'a pas besoin d'envoyer le port udp listening car tous les utilisateurs ont le même
+		//on n'a pas besoin d'envoyer le port udp listening car tous les utilisateurs ont le mï¿½me
 		broadcast(dgramSocket,message);
 		
-		//traitement de la réponse
+		//traitement de la rï¿½ponse
 		byte buffer[] = new byte[65535];
 		String response = null;
 		
@@ -62,7 +62,7 @@ public LocalUser local_user;
 				e.printStackTrace();
 			}
 		}
-		else System.out.println("Veuillez saisir un pseudo différent que celui que vous avez");
+		else System.out.println("Veuillez saisir un pseudo diffï¿½rent que celui que vous avez");
 	}
 	
 	public String initPseudo() throws IOException {
@@ -78,11 +78,11 @@ public LocalUser local_user;
 		return pseudo;
 	}
 	
-	//broadcast est une fonction qui envoie à tous les utilisateur "message" en utilisant UDPport de l'utilisateur
+	//broadcast est une fonction qui envoie ï¿½ tous les utilisateur "message" en utilisant UDPport de l'utilisateur
 	public void broadcast(DatagramSocket dgramSocket,String message) throws IOException {
 		byte buffer[] = null;
 		buffer = message.getBytes();
-		InetAddress broadcast_IP = InetAddress.getByName("10.1.255.255"); //mettre l'adresse broad du réseau
+		InetAddress broadcast_IP = InetAddress.getByName("10.1.255.255"); //mettre l'adresse broad du rï¿½seau
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length, broadcast_IP, this.local_user.getUDPport_listening() );
 		dgramSocket.send(packet);	
 			
