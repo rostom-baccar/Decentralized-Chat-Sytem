@@ -32,7 +32,7 @@ private Statement stmt = null;
               idAttaque = idA.getInt("id")+1;
           }
                 
-          Accueil.Accueil(stmt, bd, idPokemon, idAttaque);
+          //Accueil.Accueil(stmt, bd, idPokemon, idAttaque);
     
           idP.close();
           idA.close();

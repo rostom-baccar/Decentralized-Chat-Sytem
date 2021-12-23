@@ -6,11 +6,16 @@ public class TestThreadTCP {
 		TCP_client t1;
 		TCP_server t2;
 		//t1 = new TCP_client("sarra","10.1.5.148");
-		t1 = new TCP_client();
-		t2 = new TCP_server();
+		//t1 = new TCP_client();
+		//t2 = new TCP_server();
 		//t1.start();
 		//t2.start();
-		
+		/*
+		TCP_server.server();
+		TCP_server.server();
+		TCP_client.client("a");
+		TCP_client.client("b");
+		*/
 	}
 }
  

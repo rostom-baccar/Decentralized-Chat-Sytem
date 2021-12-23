@@ -21,10 +21,10 @@ public class TCP_client{
 		*/
 	
 	//public void run() {
-	public static void main(String[] args) {
+	public static void main (String arg[]) {
 		//Cote client
 		//declarations
-		String host = "10.1.5.34";
+		String host = "127.0.0.1";
 		//String host = addr;
 		int port = 5000;
 		//creation du message a envoyer
@@ -54,6 +54,7 @@ public class TCP_client{
 			//msg=this.test;
 			//on place msg dans out
 			out.println(msg);
+			//out.println(msg1);
 			out.flush(); //
 
 

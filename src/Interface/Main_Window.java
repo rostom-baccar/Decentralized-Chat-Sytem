@@ -79,6 +79,7 @@ public class Main_Window extends JFrame implements ActionListener{
     	if(event.getSource() == sendButton){
         String message = messageField.getText();
         convArea.append(message+"\n");
+        //TCP_client.client(message+"\n");
         /*
         TCP_client t1;
 		TCP_server t2;

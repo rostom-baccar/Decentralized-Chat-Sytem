@@ -10,6 +10,7 @@ import javax.swing.*;
 import Controller.Controller;
 import Controller.Controller_Interface;
 import Model.LocalUser;
+import Tests.TCP_server;
 
 public class Authentification implements ActionListener {
 	private Controller_Interface controller;
@@ -64,8 +65,11 @@ public class Authentification implements ActionListener {
 			cont1.local_user.setPseudo(pseudo);
 			System.out.println(cont1.local_user);
 			loginFrame.setVisible(false);
+			
 	        Main_Window window = null;
 	        window = new Main_Window(controller);
+	        //TCP_server.server();
+	        
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
