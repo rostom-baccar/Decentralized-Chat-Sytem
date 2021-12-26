@@ -69,7 +69,6 @@ public class Authentification implements ActionListener {
 			
 	        Main_Window window = null;
 	        window = new Main_Window(controller);
-	        //TCP_server.server();
 	        
 	        //connect to someone simulation
 	        Client.connect("192.168.1.15",5000);

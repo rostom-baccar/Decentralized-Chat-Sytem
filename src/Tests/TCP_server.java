@@ -26,6 +26,7 @@ public class TCP_server{
 			Socket client_socket = null;
 			client_socket = server_socket.accept();
 			System.out.println("Connected");
+			
 			BufferedReader input = null;
 			input = new BufferedReader(new InputStreamReader(client_socket.getInputStream()));
 			String msg = null;
