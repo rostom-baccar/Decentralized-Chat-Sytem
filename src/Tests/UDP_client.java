@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 public class UDP_client extends Thread
 {
-	public void run() 
-	{
+	public static void main (String arg[]) {
+	
 		//Message entre par l'utilisateur
 		Scanner s = new Scanner(System.in);
 

@@ -8,7 +8,8 @@ import java.net.Socket;
 public class TCP_server{
 
 	//public void run() {
-	public static void main (String arg[]) {
+	//public static void main (String arg[]) {
+	public static void server() {
 		//declarations
 		int port = 5000;
 

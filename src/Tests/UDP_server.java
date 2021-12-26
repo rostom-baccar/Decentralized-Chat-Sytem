@@ -8,8 +8,8 @@ import java.net.SocketException;
 
 public class UDP_server extends Thread
 {
-	public void run() 
-	{
+	public static void main (String arg[]) {
+	
 
 		DatagramSocket dgramSocket = null;
 		try {

@@ -5,8 +5,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Scanner;
+
 import javax.swing.*;
 import Controller.Controller_Interface;
+import Tests.Client;
 import Tests.TCP_client;
 import Tests.TCP_server;
 
@@ -78,7 +81,17 @@ public class Main_Window extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent event) {
     	if(event.getSource() == sendButton){
         String message = messageField.getText();
-        convArea.append(message+"\n");
+        convArea.append("Client :" +message+"\n");
+        Client.send(message);
+    		
+        
+        //Client.send(message,"192.168.1.15",5000);
+        
+		//TCP_client.client(message);
+        
+		//Scanner s = new Scanner(System.in);
+		//TCP_client.client(s);
+        
         //TCP_client.client(message+"\n");
         /*
         TCP_client t1;
