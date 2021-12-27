@@ -14,7 +14,7 @@ import Tests.Server;
 import Tests.TCP_client;
 import Tests.TCP_server;
 
-public class Main_Window extends JFrame implements ActionListener, KeyListener{
+public class MainWindow extends JFrame implements ActionListener{
 
 	private int width = 800;
 	private int height = 600;
@@ -28,11 +28,10 @@ public class Main_Window extends JFrame implements ActionListener, KeyListener{
 	JTextField messageField;
 	public static JTextArea convArea;
 	JScrollPane scrollMessages;
-	//JLabel messageLabel;
 	JButton sendButton;
 
 
-	public Main_Window(Controller_Interface controller) {
+	public MainWindow(Controller_Interface controller) {
 
 		this.controller=controller;
 		mainPanel = new JPanel(null);
@@ -61,16 +60,12 @@ public class Main_Window extends JFrame implements ActionListener, KeyListener{
 		mainPanel.add(centerPanel);
 		mainPanel.add(bottomPanel);
 
-
-
 		this.add(mainPanel);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(width, height);
 		this.setVisible(true);
 
 	}
-
-
 
 	public void actionPerformed(ActionEvent event) {
 		if(event.getSource() == sendButton){
@@ -81,40 +76,17 @@ public class Main_Window extends JFrame implements ActionListener, KeyListener{
 	}
 
 
-
-
 	public static void createAndShowGUI() throws UnknownHostException {
 
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		Controller_Interface controller = new Controller_Interface();
-		Main_Window window = null;
-		window = new Main_Window(controller);
+		MainWindow window = null;
+		window = new MainWindow(controller);
 		
 	}
 
 
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
 
 
 }

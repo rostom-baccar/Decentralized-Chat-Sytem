@@ -68,8 +68,8 @@ public class Authentification implements ActionListener {
 			System.out.println(cont1.local_user);
 			loginFrame.setVisible(false);
 			
-	        Main_Window window = null;
-	        window = new Main_Window(controller);
+	        MainWindow window = null;
+	        window = new MainWindow(controller);
 	        
 	        //Server.recieve(5000);
 	        

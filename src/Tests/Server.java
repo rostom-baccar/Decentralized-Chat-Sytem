@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import Interface.Main_Window;
+import Interface.MainWindow;
 
 public class Server {
 	public static String msg;
@@ -38,7 +38,7 @@ public class Server {
 		}catch(IOException e1){e1.printStackTrace();}
 
 		while (msg!=null) {
-			Main_Window.convArea.append("Server :" +msg+"\n");
+			MainWindow.convArea.append("Server :" +msg+"\n");
 			System.out.println("Client: " + msg);
 			
 			try {

@@ -5,7 +5,7 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import Interface.Authentification;
-import Interface.Main_Window;
+import Interface.MainWindow;
 import Model.LocalUser;
 import Tests.Server;
 import Tests.TCP_client;
