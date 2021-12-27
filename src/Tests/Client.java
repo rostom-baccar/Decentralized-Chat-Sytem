@@ -22,15 +22,21 @@ public class Client {
 		
 	}
 
-
 	public static void send(String message) {
-		//Scanner s = new Scanner(System.in);
-		//String msg;
-		//while(true) { 
-			//msg=s.nextLine();
 			out.println(message);
 			out.flush(); 
-		//}
+		
+
+	}
+
+	public static void send2() {
+		Scanner s = new Scanner(System.in);
+		String msg;
+		while(true) { 
+			msg=s.nextLine();
+			out.println(msg);
+			out.flush(); 
+		}
 
 	}
 	
@@ -38,7 +44,7 @@ public class Client {
 		
 		String message;
 		Client.connect("192.168.1.15",5000);
-		Client.send("test");
+		Client.send2();
 	}
 	
 	

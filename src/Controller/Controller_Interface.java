@@ -5,7 +5,9 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import Interface.Authentification;
+import Interface.Main_Window;
 import Model.LocalUser;
+import Tests.Server;
 import Tests.TCP_client;
 import Tests.TCP_server;
 
@@ -22,7 +24,9 @@ public class Controller_Interface {
 		//TCP_client.client(msg);
 		Controller_Interface interf = new Controller_Interface();
 		Authentification.createAndShowGUI();
-		
+		Server.connect(5000);
+		Server.recieve(5000);
+
 	}
 	
 }
