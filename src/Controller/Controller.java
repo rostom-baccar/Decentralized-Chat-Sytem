@@ -10,9 +10,9 @@ import javax.swing.*;
 
 public class Controller {
 	
-final static int TCPport_local = 4001;
-final static int UDPport_listening_local = 5001;
-final static int UDPport_sending_local = 6001;
+public final static int TCPport_local = 4001;
+public final static int UDPport_listening_local = 5001;
+public final static int UDPport_sending_local = 6001;
 
 public LocalUser local_user;
 //private Authentification auth_interf;

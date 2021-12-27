@@ -1,59 +1,53 @@
 package Network;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
-
-
-//import intf.MessageInterface;
+import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class TCP_Client {
-	
-	private static TCP_Client instance;
-	private Socket socketConn;
-    private InputStreamReader isr;
-    private OutputStreamWriter osw;
-    
-    public static TCP_Client getInstance(){
-        if(instance == null){
-            instance = new TCP_Client();
-        }
-        return instance;
-    }
-    
-    public void connectToServer(/*MessageInterface mi*/) throws Exception{
-        //this.mi = mi;
-        System.out.println("Connection to server...");
-        socketConn = new Socket("127.0.0.1", 3535);
-        isr = new InputStreamReader(socketConn.getInputStream());
-        osw = new OutputStreamWriter(socketConn.getOutputStream());
-        System.out.println("Conneted to server");
-        listenForMessages();
-    }
-    
-    public void listenForMessages(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true){
-                    try{
-                        char[] charMessage = new char[1024];
-                        if(isr != null){
-                            String message = new String(charMessage);
-                            //mi.onMessageReceived(message);
-                            System.out.println(message);
-                        }
-                    }catch(Exception e){
-                        System.err.println(e.getMessage());
-                    }
-                }
-            }
-        }).start();
-    }
-    
-    public void sendMessage(String message)throws Exception{
-        osw.write(message);
-        osw.flush();
-    }
-    
+
+	static PrintWriter out = null;
+
+	public static void connect(String host, int port) {
+		Socket client_socket = null;
+		try {
+			client_socket = new Socket(host,port);}
+		catch(UnknownHostException e) {e.printStackTrace();
+		}catch(IOException e){e.printStackTrace();}
+		try {
+			out = new PrintWriter(client_socket.getOutputStream());
+		} catch(IOException e){e.printStackTrace();}
+
+	}
+
+	public static void send(String message) {
+		out.println(message);
+		out.flush(); 
+
+
+	}
+
+	public static void send2() {
+		Scanner s = new Scanner(System.in);
+		String msg;
+		while(true) { 
+			msg=s.nextLine();
+			out.println(msg);
+			out.flush(); 
+		}
+
+	}
+
+	public static void main(String[] args) {
+
+		String message;
+		TCP_Client.connect("192.168.1.15",5000);
+		TCP_Client.send2();
+	}
+
+
+
 
 }

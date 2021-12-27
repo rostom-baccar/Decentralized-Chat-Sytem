@@ -1,75 +1,56 @@
 package Network;
-import java.io.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
-//import intf.MessageInterface;
-
-
+import Interface.MainWindow;
 
 public class TCP_Server {
+	public static String msg;
+	static BufferedReader input = null;
 	
-	public static TCP_Server instance;
-    private ServerSocket serverSock;
-    private Socket socket;
-    private InputStreamReader isr;
-    private OutputStreamWriter osw;
-    
-    
-    public static TCP_Server getInstance(){
-        if(instance == null){
-            instance = new TCP_Server();
-        }
-        return instance;
-    }
-    
-    public void startServer(/*MessageInterface mi*/) throws Exception{
-        //this.mi = mi;
-        serverSock = new ServerSocket(3535);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true){
-                    try{
-                        System.out.println("Server online...");
-                        socket = serverSock.accept();
-                        isr = new InputStreamReader(socket.getInputStream());
-                        osw = new OutputStreamWriter(socket.getOutputStream());
-                        System.out.println("Client Server Connection OK");
-                        listenForMessages();
-                        break;
-                    }catch (Exception e){
-                        System.err.println("Server Listening Error!");
-                    }
-                }
-            }
-        }).start();
-    }
-    
-    public void listenForMessages(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true){
-                    try{
-                        char[] charMessage = new char[1024];
-                        if(isr != null){
-                            String message = new String(charMessage);
-                            //mi.onMessageReceived(message);
-                            System.out.println(message);
-                        }
-                    }catch(Exception e){
-                        System.err.println(e.getMessage());
-                    }
-                }
-            }
-        }).start();
-    }
-    
-    public void sendMessage(String message)throws Exception{
-        osw.write(message);
-        osw.flush();
-    }
+	public static void connect(int port) {
+		ServerSocket server_socket = null;
+		try {
+			server_socket = new ServerSocket(port);
+		}catch(IOException e1){e1.printStackTrace();}
+		System.out.println("Waiting for connection...");
+		Socket client_socket = null;
+		try {
+			client_socket = server_socket.accept();
+		} catch(IOException e){e.printStackTrace();}
+		System.out.println("Connected");
+		try {
+			input = new BufferedReader(new InputStreamReader(client_socket.getInputStream()));
+		} catch(IOException e1){e1.printStackTrace();
+		}
+	}
+
+	public static void recieve(int port) {
+
+		//
+		//String msg = null;
+		try {
+			msg = input.readLine();
+		}catch(IOException e1){e1.printStackTrace();}
+
+		while (msg!=null) {
+			MainWindow.convArea.append("Server :" +msg+"\n");
+			System.out.println("Client: " + msg);
+			
+			try {
+				msg = input.readLine();
+			}catch(IOException e){e.printStackTrace();}
+		}
+	}
+
+	public static void main(String[] args) {
+		TCP_Server.connect(5000);
+		TCP_Server.recieve(5000);
+
+	}
 
 }

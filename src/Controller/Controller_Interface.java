@@ -1,15 +1,10 @@
 package Controller;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
+import Interface.ActiveUsers;
 import Interface.Authentification;
-import Interface.MainWindow;
-import Model.LocalUser;
-import Tests.Server;
-import Tests.TCP_client;
-import Tests.TCP_server;
+import Network.TCP_Server;
 
 public class Controller_Interface {
 	static String msg;
@@ -19,13 +14,10 @@ public class Controller_Interface {
 	}
 	
 	public static void main(String[] args) throws UnknownHostException {
-		//Scanner s = new Scanner(System.in);
-		//msg=s.nextLine();
-		//TCP_client.client(msg);
-		Controller_Interface interf = new Controller_Interface();
-		Authentification.createAndShowGUI();
-		Server.connect(5000);
-		Server.recieve(5000);
+		//Controller_Interface interf = new Controller_Interface();
+		Authentification window = new Authentification();
+		TCP_Server.connect(Controller.TCPport_local);
+		TCP_Server.recieve(Controller.TCPport_local);
 
 	}
 	

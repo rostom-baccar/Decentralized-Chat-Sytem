@@ -1,26 +1,13 @@
 package Interface;
 
 
-import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.Scanner;
-
 import javax.swing.*;
-import Controller.Controller_Interface;
-import Tests.Client;
-import Tests.Server;
-import Tests.TCP_client;
-import Tests.TCP_server;
+import Network.TCP_Client;
 
 public class MainWindow extends JFrame implements ActionListener{
 
-	private int width = 800;
-	private int height = 600;
-	private Controller_Interface controller;
-
-	//JFrame mainFrame;
 	JPanel mainPanel;
 	JPanel centerPanel;
 	JPanel bottomPanel;
@@ -31,16 +18,15 @@ public class MainWindow extends JFrame implements ActionListener{
 	JButton sendButton;
 
 
-	public MainWindow(Controller_Interface controller) {
+	public MainWindow() {
 
-		this.controller=controller;
 		mainPanel = new JPanel(null);
 
 		centerPanel = new JPanel(null);
-		centerPanel.setBounds(0, 0, width, height - 100);
+		centerPanel.setBounds(0, 0, 400, 400);
 
 		bottomPanel = new JPanel(null);
-		bottomPanel.setBounds(0, centerPanel.getHeight(), width, 100);
+		bottomPanel.setBounds(0, centerPanel.getHeight(), 400, 100);
 
 		convArea = new JTextArea();
 		scrollMessages = new JScrollPane(convArea);
@@ -48,10 +34,9 @@ public class MainWindow extends JFrame implements ActionListener{
 		centerPanel.add(scrollMessages);
 
 		messageField = new JTextField();
-		messageField.setBounds(10, 10, 450, 30);
+		messageField.setBounds(10, 10, 250, 30);
 		bottomPanel.add(messageField);
 
-		//mainFrame.getRootPane().setDefaultButton(sendButton);
 		sendButton = new JButton("SEND");
 		sendButton.setBounds(messageField.getWidth() + 10, 10, 100, 30);
 		sendButton.addActionListener(this);
@@ -62,7 +47,7 @@ public class MainWindow extends JFrame implements ActionListener{
 
 		this.add(mainPanel);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(width, height);
+		this.setSize(500, 500);
 		this.setVisible(true);
 
 	}
@@ -71,19 +56,11 @@ public class MainWindow extends JFrame implements ActionListener{
 		if(event.getSource() == sendButton){
 			String message = messageField.getText();
 			convArea.append("Client :" +message+"\n");
-			Client.send(message);
+			TCP_Client.send(message);
 		}
 	}
 
 
-	public static void createAndShowGUI() throws UnknownHostException {
-
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		Controller_Interface controller = new Controller_Interface();
-		MainWindow window = null;
-		window = new MainWindow(controller);
-		
-	}
 
 
 
