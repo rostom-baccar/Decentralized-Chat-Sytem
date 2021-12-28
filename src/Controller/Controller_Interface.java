@@ -16,8 +16,11 @@ public class Controller_Interface {
 	public static void main(String[] args) throws UnknownHostException {
 		//Controller_Interface interf = new Controller_Interface();
 		Authentification window = new Authentification();
-		TCP_Server.connect(Controller.TCPport_local);
-		TCP_Server.recieve(Controller.TCPport_local);
+		
+//		TCP_Server t1 = new TCP_Server(Controller.TCPport_local);
+//		t1.start();
+//		TCP_Server.connect(Controller.TCPport_local);
+//		TCP_Server.recieve(Controller.TCPport_local);
 
 	}
 

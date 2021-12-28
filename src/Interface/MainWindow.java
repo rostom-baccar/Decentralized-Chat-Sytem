@@ -2,8 +2,11 @@ package Interface;
 
 
 import java.awt.event.*;
+import java.io.PrintWriter;
 import java.net.UnknownHostException;
 import javax.swing.*;
+
+import Controller.Controller;
 import Network.TCP_Client;
 
 public class MainWindow extends JFrame implements ActionListener{
@@ -56,7 +59,8 @@ public class MainWindow extends JFrame implements ActionListener{
 		if(event.getSource() == sendButton){
 			String message = messageField.getText();
 			convArea.append("Client :" +message+"\n");
-			TCP_Client.send(message);
+			//TCP_Client.send(message);
+			
 		}
 	}
 

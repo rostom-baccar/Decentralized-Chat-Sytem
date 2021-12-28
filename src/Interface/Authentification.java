@@ -67,6 +67,7 @@ public class Authentification extends JFrame implements ActionListener {
 					loginFrame.setVisible(false);
 					
 					ActiveUsers window = new ActiveUsers();
+
     }
 
     

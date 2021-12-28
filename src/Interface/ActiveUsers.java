@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import Controller.Controller;
 import Network.TCP_Client;
+import Network.TCP_Server;
 
 public class ActiveUsers extends JFrame implements ActionListener {
     final static int START_INDEX = 0;
@@ -15,6 +16,7 @@ public class ActiveUsers extends JFrame implements ActionListener {
     JButton chatButton;
 
     public ActiveUsers() {
+    	
         selectPanel = new JPanel();
         addWidgets();
         mainPanel = new JPanel();
@@ -68,8 +70,11 @@ public class ActiveUsers extends JFrame implements ActionListener {
 	        //faut-il se connecter à tout le monde ?
 	        //pour être toujours pret à recevoir des msg de la part de 
 	        //tout le monde
-	        
-	        TCP_Client.connect(s,Controller.TCPport_local);
+			TCP_Server t1 = new TCP_Server(Controller.TCPport_local);
+			t1.start();
+			TCP_Client t2 = new TCP_Client(s,Controller.TCPport_local);
+			t2.start();
+//	        TCP_Client.connect(s,Controller.TCPport_local);
         }
     }
 

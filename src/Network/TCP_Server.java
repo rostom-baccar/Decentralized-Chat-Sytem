@@ -8,11 +8,16 @@ import java.net.Socket;
 
 import Interface.MainWindow;
 
-public class TCP_Server {
+public class TCP_Server extends Thread {
 	public static String msg;
 	static BufferedReader input = null;
 	
-	public static void connect(int port) {
+	static int port;
+	public TCP_Server(int port) {
+		this.port=port;
+	}
+	
+	public void run() {
 		ServerSocket server_socket = null;
 		try {
 			server_socket = new ServerSocket(port);
@@ -27,9 +32,9 @@ public class TCP_Server {
 			input = new BufferedReader(new InputStreamReader(client_socket.getInputStream()));
 		} catch(IOException e1){e1.printStackTrace();
 		}
-	}
-
-	public static void recieve(int port) {
+//	}
+//
+//	public static void recieve(int port) {
 
 		//
 		//String msg = null;
@@ -48,8 +53,8 @@ public class TCP_Server {
 	}
 
 	public static void main(String[] args) {
-		TCP_Server.connect(5000);
-		TCP_Server.recieve(5000);
+//		TCP_Server.connect(5000);
+//		TCP_Server.recieve(5000);
 
 	}
 
