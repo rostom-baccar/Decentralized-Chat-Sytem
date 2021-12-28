@@ -9,10 +9,10 @@ import Network.TCP_Server;
 public class Controller_Interface {
 	static String msg;
 	protected Authentification view;
-	
+
 	public Controller_Interface() throws UnknownHostException {
 	}
-	
+
 	public static void main(String[] args) throws UnknownHostException {
 		//Controller_Interface interf = new Controller_Interface();
 		Authentification window = new Authentification();
@@ -20,7 +20,7 @@ public class Controller_Interface {
 		TCP_Server.recieve(Controller.TCPport_local);
 
 	}
-	
+
 }
 
 //2 problèmes:
@@ -31,3 +31,21 @@ public class Controller_Interface {
 //	(testé: ne marche pas)
 //	-Il faut utiliser des ports différents pour chaque destinataire
 //	->utilisation de threads
+
+//Thread with arguments example:
+//
+//	public class TestThreadTCP {
+//	public static void main (String arg[]) {
+//		TCP_client t1 = new TCP_client("sarra","10.1.5.148");
+//		t1.start();
+//	}
+//}
+//
+//public class TCP_client extends Thread {
+//	String test;
+//	String addr;
+//	public TCP_client(String test, String addr) {
+//		this.test=test;
+//		this.addr=addr;
+//	}
+//	public void run() {}
