@@ -40,8 +40,10 @@ public class ActiveUsers extends JFrame implements ActionListener {
     	UsersList = new JComboBox<String>(init);
     	
     	//use addItem to add active user to the list
+    	//UDP
         UsersList.addItem("192.168.1.15");
         UsersList.addItem("192.168.1.6");
+        UsersList.addItem("192.168.1.22");
         UsersList.addItem("192.168.1.255");
         
         UsersList.setSelectedIndex(START_INDEX);
@@ -56,12 +58,17 @@ public class ActiveUsers extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         if ("comboBoxChanged".equals(event.getActionCommand())) {
         	String s=String.valueOf(UsersList.getSelectedItem());
-            System.out.println(s);
         }
         if(event.getSource() == chatButton) {
         	String s=String.valueOf(UsersList.getSelectedItem());
 	        MainWindow window = null;
 	        window = new MainWindow();
+	        
+	        //remarque importante:
+	        //faut-il se connecter à tout le monde ?
+	        //pour être toujours pret à recevoir des msg de la part de 
+	        //tout le monde
+	        
 	        TCP_Client.connect(s,Controller.TCPport_local);
         }
     }
@@ -78,11 +85,4 @@ public class ActiveUsers extends JFrame implements ActionListener {
         mainFrame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
 }

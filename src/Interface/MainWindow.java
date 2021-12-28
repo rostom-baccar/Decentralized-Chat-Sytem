@@ -46,7 +46,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		mainPanel.add(bottomPanel);
 
 		this.add(mainPanel);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(500, 500);
 		this.setVisible(true);
 
