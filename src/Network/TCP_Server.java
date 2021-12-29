@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import Interface.MainWindow;
+import Interface.ChatWindow;
 
 public class TCP_Server extends Thread {
 	public static String msg;
@@ -43,7 +43,7 @@ public class TCP_Server extends Thread {
 		}catch(IOException e1){e1.printStackTrace();}
 
 		while (msg!=null) {
-			MainWindow.convArea.append("Server :" +msg+"\n");
+			ChatWindow.convArea.append("Server :" +msg+"\n");
 			System.out.println("Client: " + msg);
 			
 			try {

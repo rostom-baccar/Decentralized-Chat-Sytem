@@ -2,14 +2,21 @@
 package Interface;
 
 import java.awt.event.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import javax.swing.*;
 
 import Controller.Controller;
+import Network.Send;
 import Network.TCP_Client;
 import Network.TCP_Server;
 
 public class ActiveUsers extends JFrame implements ActionListener {
     final static int START_INDEX = 0;
+    public static boolean click = false;
     JPanel mainPanel;
     JPanel selectPanel;
     JComboBox<String> UsersList = null;
@@ -62,19 +69,32 @@ public class ActiveUsers extends JFrame implements ActionListener {
         	String s=String.valueOf(UsersList.getSelectedItem());
         }
         if(event.getSource() == chatButton) {
+        	click=true;
         	String s=String.valueOf(UsersList.getSelectedItem());
-	        MainWindow window = null;
-	        window = new MainWindow();
+	        ChatWindow window = null;
+	        window = new ChatWindow();
+	        
+			Socket client_socket = null;
+			try {
+				client_socket = new Socket(s,Controller.TCPport_local);}
+			catch(UnknownHostException e) {e.printStackTrace();
+			}catch(IOException e){e.printStackTrace();}
+			try {
+				PrintWriter out = new PrintWriter(client_socket.getOutputStream());
+			} catch(IOException e){e.printStackTrace();}
+			
 	        
 	        //remarque importante:
 	        //faut-il se connecter à tout le monde ?
 	        //pour être toujours pret à recevoir des msg de la part de 
 	        //tout le monde
-			TCP_Server t1 = new TCP_Server(Controller.TCPport_local);
-			t1.start();
-			TCP_Client t2 = new TCP_Client(s,Controller.TCPport_local);
-			t2.start();
+//	        String message=null;
+//			TCP_Server t1 = new TCP_Server(Controller.TCPport_local);
+//			t1.start();
+//			TCP_Client t2 = new TCP_Client(s,Controller.TCPport_local,message);
+//			t2.start();
 //	        TCP_Client.connect(s,Controller.TCPport_local);
+			click=false;
         }
     }
 

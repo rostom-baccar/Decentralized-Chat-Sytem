@@ -7,21 +7,23 @@ import java.net.UnknownHostException;
 import javax.swing.*;
 
 import Controller.Controller;
+import Network.Send;
 import Network.TCP_Client;
+import Network.TCP_Server;
 
-public class MainWindow extends JFrame implements ActionListener{
+public class ChatWindow extends JFrame implements ActionListener{
 
 	JPanel mainPanel;
 	JPanel centerPanel;
 	JPanel bottomPanel;
 
-	JTextField messageField;
+	public static JTextField messageField;
 	public static JTextArea convArea;
 	JScrollPane scrollMessages;
 	JButton sendButton;
 
 
-	public MainWindow() {
+	public ChatWindow() {
 
 		mainPanel = new JPanel(null);
 
@@ -60,6 +62,13 @@ public class MainWindow extends JFrame implements ActionListener{
 			String message = messageField.getText();
 			convArea.append("Client :" +message+"\n");
 			//TCP_Client.send(message);
+			
+			PrintWriter out = null;		
+//			Send t1 = new Send(message,out);
+//			t1.start();
+//			
+//			TCP_Client t2 = new TCP_Client(s,Controller.TCPport_local,message);
+//			t2.start();
 			
 		}
 	}
