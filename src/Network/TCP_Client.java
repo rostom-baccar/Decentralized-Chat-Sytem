@@ -9,42 +9,26 @@ import java.util.Scanner;
 import Interface.ActiveUsers;
 import Interface.ChatWindow;
 
-public class TCP_Client extends Thread{
-	Scanner s = new Scanner(System.in);
+public class TCP_Client {
+
 	static PrintWriter out = null;
-	int port;
-	static String host;
-	String message;
-	public TCP_Client(String host,int port,String message) {
-		this.host=host;
-		this.port=port;
-		this.message=message;
+
+	public static void connect(String host, int port) {
+		Socket client_socket = null;
+		try {
+			client_socket = new Socket(host,port);}
+		catch(UnknownHostException e) {e.printStackTrace();
+		}catch(IOException e){e.printStackTrace();}
+		try {
+			out = new PrintWriter(client_socket.getOutputStream());
+		} catch(IOException e){e.printStackTrace();}
+
 	}
 
+	public static void send(String message) {
+		out.println(message);
+		out.flush(); 
 
-	public void run() {
-
-	
-			Socket client_socket = null;
-			try {
-				client_socket = new Socket(host,port);}
-			catch(UnknownHostException e) {e.printStackTrace();
-			}catch(IOException e){e.printStackTrace();}
-			try {
-				out = new PrintWriter(client_socket.getOutputStream());
-			} catch(IOException e){e.printStackTrace();}
-		
-			while(ChatWindow.messageField!=null) { 
-				message=s.nextLine();
-					out.println(message);
-					out.flush(); //
-				}
-			//	}
-
-			//	public static void send(String message) {
-//			out.println(message);
-//			out.flush(); 
-		
 
 	}
 

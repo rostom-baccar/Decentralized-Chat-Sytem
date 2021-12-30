@@ -73,15 +73,6 @@ public class ActiveUsers extends JFrame implements ActionListener {
         	String s=String.valueOf(UsersList.getSelectedItem());
 	        ChatWindow window = null;
 	        window = new ChatWindow();
-	        
-			Socket client_socket = null;
-			try {
-				client_socket = new Socket(s,Controller.TCPport_local);}
-			catch(UnknownHostException e) {e.printStackTrace();
-			}catch(IOException e){e.printStackTrace();}
-			try {
-				PrintWriter out = new PrintWriter(client_socket.getOutputStream());
-			} catch(IOException e){e.printStackTrace();}
 			
 	        
 	        //remarque importante:
@@ -89,12 +80,12 @@ public class ActiveUsers extends JFrame implements ActionListener {
 	        //pour être toujours pret à recevoir des msg de la part de 
 	        //tout le monde
 //	        String message=null;
+	        
 //			TCP_Server t1 = new TCP_Server(Controller.TCPport_local);
 //			t1.start();
 //			TCP_Client t2 = new TCP_Client(s,Controller.TCPport_local,message);
 //			t2.start();
-//	        TCP_Client.connect(s,Controller.TCPport_local);
-			click=false;
+	        TCP_Client.connect(s,Controller.TCPport_local);
         }
     }
 

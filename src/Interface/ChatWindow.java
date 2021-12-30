@@ -61,14 +61,9 @@ public class ChatWindow extends JFrame implements ActionListener{
 		if(event.getSource() == sendButton){
 			String message = messageField.getText();
 			convArea.append("Client :" +message+"\n");
-			//TCP_Client.send(message);
 			
-			PrintWriter out = null;		
-//			Send t1 = new Send(message,out);
-//			t1.start();
-//			
-//			TCP_Client t2 = new TCP_Client(s,Controller.TCPport_local,message);
-//			t2.start();
+			TCP_Client.send(message);
+			
 			
 		}
 	}
