@@ -2,14 +2,9 @@ package Interface;
 
 
 import java.awt.event.*;
-import java.io.PrintWriter;
 import java.net.UnknownHostException;
 import javax.swing.*;
-
-import Controller.Controller;
-import Network.Send;
 import Network.TCP_Client;
-import Network.TCP_Server;
 
 public class ChatWindow extends JFrame implements ActionListener{
 
@@ -17,7 +12,7 @@ public class ChatWindow extends JFrame implements ActionListener{
 	JPanel centerPanel;
 	JPanel bottomPanel;
 
-	public static JTextField messageField;
+	JTextField messageField;
 	public static JTextArea convArea;
 	JScrollPane scrollMessages;
 	JButton sendButton;
@@ -61,10 +56,7 @@ public class ChatWindow extends JFrame implements ActionListener{
 		if(event.getSource() == sendButton){
 			String message = messageField.getText();
 			convArea.append("Client :" +message+"\n");
-			
 			TCP_Client.send(message);
-			
-			
 		}
 	}
 

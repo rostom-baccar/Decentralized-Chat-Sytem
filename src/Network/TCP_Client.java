@@ -6,9 +6,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-import Interface.ActiveUsers;
-import Interface.ChatWindow;
-
 public class TCP_Client {
 
 	static PrintWriter out = null;
@@ -31,26 +28,5 @@ public class TCP_Client {
 
 
 	}
-
-	//	public static void send2() {
-	//		Scanner s = new Scanner(System.in);
-	//		String msg;
-	//		while(true) { 
-	//			msg=s.nextLine();
-	//			out.println(msg);
-	//			out.flush(); 
-	//		}
-	//
-	//	}
-	//
-	//	public static void main(String[] args) {
-	//
-	//		String message;
-	//		TCP_Client.connect("192.168.1.15",5000);
-	//		TCP_Client.send2();
-	//	}
-
-
-
 
 }
