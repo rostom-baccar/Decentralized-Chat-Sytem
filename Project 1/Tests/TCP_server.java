@@ -38,7 +38,6 @@ public class TCP_server{
             try {
                 msg = input.readLine();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
