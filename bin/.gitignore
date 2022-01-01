@@ -1,3 +1,5 @@
-/Controller/
-/Network/
-/Interface/
+/Server.class
+/Client.class
+/ClientHandler.class
+/Tests/
+/ServerConnection.class
