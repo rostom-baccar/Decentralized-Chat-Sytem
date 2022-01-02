@@ -15,7 +15,6 @@ public class Client {
 		this.username=username;
 	}
 
-
 	private final static int port = 5001;
 	private final static String Server_IP="192.168.1.6";
 
