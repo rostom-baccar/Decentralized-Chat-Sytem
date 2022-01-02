@@ -22,9 +22,15 @@ public class ServerConnection extends Thread{
 			while(true) {
 				String serverResponse = in.readLine();
 				if (serverResponse==null) break;
+				Thread.sleep(200); //to give time to the client handler to send its response
+				if (!serverResponse.equals("Username already taken, please choose another one")) {
+					Client.setUniqueUsername(true);
+				}
 				System.out.println("|SERVER|: "+serverResponse);
 			} 
-		}catch (IOException e){e.printStackTrace();}
+		}catch (IOException e){e.printStackTrace();} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		finally {
 			try {
 				in.close();

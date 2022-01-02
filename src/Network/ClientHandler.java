@@ -15,10 +15,21 @@ public class ClientHandler extends Thread {
 
 	private BufferedReader in;
 	private PrintWriter out;
+
+	public String getClientUsername() {
+		return clientUsername;
+	}
+
 	private Socket clientSocket;
 	private ArrayList<ClientHandler> clients;
 	private String clientUsername; 
 	private boolean firstConnection=true;
+	private boolean canBeAdded=false;
+
+	public boolean canBeAdded() {
+		return canBeAdded;
+	}
+
 
 	//Every handler of a certain client will have access to the other handlers of the other clients
 	public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException{
@@ -43,7 +54,7 @@ public class ClientHandler extends Thread {
 					int spaceIndex=request.indexOf(" ");
 					String remoteUser=request.substring(1,spaceIndex);
 					String message=request.substring(spaceIndex);
-					System.out.println(this.clientUsername+" wants to send "+remoteUser+" this message: "+message);
+					//					System.out.println(this.clientUsername+" wants to send "+remoteUser+" this message: "+message);
 					ClientHandler remoteClientHandler=findThread(remoteUser);
 					remoteClientHandler.out.println("[PRIVATE CHAT] |"+this.clientUsername+"| "+message);
 					request = in.readLine();
@@ -61,11 +72,21 @@ public class ClientHandler extends Thread {
 				}
 
 				else if (firstConnection){ //first connection
-					System.out.println(request + " just connected");
-					out.println("You are connected");
-					clientUsername=request; //we save it so that each client handler knows its primary client
-					request = in.readLine();
-					firstConnection=false;
+					if (!unique(request)) {
+						out.println("Username already taken, please choose another one");
+						request = in.readLine();
+
+					}
+
+					else {
+						this.canBeAdded=true;
+						System.out.println(request + " just connected");
+						out.println("You are connected");
+						clientUsername=request; //we save it so that each client handler knows its primary client
+						request = in.readLine();
+						firstConnection=false;
+					}
+
 				}
 				else if (request.contains("disconnect")) {
 					System.out.println(clientUsername + " just disconnected");
@@ -99,11 +120,23 @@ public class ClientHandler extends Thread {
 
 	}
 
+
+	public void setCanBeAdded(boolean canBeAdded) {
+		this.canBeAdded = canBeAdded;
+	}
+
+
+	public ArrayList<ClientHandler> getClients() {
+		return this.clients;
+	}
+
 	private ClientHandler findThread(String remoteUser) {
 		ClientHandler target = null;
-		for (ClientHandler client : clients) {
-			if (remoteUser.equals(client.clientUsername)){
-				target=client;
+		for (int i=0; i<=10; i++) {
+			for (ClientHandler client : clients) {
+				if (remoteUser.equals(client.clientUsername)){
+					target=client;
+				}
 			}
 		}
 		return target;
@@ -124,5 +157,13 @@ public class ClientHandler extends Thread {
 		}
 	}
 
+	private static boolean unique(String username) {
+		boolean unique=true;
+		ArrayList<ClientHandler> clients = Server.getClients();
+		for (ClientHandler client : clients) {
+			if ((client.clientUsername!=null) && (client.clientUsername.equals(username))) unique=false;
+		}
+		return unique;
+	}
 
 }

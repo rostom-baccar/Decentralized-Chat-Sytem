@@ -1,10 +1,10 @@
 package Network;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Client {
@@ -15,10 +15,14 @@ public class Client {
 		this.username=username;
 	}
 
-	private final static int port = 5001;
-	private final static String Server_IP="192.168.1.6";
+	InetAddress myIP = null;
 
-	public static void main(String[] args) throws IOException {
+
+	private final static int port = 5001;
+	private final static String Server_IP="127.0.0.1";
+	private static boolean uniqueUsername=false;
+	
+	public static void main(String[] args) throws IOException, InterruptedException {
 
 		//Socket
 		Socket socket = new Socket(Server_IP, port);
@@ -34,6 +38,12 @@ public class Client {
 		Scanner s = new Scanner(System.in);
 		username=s.nextLine();
 		out.println(username);
+		Thread.sleep(400); //to give time for ServerConnection to set uniqueUsername to true if it's unique
+		System.out.println(uniqueUsername);
+		while(!uniqueUsername) {
+			username=s.nextLine();
+			out.println(username);
+		}
 
 		System.out.println("Type @ + name of remote user + message to send a message to a remote user privately");
 		System.out.println("Type broad + the message you want to broadcast to all active clients");
@@ -41,10 +51,14 @@ public class Client {
 		System.out.println("Type active to see all active users");
 
 		String query=s.nextLine();
-			while(query!=null) {
-				out.println(query);
-				query=s.nextLine();
+		while(query!=null) {
+			out.println(query);
+			query=s.nextLine();
 		}
+	}
+
+	public static void setUniqueUsername(boolean uniqueUsername) {
+		Client.uniqueUsername = uniqueUsername;
 	}
 
 	public static String getUsername() {
