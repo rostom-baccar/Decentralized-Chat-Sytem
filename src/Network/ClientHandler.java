@@ -37,18 +37,25 @@ public class ClientHandler extends Thread {
 			e1.printStackTrace();}
 		try {
 			while(request!=null) {
-				if (request.contains("request")) {
-//					out.println("Contains request");
+				if (request.contains("@")) {
+					out.println("Contains request");
 					//request part
+					int spaceIndex=request.indexOf(" ");
+					String remoteUser=request.substring(1,spaceIndex);
+					String message=request.substring(spaceIndex);
+					System.out.println(this.clientUsername+" wants to send "+remoteUser+" this message: "+message);
+					ClientHandler remoteClientHandler=findThread(remoteUser);
+					remoteClientHandler.out.println("[PRIVATE CHAT] |"+this.clientUsername+"| "+message);
+					request = in.readLine();
 
 				}
 				else if (request.contains("broad")) {
-//					out.println("Contains broad");
+					//					out.println("Contains broad");
 					int spaceIndex = request.indexOf(" ");
 					if (spaceIndex!=-1) { //if it exists
-						//						System.out.println("Broadcasting "+request.substring(spaceIndex+1)+"...");
+						//System.out.println("Broadcasting "+request.substring(spaceIndex+1)+"...");
 						broadcast(request.substring(spaceIndex+1),clientUsername);
-						//						System.out.println("Broadcast done");
+						//System.out.println("Broadcast done");
 						request = in.readLine();
 					}
 				}
@@ -69,7 +76,7 @@ public class ClientHandler extends Thread {
 				}
 				else if (request.contains("active")) {
 					for (ClientHandler client : clients) {
-					out.println(client.clientUsername);
+						out.println(client.clientUsername);
 					}
 					request = in.readLine();
 				}
@@ -92,6 +99,16 @@ public class ClientHandler extends Thread {
 
 	}
 
+	private ClientHandler findThread(String remoteUser) {
+		ClientHandler target = null;
+		for (ClientHandler client : clients) {
+			if (remoteUser.equals(client.clientUsername)){
+				target=client;
+			}
+		}
+		return target;
+	}
+
 	//for disconnecting: custom message without the | | 
 	private void broadcast(String message) {
 		//we send a message to all the clientHandlers that are active
@@ -99,7 +116,7 @@ public class ClientHandler extends Thread {
 			client.out.println(message);
 		}
 	}
-	
+
 	private void broadcast(String message, String clientUsername) {
 		//we send a message to all the clientHandlers that are active
 		for (ClientHandler client : clients) {
