@@ -30,7 +30,7 @@ public class Client {
 
 		//Receiving
 		serverConnection.start();
-		
+
 		System.out.println("Type username");
 		Scanner s = new Scanner(System.in);
 		username=s.nextLine();
@@ -38,15 +38,14 @@ public class Client {
 
 		System.out.println("Type request + the name of the client you want to connect with");
 		System.out.println("Type broad + the message you want to broadcast to all active clients");
+		System.out.println("Type disconnect to disconnect");
+		System.out.println("Type active to see all active users");
 
 		String query=s.nextLine();
-		while(query!=null) {
-			out.println(query);
-			query=s.nextLine();
+			while(query!=null) {
+				out.println(query);
+				query=s.nextLine();
 		}
-
-		socket.close();
-
 	}
 
 	public static String getUsername() {

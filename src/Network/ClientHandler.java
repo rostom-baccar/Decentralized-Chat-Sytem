@@ -32,16 +32,18 @@ public class ClientHandler extends Thread {
 		String request = null;
 		try {
 			request = in.readLine();
-		} catch (IOException e1) {e1.printStackTrace();}
+		} catch (IOException e1) {
+			System.out.println("6");
+			e1.printStackTrace();}
 		try {
 			while(request!=null) {
 				if (request.contains("request")) {
-					out.println("Contains request");
+//					out.println("Contains request");
 					//request part
 
 				}
 				else if (request.contains("broad")) {
-					out.println("Contains broad");
+//					out.println("Contains broad");
 					int spaceIndex = request.indexOf(" ");
 					if (spaceIndex!=-1) { //if it exists
 						//						System.out.println("Broadcasting "+request.substring(spaceIndex+1)+"...");
@@ -58,23 +60,46 @@ public class ClientHandler extends Thread {
 					request = in.readLine();
 					firstConnection=false;
 				}
+				else if (request.contains("disconnect")) {
+					System.out.println(clientUsername + " just disconnected");
+					broadcast(clientUsername+" disconnected");
+					clients.remove(this);
+					this.clientSocket.close();
+					request = in.readLine();
+				}
+				else if (request.contains("active")) {
+					for (ClientHandler client : clients) {
+					out.println(client.clientUsername);
+					}
+					request = in.readLine();
+				}
 				else {
-					out.println("You forgot to write broad");
+					out.println("Request unknown");
 					request = in.readLine();
 
 				}
 			}
-		} catch (IOException e) {e.printStackTrace();}
+		} catch (IOException e) {} //to avoid errors when disconnecting
 		finally {
 			//When we manually break off the loop
 			out.close();
 			try {
 				in.close();
-			} catch (IOException e) {e.printStackTrace();}
+			} catch (IOException e) {
+				System.out.println("4");
+				e.printStackTrace();}
 		}
 
 	}
 
+	//for disconnecting: custom message without the | | 
+	private void broadcast(String message) {
+		//we send a message to all the clientHandlers that are active
+		for (ClientHandler client : clients) {
+			client.out.println(message);
+		}
+	}
+	
 	private void broadcast(String message, String clientUsername) {
 		//we send a message to all the clientHandlers that are active
 		for (ClientHandler client : clients) {
