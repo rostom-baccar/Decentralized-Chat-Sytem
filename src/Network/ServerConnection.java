@@ -1,3 +1,5 @@
+package Network;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -32,5 +34,3 @@ public class ServerConnection extends Thread{
 		}
 	}
 }
-
-
