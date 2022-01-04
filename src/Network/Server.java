@@ -48,13 +48,15 @@ public class Server {
 			//thread that will add the thread to clients as soon as its
 			//username will be unique (while loop is a blocking process)
 			
-//			usernameThread = new UsernameHandler(clientThread,clients);
-//			usernameThread.start();
+			usernameThread = new UsernameHandler(clientThread);
+			usernameThread.start();
 			
+			
+//			System.out.println(clients.size());
 			//code above does not work properly
 			
-			while(!clientThread.canBeAdded()) {} //wait until it can be added (when the username will be unique)
-			clients.add(clientThread);
+//			while(!clientThread.getCanBeAdded()) {} //wait until it can be added (when the username will be unique)
+//			clients.add(clientThread);
 
 		}
 	}

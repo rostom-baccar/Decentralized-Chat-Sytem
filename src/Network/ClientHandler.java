@@ -26,7 +26,7 @@ public class ClientHandler extends Thread {
 	private boolean firstConnection=true;
 	private boolean canBeAdded=false;
 
-	public boolean canBeAdded() {
+	public boolean getCanBeAdded() {
 		return canBeAdded;
 	}
 
@@ -44,7 +44,7 @@ public class ClientHandler extends Thread {
 		try {
 			request = in.readLine();
 		} catch (IOException e1) {
-			System.out.println("6");
+//			System.out.println("6");
 			e1.printStackTrace();}
 		try {
 			while(request!=null) {
@@ -52,16 +52,28 @@ public class ClientHandler extends Thread {
 					out.println("Contains request");
 					//request part
 					int spaceIndex=request.indexOf(" ");
+//					out.println("1");
 					String remoteUser=request.substring(1,spaceIndex);
+					out.println("remoteUser: "+remoteUser);
 					String message=request.substring(spaceIndex);
+					out.println(message);
 					//					System.out.println(this.clientUsername+" wants to send "+remoteUser+" this message: "+message);
 					ClientHandler remoteClientHandler=findThread(remoteUser);
+//					out.println("4");
+//					String test = this.clientUsername;
+//					out.println("5");
+//					out.println(test);
+//					out.println("6");
+//					out.println(message);
+//					out.println("7");
 					remoteClientHandler.out.println("[PRIVATE CHAT] |"+this.clientUsername+"| "+message);
+//					out.println("8");
 					request = in.readLine();
+//					out.println("9");
 
 				}
 				else if (request.contains("broad")) {
-					//					out.println("Contains broad");
+					//out.println("Contains broad");
 					int spaceIndex = request.indexOf(" ");
 					if (spaceIndex!=-1) { //if it exists
 						//System.out.println("Broadcasting "+request.substring(spaceIndex+1)+"...");
@@ -85,6 +97,8 @@ public class ClientHandler extends Thread {
 						clientUsername=request; //we save it so that each client handler knows its primary client
 						request = in.readLine();
 						firstConnection=false;
+//						out.println(client.size());
+
 					}
 
 				}
