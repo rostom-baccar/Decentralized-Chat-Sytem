@@ -39,7 +39,6 @@ public class Client {
 		username=s.nextLine();
 		out.println(username);
 		Thread.sleep(400); //to give time for ServerConnection to set uniqueUsername to true if it's unique
-		System.out.println(uniqueUsername);
 		while(!uniqueUsername) {
 			username=s.nextLine();
 			out.println(username);

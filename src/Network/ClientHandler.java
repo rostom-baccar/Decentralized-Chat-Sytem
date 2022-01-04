@@ -21,7 +21,7 @@ public class ClientHandler extends Thread {
 	}
 
 	private Socket clientSocket;
-	private ArrayList<ClientHandler> clients;
+	private static ArrayList<ClientHandler> clients;
 	private String clientUsername; 
 	private boolean firstConnection=true;
 	private boolean canBeAdded=false;
@@ -44,41 +44,30 @@ public class ClientHandler extends Thread {
 		try {
 			request = in.readLine();
 		} catch (IOException e1) {
-//			System.out.println("6");
 			e1.printStackTrace();}
 		try {
 			while(request!=null) {
 				if (request.contains("@")) {
-					out.println("Contains request");
-					//request part
 					int spaceIndex=request.indexOf(" ");
-//					out.println("1");
 					String remoteUser=request.substring(1,spaceIndex);
-					out.println("remoteUser: "+remoteUser);
-					String message=request.substring(spaceIndex);
-					out.println(message);
-					//					System.out.println(this.clientUsername+" wants to send "+remoteUser+" this message: "+message);
-					ClientHandler remoteClientHandler=findThread(remoteUser);
-//					out.println("4");
-//					String test = this.clientUsername;
-//					out.println("5");
-//					out.println(test);
-//					out.println("6");
-//					out.println(message);
-//					out.println("7");
-					remoteClientHandler.out.println("[PRIVATE CHAT] |"+this.clientUsername+"| "+message);
-//					out.println("8");
-					request = in.readLine();
-//					out.println("9");
+					if (among(remoteUser)) {
+						String message=request.substring(spaceIndex);
+						ClientHandler remoteClientHandler=findThread(remoteUser);
+						remoteClientHandler.out.println("[PRIVATE CHAT] |"+this.clientUsername+"| "+message);
+						this.out.println("[PRIVATE CHAT] |"+this.clientUsername+"| "+message); //the user also sees what they have sent privately to the remote user
+						request = in.readLine();
 
+					}
+					else {
+						this.out.println("Sorry, this user is not connected");
+						request = in.readLine();
+
+					}
 				}
 				else if (request.contains("broad")) {
-					//out.println("Contains broad");
 					int spaceIndex = request.indexOf(" ");
 					if (spaceIndex!=-1) { //if it exists
-						//System.out.println("Broadcasting "+request.substring(spaceIndex+1)+"...");
 						broadcast(request.substring(spaceIndex+1),clientUsername);
-						//System.out.println("Broadcast done");
 						request = in.readLine();
 					}
 				}
@@ -97,8 +86,6 @@ public class ClientHandler extends Thread {
 						clientUsername=request; //we save it so that each client handler knows its primary client
 						request = in.readLine();
 						firstConnection=false;
-//						out.println(client.size());
-
 					}
 
 				}
@@ -111,7 +98,9 @@ public class ClientHandler extends Thread {
 				}
 				else if (request.contains("active")) {
 					for (ClientHandler client : clients) {
-						out.println(client.clientUsername);
+						if (client!=this) { //we do not show the user's own nickname
+							out.println(client.clientUsername);
+						}
 					}
 					request = in.readLine();
 				}
@@ -146,11 +135,9 @@ public class ClientHandler extends Thread {
 
 	private ClientHandler findThread(String remoteUser) {
 		ClientHandler target = null;
-		for (int i=0; i<=10; i++) {
-			for (ClientHandler client : clients) {
-				if (remoteUser.equals(client.clientUsername)){
-					target=client;
-				}
+		for (ClientHandler client : clients) {
+			if (remoteUser.equals(client.clientUsername)){
+				target=client;
 			}
 		}
 		return target;
@@ -160,16 +147,17 @@ public class ClientHandler extends Thread {
 	private void broadcast(String message) {
 		//we send a message to all the clientHandlers that are active
 		for (ClientHandler client : clients) {
-			client.out.println(message);
+			client.out.println("//"+message+"//");
 		}
 	}
 
 	private void broadcast(String message, String clientUsername) {
 		//we send a message to all the clientHandlers that are active
 		for (ClientHandler client : clients) {
-			client.out.println("|"+clientUsername+"| "+message);
+			client.out.println("[BROADCAST] |"+clientUsername+"| "+message);
 		}
 	}
+
 
 	private static boolean unique(String username) {
 		boolean unique=true;
@@ -178,6 +166,16 @@ public class ClientHandler extends Thread {
 			if ((client.clientUsername!=null) && (client.clientUsername.equals(username))) unique=false;
 		}
 		return unique;
+	}
+
+	private static boolean among(String remoteUser) {
+		boolean contain=false;
+		for (ClientHandler client : clients) {
+			if (remoteUser.equals(client.clientUsername)){
+				contain=true;
+			}
+		}
+		return contain;
 	}
 
 }

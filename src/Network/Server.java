@@ -25,14 +25,12 @@ public class Server {
 			e.printStackTrace();
 		}
 		while(true) {
-			//			System.out.println("[SERVER] Waiting for client connection");
 			try {
 				clientSocket = serverSocket.accept();
 			} catch (IOException e) {
 				System.out.println("2");
 				e.printStackTrace();
 			}
-			//			System.out.println("[SERVER] Connected to client");
 
 			//Creation of the thread that's going to handle the client
 			ClientHandler clientThread = null;
@@ -44,19 +42,12 @@ public class Server {
 				e.printStackTrace();
 			}
 			clientThread.start();
-			
+
 			//thread that will add the thread to clients as soon as its
 			//username will be unique (while loop is a blocking process)
-			
+
 			usernameThread = new UsernameHandler(clientThread);
 			usernameThread.start();
-			
-			
-//			System.out.println(clients.size());
-			//code above does not work properly
-			
-//			while(!clientThread.getCanBeAdded()) {} //wait until it can be added (when the username will be unique)
-//			clients.add(clientThread);
 
 		}
 	}

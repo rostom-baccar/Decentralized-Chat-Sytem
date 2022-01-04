@@ -26,7 +26,7 @@ public class ServerConnection extends Thread{
 				if (!serverResponse.equals("Username already taken, please choose another one")) {
 					Client.setUniqueUsername(true);
 				}
-				System.out.println("|SERVER|: "+serverResponse);
+				System.out.println(serverResponse);
 			} 
 		}catch (IOException e){e.printStackTrace();} catch (InterruptedException e) {
 			e.printStackTrace();
