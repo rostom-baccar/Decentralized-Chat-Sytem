@@ -7,9 +7,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Interface.LoginWindow;
+
 public class Client {
 
-	private static String username;
+	private static String username=null;
 
 	public Client(String username) {
 		this.username=username;
@@ -21,7 +23,7 @@ public class Client {
 	private final static int port = 5001;
 	private final static String Server_IP="127.0.0.1";
 	private static boolean uniqueUsername=false;
-	
+
 	public static void main(String[] args) throws IOException, InterruptedException {
 
 		//Socket
@@ -33,14 +35,23 @@ public class Client {
 
 		//Receiving
 		serverConnection.start();
-
+		LoginWindow loginWindow = new LoginWindow();
 		System.out.println("Type username");
-		Scanner s = new Scanner(System.in);
-		username=s.nextLine();
+//		Scanner s = new Scanner(System.in);
+//		username=s.nextLine();
+		while(username==null) { //waiting for user to type username in text field
+			username=LoginWindow.username;
+		}
+		System.out.println("client "+username);
 		out.println(username);
 		Thread.sleep(400); //to give time for ServerConnection to set uniqueUsername to true if it's unique
 		while(!uniqueUsername) {
-			username=s.nextLine();
+//			username=s.nextLine();
+			System.out.println("username not unique");
+			username=null;
+			while(username==null) { 
+				username=LoginWindow.username;
+			}
 			out.println(username);
 		}
 
@@ -49,11 +60,11 @@ public class Client {
 		System.out.println("Type disconnect to disconnect");
 		System.out.println("Type active to see all active users");
 
-		String query=s.nextLine();
-		while(query!=null) {
-			out.println(query);
-			query=s.nextLine();
-		}
+//		String query=s.nextLine();
+//		while(query!=null) {
+//			out.println(query);
+//			query=s.nextLine();
+//		}
 	}
 
 	public static void setUniqueUsername(boolean uniqueUsername) {
