@@ -51,10 +51,6 @@ public class Server {
 
 		}
 	}
-
-	public static ArrayList<ClientHandler> pointClients(){
-		return clients;
-	}
 	
 	public static ArrayList<ClientHandler> getClients(){
 		return clients;

@@ -96,6 +96,8 @@ public class ClientHandler extends Thread {
 //						System.out.println("ClientHandler "+Server.getClients().size());
 						clientUsername=request; //we save it so that each client handler knows its primary client
 						MainWindow mainWindow = new MainWindow(clientUsername,clients);
+//						Thread.sleep(500);
+						
 						request = in.readLine();
 						firstConnection=false;
 					}

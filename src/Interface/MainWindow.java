@@ -92,6 +92,10 @@ public class MainWindow extends JPanel implements ActionListener {
 		}
 
 		if(e.getSource() == refreshButton) {
+			
+			
+			
+			
 //			System.out.println("Refresh button clicked. Clients : ");
 			try {
 				Thread.sleep(2000); //to give time for the client handler thread to assign the username

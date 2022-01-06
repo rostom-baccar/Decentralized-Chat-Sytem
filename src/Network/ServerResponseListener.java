@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
 
 //Thread for each client which listens constantly to what the server broadcasts
 //we only need an input attribute since we won't be sending the server any messages with these threads
@@ -11,7 +12,9 @@ public class ServerResponseListener extends Thread{
 
 	private BufferedReader in;
 	private Socket clientSocket;
+	private static ArrayList<ClientHandler> clients;
 
+	
 	public ServerResponseListener(Socket clientSocket) throws IOException {
 		this.clientSocket=clientSocket;
 		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
