@@ -3,13 +3,19 @@
 package Interface ;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.event.*;
 
+import Network.ClientHandler;
+import Network.Server;
+
 public class MainWindow extends JPanel implements ActionListener {
-	private JButton DisconnectButton;
-	private JButton ChatButton;
-	private JComboBox ActiveUsers;
+	private static ArrayList<ClientHandler> clients;
+	private JButton refreshButton;
+	private JButton disconnectButton;
+	private JButton chatButton;
 	private JTextArea TextAreaMain;
 	private JTextField TextFieldMain;
 	private JButton SendButton;
@@ -17,37 +23,43 @@ public class MainWindow extends JPanel implements ActionListener {
 	public static JFrame mainFrame;
 	private JPanel mainPanel;
 	public static String query;
+	private JComboBox<String> UsersList = null;
+	private String username;
 
-
-	public MainWindow() {
-
-		String[] ActiveUsersItems = {"Item 1", "Item 2", "Item 3"};
-		ActiveUsers = new JComboBox (ActiveUsersItems);
-		mainFrame = new JFrame ("Main Window");
+	public MainWindow(String username, ArrayList<ClientHandler> clients) {
+		this.clients=clients;
+		this.username=username;
+		String[] init = {};
+		UsersList = new JComboBox<String>(init);
+		mainFrame = new JFrame (username);
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		mainPanel = new JPanel(new GridLayout(10,10));
 
 		TextAreaMain = new JTextArea (5, 5);
 		TextFieldMain = new JTextField (5);
 		Label = new JLabel ("GROUP CHAT");
-		DisconnectButton = new JButton ("Disconnect");
-		ChatButton = new JButton ("Chat");
+		refreshButton = new JButton ("Refresh list");
+		disconnectButton = new JButton ("Disconnect");
+		chatButton = new JButton ("Chat");
 		SendButton = new JButton ("Send");
-		DisconnectButton.addActionListener(this);
-		ChatButton.addActionListener(this);
+		refreshButton.addActionListener(this);
+		disconnectButton.addActionListener(this);
+		chatButton.addActionListener(this);
 		SendButton.addActionListener(this);
 
-		DisconnectButton.setBounds (350, 250, 130, 25);
-		ChatButton.setBounds (350, 60, 130, 25);
-		ActiveUsers.setBounds (350, 20, 130, 25);
+		refreshButton.setBounds (350, 20, 130, 25);
+		disconnectButton.setBounds (350, 250, 130, 25);
+		chatButton.setBounds (350, 105, 130, 25);
+		UsersList.setBounds (350, 60, 130, 25);
 		TextAreaMain.setBounds (20, 60, 310, 215);
 		TextFieldMain.setBounds (20, 295, 310, 25);
 		SendButton.setBounds (350, 295, 130, 25);
 		Label.setBounds (135, 25, 80, 25);
 
-		mainFrame.add (DisconnectButton);
-		mainFrame.add (ChatButton);
-		mainFrame.add (ActiveUsers);
+		mainFrame.add (refreshButton);
+		mainFrame.add (disconnectButton);
+		mainFrame.add (chatButton);
+		mainFrame.add (UsersList);
 		mainFrame.add (TextAreaMain);
 		mainFrame.add (TextFieldMain);
 		mainFrame.add (SendButton);
@@ -63,20 +75,35 @@ public class MainWindow extends JPanel implements ActionListener {
 	}
 
 	public static void main(String [] argv) {
-		MainWindow mainWindow = new MainWindow();
+		//		MainWindow mainWindow = new MainWindow(username);
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if(e.getSource() == DisconnectButton) {
+		if(e.getSource() == disconnectButton) {
 			query="disconnect";
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e1){e1.printStackTrace();
 			}
 			query=null;
+		}
+
+		if(e.getSource() == refreshButton) {
+//			System.out.println("Refresh button clicked. Clients : ");
+			try {
+				Thread.sleep(2000); //to give time for the client handler thread to assign the username
+			} catch (InterruptedException e1){e1.printStackTrace();}
+//			System.out.println("MainWindow "+Server.getClients().size());
+			for (ClientHandler client : Server.getClients()){
+				if (client.getClientUsername()!=username) {
+					UsersList.addItem(client.getClientUsername());
+				}
+			}
+			String[] init = {};
+			UsersList = new JComboBox<String>(init);
 		}
 
 	}

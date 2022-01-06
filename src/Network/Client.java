@@ -31,7 +31,7 @@ public class Client {
 
 		//Socket
 		Socket socket = new Socket(Server_IP, port);
-		ServerConnection serverConnection = new ServerConnection(socket);
+		ServerResponseListener serverConnection = new ServerResponseListener(socket);
 
 		//Sending
 		PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
@@ -45,21 +45,20 @@ public class Client {
 		while(username==null) { //waiting for user to type username in text field
 			username=LoginWindow.username;
 		}
-		System.out.println("client "+username);
+//		System.out.println("client "+username);
 		out.println(username);
 		Thread.sleep(400); //to give time for ServerConnection to set uniqueUsername to true if it's unique
 		while(!uniqueUsername) {
 			//			username=s.nextLine();
-			System.out.println("username not unique");
+//			System.out.println("username not unique");
 			username=null;
 			while(username==null) { 
 				username=LoginWindow.username;
 			}
 			out.println(username);
 		}
+//		MainWindow mainWindow = new MainWindow(username,clients);
 		LoginWindow.loginFrame.setVisible(false);
-		JOptionPane.showMessageDialog(null,"You are connected");
-		MainWindow mainWindow = new MainWindow();
 		System.out.println("Type @ + name of remote user + message to send a message to a remote user privately");
 		System.out.println("Type broad + the message you want to broadcast to all active clients");
 		System.out.println("Type disconnect to disconnect");
@@ -68,25 +67,30 @@ public class Client {
 		//		Scanner s = new Scanner(System.in);
 		//		String query=s.nextLine();
 
-		//		while(true) {
-		while (query==null) {
-			query=MainWindow.query;
+		while(true) {
+			Thread.sleep(1000);
+//			System.out.println("Client "+Server.getClients().size());
+			System.out.println("WAITING FOR QUERY");
+			System.out.println(query);
+			while (query==null) {
+				query=MainWindow.query;
+			}
+			System.out.println("query recieved: "+query);
+
+			//		}
+			//		while(query!=null) {
+			//			out.println(query);
+			//			query=s.nextLine();
+			//		}
+
+
+			out.println(query);
+			if (query.equals("disconnect")) {
+				MainWindow.mainFrame.setVisible(false);
+				JOptionPane.showMessageDialog(null,"You are disconnected");
+			}
+			query=null;
 		}
-
-		//		}
-		//		while(query!=null) {
-		//			out.println(query);
-		//			query=s.nextLine();
-		//		}
-
-
-		out.println(query);
-		if (query.equals("disconnect")) {
-			MainWindow.mainFrame.setVisible(false);
-			JOptionPane.showMessageDialog(null,"You are disconnected");
-		}
-		query=null;
-
 	}
 
 

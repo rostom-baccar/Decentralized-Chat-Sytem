@@ -11,7 +11,7 @@ public class UsernameHandler extends Thread{
 	public void run() {
 		while (!clientThread.getCanBeAdded()) {
 			try {
-				Thread.sleep(50);
+				Thread.sleep(1);
 			} catch (InterruptedException e){e.printStackTrace();
 			}
 		}

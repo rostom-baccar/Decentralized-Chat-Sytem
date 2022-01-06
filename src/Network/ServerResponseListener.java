@@ -7,12 +7,12 @@ import java.net.Socket;
 
 //Thread for each client which listens constantly to what the server broadcasts
 //we only need an input attribute since we won't be sending the server any messages with these threads
-public class ServerConnection extends Thread{
+public class ServerResponseListener extends Thread{
 
 	private BufferedReader in;
 	private Socket clientSocket;
 
-	public ServerConnection(Socket clientSocket) throws IOException {
+	public ServerResponseListener(Socket clientSocket) throws IOException {
 		this.clientSocket=clientSocket;
 		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 	}
