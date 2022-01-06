@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import Interface.LoginWindow;
 
 public class Client {
@@ -54,7 +56,8 @@ public class Client {
 			}
 			out.println(username);
 		}
-
+		LoginWindow.loginFrame.setVisible(false);
+		JOptionPane.showMessageDialog(null,"You are connected");
 		System.out.println("Type @ + name of remote user + message to send a message to a remote user privately");
 		System.out.println("Type broad + the message you want to broadcast to all active clients");
 		System.out.println("Type disconnect to disconnect");

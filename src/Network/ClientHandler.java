@@ -7,6 +7,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
+import Interface.LoginWindow;
+import Interface.MainWindow;
+
 //each client will have its own client handler with which it can communicate (like a server instance)
 //in order to have multiple client we need multiple threads handling each client
 //otherwise we would have blocking functions that would not allow the program to finish
@@ -75,11 +80,15 @@ public class ClientHandler extends Thread {
 				else if (firstConnection){ //first connection
 					if (!unique(request)) {
 						out.println("Username already taken, please choose another one");
+						JOptionPane.showMessageDialog(null,"Username already taken, please choose another one");
+
 						request = in.readLine();
 
 					}
 
 					else {
+//						LoginWindow.loginFrame.setVisible(false);
+//						MainWindow mainWindow = new MainWindow();
 						this.canBeAdded=true;
 						System.out.println(request + " just connected");
 						out.println("You are connected");

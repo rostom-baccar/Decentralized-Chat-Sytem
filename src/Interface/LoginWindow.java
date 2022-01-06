@@ -7,8 +7,8 @@ import javax.swing.*;
 
 public class LoginWindow extends JFrame implements ActionListener {
 	public static String username;
-	JFrame loginFrame;
-	JPanel loginPanel;
+	public static JFrame loginFrame;
+	public static JPanel loginPanel;
 	public static JTextField pseudoField;
 	JLabel pseudoLabel;
 	JButton loginButton;
@@ -25,7 +25,7 @@ public class LoginWindow extends JFrame implements ActionListener {
 		loginFrame.getRootPane().setDefaultButton(loginButton);
 		loginFrame.getContentPane().add(loginPanel, BorderLayout.CENTER);
 		loginFrame.pack();
-		loginFrame.setLocationRelativeTo(null) ;
+		//		loginFrame.setLocationRelativeTo(null) ;
 		loginFrame.setSize(300,300);
 		loginFrame.setVisible(true);
 
@@ -51,7 +51,12 @@ public class LoginWindow extends JFrame implements ActionListener {
 
 		username = pseudoField.getText();
 		username=null;
-//		loginFrame.setVisible(false);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e){e.printStackTrace();
+		}
+		
+		//		loginFrame.setVisible(false);
 
 
 
