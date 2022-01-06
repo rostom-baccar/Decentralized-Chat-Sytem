@@ -7,66 +7,79 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class MainWindow extends JPanel implements ActionListener {
-    private JButton DisconnectButton;
-    private JButton ChatButton;
-    private JComboBox ActiveUsers;
-    private JTextArea TextAreaMain;
-    private JTextField TextFieldMain;
-    private JButton SendButton;
-    private JLabel Label;
-    private JFrame mainFrame;
-	JPanel mainPanel;
+	private JButton DisconnectButton;
+	private JButton ChatButton;
+	private JComboBox ActiveUsers;
+	private JTextArea TextAreaMain;
+	private JTextField TextFieldMain;
+	private JButton SendButton;
+	private JLabel Label;
+	public static JFrame mainFrame;
+	private JPanel mainPanel;
+	public static String query;
 
 
-    public MainWindow() {
-        //construct preComponents
-        String[] ActiveUsersItems = {"Item 1", "Item 2", "Item 3"};
+	public MainWindow() {
 
-        //construct components
-        DisconnectButton = new JButton ("Disconnect");
-        ChatButton = new JButton ("Chat");
-        ActiveUsers = new JComboBox (ActiveUsersItems);
-        TextAreaMain = new JTextArea (5, 5);
-        TextFieldMain = new JTextField (5);
-        SendButton = new JButton ("Send");
-        Label = new JLabel ("GROUP CHAT");
-
-        //adjust size and set layout
-        setPreferredSize (new Dimension (498, 351));
-        setLayout (null);
-
-        //add components
-        mainFrame.add (DisconnectButton);
-        mainFrame.add (ChatButton);
-        mainFrame.add (ActiveUsers);
-        mainFrame.add (TextAreaMain);
-        mainFrame.add (TextFieldMain);
-        mainFrame.add (SendButton);
-        mainFrame.add (Label);
-
-        //set component bounds (only needed by Absolute Positioning)
-        DisconnectButton.setBounds (350, 250, 130, 25);
-        ChatButton.setBounds (350, 60, 130, 25);
-        ActiveUsers.setBounds (350, 20, 130, 25);
-        TextAreaMain.setBounds (20, 60, 310, 215);
-        TextFieldMain.setBounds (20, 295, 310, 25);
-        SendButton.setBounds (350, 295, 130, 25);
-        Label.setBounds (135, 25, 80, 25);
-        
+		String[] ActiveUsersItems = {"Item 1", "Item 2", "Item 3"};
+		ActiveUsers = new JComboBox (ActiveUsersItems);
+		mainFrame = new JFrame ("Main Window");
+		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		mainPanel = new JPanel(new GridLayout(10,10));
-        mainFrame = new JFrame ("Main Window");
-        mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-        mainFrame.getContentPane().add (mainPanel, BorderLayout.CENTER);
-        mainFrame.pack();
-        mainFrame.setVisible (true);
-        
-    }
+
+		TextAreaMain = new JTextArea (5, 5);
+		TextFieldMain = new JTextField (5);
+		Label = new JLabel ("GROUP CHAT");
+		DisconnectButton = new JButton ("Disconnect");
+		ChatButton = new JButton ("Chat");
+		SendButton = new JButton ("Send");
+		DisconnectButton.addActionListener(this);
+		ChatButton.addActionListener(this);
+		SendButton.addActionListener(this);
+
+		DisconnectButton.setBounds (350, 250, 130, 25);
+		ChatButton.setBounds (350, 60, 130, 25);
+		ActiveUsers.setBounds (350, 20, 130, 25);
+		TextAreaMain.setBounds (20, 60, 310, 215);
+		TextFieldMain.setBounds (20, 295, 310, 25);
+		SendButton.setBounds (350, 295, 130, 25);
+		Label.setBounds (135, 25, 80, 25);
+
+		mainFrame.add (DisconnectButton);
+		mainFrame.add (ChatButton);
+		mainFrame.add (ActiveUsers);
+		mainFrame.add (TextAreaMain);
+		mainFrame.add (TextFieldMain);
+		mainFrame.add (SendButton);
+		mainFrame.add (Label);
+
+		mainFrame.setSize(new Dimension(2000, 500));
+		mainFrame.getContentPane().add (mainPanel, BorderLayout.CENTER);
+		mainFrame.pack();
+		mainFrame.setSize(500,400);
+		mainFrame.setVisible (true);
 
 
+	}
+
+	public static void main(String [] argv) {
+		MainWindow mainWindow = new MainWindow();
+
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+
+		if(e.getSource() == DisconnectButton) {
+			query="disconnect";
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e1){e1.printStackTrace();
+			}
+			query=null;
+		}
+
 	}
 }
+
+

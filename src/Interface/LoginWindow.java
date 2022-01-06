@@ -19,8 +19,17 @@ public class LoginWindow extends JFrame implements ActionListener {
 		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		loginFrame.setSize(new Dimension(2000, 500));
 		loginPanel = new JPanel(new GridLayout(10,10));
+		
+		pseudoField = new JTextField(40);
+		pseudoLabel = new JLabel("Pseudo", SwingConstants.LEFT);
+		loginButton = new JButton("Login");
+		loginButton.addActionListener(this);
 
-		addComponents();
+		loginPanel.add(pseudoField);
+		loginPanel.add(pseudoLabel);
+		loginPanel.add(loginButton);
+
+		pseudoLabel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
 		loginFrame.getRootPane().setDefaultButton(loginButton);
 		loginFrame.getContentPane().add(loginPanel, BorderLayout.CENTER);
@@ -32,20 +41,6 @@ public class LoginWindow extends JFrame implements ActionListener {
 
 	}
 
-
-	private void addComponents() {
-
-		pseudoField = new JTextField(40);
-		pseudoLabel = new JLabel("Pseudo", SwingConstants.LEFT);
-		loginButton = new JButton("Login");
-		loginButton.addActionListener(this);
-
-		loginPanel.add(pseudoField);
-		loginPanel.add(pseudoLabel);
-		loginPanel.add(loginButton);
-
-		pseudoLabel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-	}
 
 	public void actionPerformed(ActionEvent event) {
 
@@ -59,6 +54,11 @@ public class LoginWindow extends JFrame implements ActionListener {
 		//		loginFrame.setVisible(false);
 
 
+
+	}
+	
+	public static void main(String [] argv) {
+		LoginWindow loginWindow = new LoginWindow();
 
 	}
 

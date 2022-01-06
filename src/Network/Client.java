@@ -10,11 +10,12 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 import Interface.LoginWindow;
+import Interface.MainWindow;
 
 public class Client {
 
 	private static String username=null;
-
+	private static String query;
 	public Client(String username) {
 		this.username=username;
 	}
@@ -39,8 +40,8 @@ public class Client {
 		serverConnection.start();
 		LoginWindow loginWindow = new LoginWindow();
 		System.out.println("Type username");
-//		Scanner s = new Scanner(System.in);
-//		username=s.nextLine();
+		//		Scanner s = new Scanner(System.in);
+		//		username=s.nextLine();
 		while(username==null) { //waiting for user to type username in text field
 			username=LoginWindow.username;
 		}
@@ -48,7 +49,7 @@ public class Client {
 		out.println(username);
 		Thread.sleep(400); //to give time for ServerConnection to set uniqueUsername to true if it's unique
 		while(!uniqueUsername) {
-//			username=s.nextLine();
+			//			username=s.nextLine();
 			System.out.println("username not unique");
 			username=null;
 			while(username==null) { 
@@ -58,17 +59,36 @@ public class Client {
 		}
 		LoginWindow.loginFrame.setVisible(false);
 		JOptionPane.showMessageDialog(null,"You are connected");
+		MainWindow mainWindow = new MainWindow();
 		System.out.println("Type @ + name of remote user + message to send a message to a remote user privately");
 		System.out.println("Type broad + the message you want to broadcast to all active clients");
 		System.out.println("Type disconnect to disconnect");
 		System.out.println("Type active to see all active users");
 
-//		String query=s.nextLine();
-//		while(query!=null) {
-//			out.println(query);
-//			query=s.nextLine();
-//		}
+		//		Scanner s = new Scanner(System.in);
+		//		String query=s.nextLine();
+
+		//		while(true) {
+		while (query==null) {
+			query=MainWindow.query;
+		}
+
+		//		}
+		//		while(query!=null) {
+		//			out.println(query);
+		//			query=s.nextLine();
+		//		}
+
+
+		out.println(query);
+		if (query.equals("disconnect")) {
+			MainWindow.mainFrame.setVisible(false);
+			JOptionPane.showMessageDialog(null,"You are disconnected");
+		}
+		query=null;
+
 	}
+
 
 	public static void setUniqueUsername(boolean uniqueUsername) {
 		Client.uniqueUsername = uniqueUsername;
