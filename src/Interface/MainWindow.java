@@ -108,6 +108,13 @@ public class MainWindow extends JPanel implements ActionListener {
 			query=null;
 
 		}
+		
+		if(e.getSource() == chatButton) {
+			String remoteUser=(String) UsersList.getSelectedItem();
+			System.out.println("[DEBUG] Chatting with "+remoteUser);
+			ChatWindow chatWindow = new ChatWindow(username, remoteUser);
+		}
+		
 
 	}
 }
