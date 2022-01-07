@@ -17,6 +17,7 @@ public class MainWindow extends JPanel implements ActionListener {
 	private JPanel mainPanel;
 	public static String query;
 	private String username;
+	private ChatWindow chatWindow=null;
 
 	public MainWindow(String username) {
 
@@ -104,17 +105,20 @@ public class MainWindow extends JPanel implements ActionListener {
 		if(e.getSource() == sendButton) {
 			String message = broadField.getText();
 			query="broad "+message;
-//			broadArea.append(username+": "+message);
+			//broadArea.append(username+": "+message);
 			query=null;
 
 		}
-		
+
 		if(e.getSource() == chatButton) {
 			String remoteUser=(String) UsersList.getSelectedItem();
 			System.out.println("[DEBUG] Chatting with "+remoteUser);
-			ChatWindow chatWindow = new ChatWindow(username, remoteUser);
+			chatWindow = new ChatWindow(username, remoteUser);
 		}
-		
-
 	}
+
+	public ChatWindow getChatWindow() {
+		return chatWindow;
+	}
+
 }

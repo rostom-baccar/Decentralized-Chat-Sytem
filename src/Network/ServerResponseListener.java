@@ -60,6 +60,7 @@ public class ServerResponseListener extends Thread{
 					MainWindow.broadArea.append(serverResponse+"\n");
 				}
 				if (serverResponse.contains("@")) {
+					
 					int spaceIndex=serverResponse.indexOf(" ");
 					String remoteUser=serverResponse.substring(1,spaceIndex);
 					if (firstWindow) {
@@ -70,8 +71,6 @@ public class ServerResponseListener extends Thread{
 					chatWindow.chatArea.append("["+remoteUser+"] "+message+"\n");
 
 				}
-
-
 
 				System.out.println(serverResponse);
 			} 
