@@ -63,7 +63,8 @@ public class ChatWindow extends JPanel implements ActionListener {
 			MainWindow.query="@"+remoteUser+" "+message;
 			try {
 				Thread.sleep(50);
-			} catch (InterruptedException e1){e1.printStackTrace();}
+			} catch (InterruptedException e1){e1.printStackTrace();
+			}
 			MainWindow.query=null;
 		}
 
