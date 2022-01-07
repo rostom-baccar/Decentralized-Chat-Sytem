@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 
+import Interface.ChatWindow;
 import Interface.MainWindow;
 
 //Thread for each client which listens constantly to what the server broadcasts
@@ -17,6 +18,8 @@ public class ServerResponseListener extends Thread{
 	private BufferedReader in;
 	private Socket clientSocket;
 	private ArrayList<String> localClients = new ArrayList<>();
+	private boolean firstWindow=true;
+	private ChatWindow chatWindow = null;
 
 	public ServerResponseListener(Socket clientSocket) throws IOException {
 		this.clientSocket=clientSocket;
@@ -32,7 +35,7 @@ public class ServerResponseListener extends Thread{
 				if (!serverResponse.equals("Username already taken, please choose another one")) {
 					Client.setUniqueUsername(true);
 				}
-				
+
 				//Active Users refresh button
 				if (serverResponse.equals("begin clients")) {
 					System.out.println("[DEBUG] server:"+  serverResponse);
@@ -49,15 +52,27 @@ public class ServerResponseListener extends Thread{
 				}
 				//problème: cette liste sera dépendante de si on appuie sur
 				//le bouton refresh ou non
-				
+
 				//localClients n'est pour l'instant pas utilisée
 
 				//Broadcast
 				if (serverResponse.contains("[BROADCAST]")) {
 					MainWindow.broadArea.append(serverResponse+"\n");
 				}
-				
-								
+				if (serverResponse.contains("@")) {
+					int spaceIndex=serverResponse.indexOf(" ");
+					String remoteUser=serverResponse.substring(1,spaceIndex);
+					if (firstWindow) {
+						chatWindow = new ChatWindow(Client.getUsername(),remoteUser);
+					}
+					firstWindow=false;
+					String message=serverResponse.substring(spaceIndex);
+					chatWindow.chatArea.append("["+remoteUser+"] "+message+"\n");
+
+				}
+
+
+
 				System.out.println(serverResponse);
 			} 
 		}catch (IOException e){e.printStackTrace();} catch (InterruptedException e) {

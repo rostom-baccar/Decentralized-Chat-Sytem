@@ -10,7 +10,7 @@ public class ChatWindow extends JPanel implements ActionListener {
 	private String remoteUser;
     private JButton sendButton;
     private JTextField chatField;
-    private JTextArea chatArea;
+    public JTextArea chatArea;
     private JFrame chatFrame;
     private JPanel chatPanel;
     public String query;

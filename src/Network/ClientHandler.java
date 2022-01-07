@@ -58,8 +58,10 @@ public class ClientHandler extends Thread {
 					if (among(remoteUser)) {
 						String message=request.substring(spaceIndex);
 						ClientHandler remoteClientHandler=findThread(remoteUser);
-						remoteClientHandler.out.println("[PRIVATE CHAT] |"+this.clientUsername+"| "+message);
-						this.out.println("[PRIVATE CHAT] |"+this.clientUsername+"| "+message); //the user also sees what they have sent privately to the remote user
+						remoteClientHandler.out.println("@"+this.clientUsername+" "+message);
+						//we do not send ourself the message to avoid opening an extra window
+						//we simply append the message we send to the chat area
+//						this.out.println("@"+this.clientUsername+" "+message); //the user also sees what they have sent privately to the remote user
 						request = in.readLine();
 
 					}
