@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 
@@ -15,6 +16,7 @@ public class ServerResponseListener extends Thread{
 
 	private BufferedReader in;
 	private Socket clientSocket;
+	private ArrayList<String> localClients = new ArrayList<>();
 
 	public ServerResponseListener(Socket clientSocket) throws IOException {
 		this.clientSocket=clientSocket;
@@ -30,31 +32,33 @@ public class ServerResponseListener extends Thread{
 				if (!serverResponse.equals("Username already taken, please choose another one")) {
 					Client.setUniqueUsername(true);
 				}
+				
+				//Active Users refresh button
 				if (serverResponse.equals("begin clients")) {
 					System.out.println("[DEBUG] server:"+  serverResponse);
 					String clientsResponse = in.readLine();
 					while (!clientsResponse.equals("end clients")) {
-
-//						MainWindow.UsersList.setSelectedIndex(-1);  
-//						MainWindow.UsersList.setSelectedItem(clientsResponse);  
-//						System.out.println("[DEBUG] next client: "+clientsResponse);
-//						if(MainWindow.UsersList.getSelectedIndex()==-1){
-//							System.out.println("[DEBUG] client: "+clientsResponse+ " does not exist. Adding...");
-							MainWindow.UsersList.addItem(clientsResponse);
-//							System.out.println("[DEBUG] client: "+clientsResponse);
-//						}
-//						else {
-//							System.out.println("[DEBUG] client: "+clientsResponse+ " exists");
-//							if (ClientHandler.findThread(clientsResponse).getCanBeAdded()==false) {
-//								System.out.println("[DEBUG] client: "+clientsResponse+ " disconnected");
-//								MainWindow.UsersList.removeItem(clientsResponse);
-//							}
-//						}
+						localClients.add(clientsResponse);
+						MainWindow.UsersList.addItem(clientsResponse);
 						clientsResponse=in.readLine();
 					}
 					System.out.println("[DEBUG] server: "+clientsResponse);
-
+					for (int i=0; i<=localClients.size()-1; i++) {
+						System.out.println("Local Client: "+localClients.get(i));
+					}
 				}
+				//problème: cette liste sera dépendante de si on appuie sur
+				//le bouton refresh ou non
+				
+				//localClients n'est pour l'instant pas utilisée
+
+				//Broadcast
+				if (serverResponse.contains("[BROADCAST]")) {
+					MainWindow.broadArea.append(serverResponse+"\n");
+				}
+				
+								
+				System.out.println(serverResponse);
 			} 
 		}catch (IOException e){e.printStackTrace();} catch (InterruptedException e) {
 			e.printStackTrace();

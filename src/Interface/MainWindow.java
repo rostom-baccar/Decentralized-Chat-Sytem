@@ -9,9 +9,8 @@ public class MainWindow extends JPanel implements ActionListener {
 	private JButton disconnectButton;
 	private JButton chatButton;
 	public static JComboBox<String> UsersList = null;
-	public static String[] init= {};
-	private JTextArea TextAreaMain;
-	private JTextField TextFieldMain;
+	public static JTextArea broadArea;
+	private JTextField broadField;
 	private JButton sendButton;
 	private JLabel Label;
 	public static JFrame mainFrame;
@@ -22,13 +21,14 @@ public class MainWindow extends JPanel implements ActionListener {
 	public MainWindow(String username) {
 
 		this.username=username;
+		String[] init= {};
 		UsersList = new JComboBox<String>(init);
 		mainFrame = new JFrame (username);
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		mainPanel = new JPanel(new GridLayout(10,10));
 
-		TextAreaMain = new JTextArea (5, 5);
-		TextFieldMain = new JTextField (5);
+		broadArea = new JTextArea (5, 5);
+		broadField = new JTextField (5);
 		Label = new JLabel ("GROUP CHAT");
 		refreshButton = new JButton ("Refresh list");
 		disconnectButton = new JButton ("Disconnect");
@@ -43,8 +43,8 @@ public class MainWindow extends JPanel implements ActionListener {
 		disconnectButton.setBounds (350, 250, 130, 25);
 		chatButton.setBounds (350, 105, 130, 25);
 		UsersList.setBounds (350, 60, 130, 25);
-		TextAreaMain.setBounds (20, 60, 310, 215);
-		TextFieldMain.setBounds (20, 295, 310, 25);
+		broadArea.setBounds (20, 60, 310, 215);
+		broadField.setBounds (20, 295, 310, 25);
 		sendButton.setBounds (350, 295, 130, 25);
 		Label.setBounds (135, 25, 80, 25);
 
@@ -52,8 +52,8 @@ public class MainWindow extends JPanel implements ActionListener {
 		mainFrame.add (disconnectButton);
 		mainFrame.add (chatButton);
 		mainFrame.add (UsersList);
-		mainFrame.add (TextAreaMain);
-		mainFrame.add (TextFieldMain);
+		mainFrame.add (broadArea);
+		mainFrame.add (broadField);
 		mainFrame.add (sendButton);
 		mainFrame.add (Label);
 
@@ -85,8 +85,8 @@ public class MainWindow extends JPanel implements ActionListener {
 		}
 
 		if(e.getSource() == refreshButton) {
-//			String[] init = {};
-//			UsersList = new JComboBox<String>(init);
+			//			String[] init = {};
+			//			UsersList = new JComboBox<String>(init);
 			UsersList.removeAllItems();
 			query="active";
 			try {
@@ -99,6 +99,14 @@ public class MainWindow extends JPanel implements ActionListener {
 				//listener to add the clients to the table
 			}
 			catch (InterruptedException e1) {e1.printStackTrace();}
+		}
+
+		if(e.getSource() == sendButton) {
+			String message = broadField.getText();
+			query="broad "+message;
+//			broadArea.append(username+": "+message);
+			query=null;
+
 		}
 
 	}

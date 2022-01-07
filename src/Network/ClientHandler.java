@@ -70,6 +70,7 @@ public class ClientHandler extends Thread {
 					}
 				}
 				else if (request.contains("broad")) {
+					System.out.println("Server: request recieved: "+request);
 					int spaceIndex = request.indexOf(" ");
 					if (spaceIndex!=-1) { //if it exists
 						broadcast(request.substring(spaceIndex+1),clientUsername);
