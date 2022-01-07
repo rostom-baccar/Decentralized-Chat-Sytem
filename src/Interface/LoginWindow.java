@@ -2,12 +2,8 @@ package Interface ;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 import javax.swing.*;
-
-import Network.ClientHandler;
-import Network.Server;
 
 public class LoginWindow extends JFrame implements ActionListener {
 	public static String username;
@@ -18,12 +14,12 @@ public class LoginWindow extends JFrame implements ActionListener {
 	JButton loginButton;
 
 	public LoginWindow() {
-		
+
 		loginFrame = new JFrame("Login Window");
 		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		loginFrame.setSize(new Dimension(2000, 500));
 		loginPanel = new JPanel(new GridLayout(10,10));
-
+		
 		pseudoField = new JTextField(40);
 		pseudoLabel = new JLabel("Pseudo", SwingConstants.LEFT);
 		loginButton = new JButton("Login");
@@ -53,15 +49,14 @@ public class LoginWindow extends JFrame implements ActionListener {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e){e.printStackTrace();
-//		System.out.println("LoginWindow "+ClientHandler.getClients().size());
 		}
-
+		
 		//		loginFrame.setVisible(false);
 
 
 
 	}
-
+	
 	public static void main(String [] argv) {
 		LoginWindow loginWindow = new LoginWindow();
 

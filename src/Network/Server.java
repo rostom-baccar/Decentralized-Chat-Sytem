@@ -51,7 +51,7 @@ public class Server {
 
 		}
 	}
-	
+
 	public static ArrayList<ClientHandler> getClients(){
 		return clients;
 	}

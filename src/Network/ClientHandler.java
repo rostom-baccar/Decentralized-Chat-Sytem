@@ -87,17 +87,12 @@ public class ClientHandler extends Thread {
 					}
 
 					else {
-//						LoginWindow.loginFrame.setVisible(false);
-//						MainWindow mainWindow = new MainWindow();
+						//						LoginWindow.loginFrame.setVisible(false);
+						//						MainWindow mainWindow = new MainWindow();
 						this.canBeAdded=true;
 						System.out.println(request + " just connected");
-//						JOptionPane.showMessageDialog(null,"You are connected");
 						out.println("You are connected");
-//						System.out.println("ClientHandler "+Server.getClients().size());
 						clientUsername=request; //we save it so that each client handler knows its primary client
-						MainWindow mainWindow = new MainWindow(clientUsername,clients);
-//						Thread.sleep(500);
-						
 						request = in.readLine();
 						firstConnection=false;
 					}
@@ -107,15 +102,18 @@ public class ClientHandler extends Thread {
 					System.out.println(clientUsername + " just disconnected");
 					broadcast(clientUsername+" disconnected");
 					clients.remove(this);
+					this.canBeAdded=false;
 					this.clientSocket.close();
 					request = in.readLine();
 				}
 				else if (request.contains("active")) {
+					out.println("begin clients");
 					for (ClientHandler client : clients) {
 						if (client!=this) { //we do not show the user's own nickname
 							out.println(client.clientUsername);
 						}
 					}
+					out.println("end clients");
 					request = in.readLine();
 				}
 				else {
@@ -147,7 +145,7 @@ public class ClientHandler extends Thread {
 		return this.clients;
 	}
 
-	private ClientHandler findThread(String remoteUser) {
+	public static ClientHandler findThread(String remoteUser) {
 		ClientHandler target = null;
 		for (ClientHandler client : clients) {
 			if (remoteUser.equals(client.clientUsername)){
