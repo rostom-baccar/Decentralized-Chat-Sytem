@@ -65,7 +65,7 @@ public class ClientHandler extends Thread {
 						remoteClientHandler.out.println("@"+this.clientUsername+" "+message);
 						//we do not send ourself the message to avoid opening an extra window
 						//we simply append the message we send to the chat area
-//						this.out.println("@"+this.clientUsername+" "+message); //the user also sees what they have sent privately to the remote user
+						//						this.out.println("@"+this.clientUsername+" "+message); //the user also sees what they have sent privately to the remote user
 						request = in.readLine();
 
 					}
@@ -87,18 +87,23 @@ public class ClientHandler extends Thread {
 					int spaceIndex=request.indexOf(" ");
 					String oldUsername=request.substring(1,spaceIndex);
 					String newUsername=request.substring(spaceIndex+1);
-					System.out.println("[DEBUG] Old Username: "+oldUsername);
-					System.out.println("[DEBUG] New Username: "+newUsername);
-					System.out.println("[DEBUG] Clients size: "+clients.size());
-					ClientHandler targetThread=findThread(oldUsername);
-					targetThread.setClientUsername(newUsername);
-					broadcast(oldUsername+" has changed their username to "+newUsername);
-					for (ClientHandler client : clients) {
-						System.out.println("[DEBUG] Client in list: "+client.getClientUsername());
+					//System.out.println("[DEBUG] Old Username: "+oldUsername);
+					//System.out.println("[DEBUG] New Username: "+newUsername);
+					//System.out.println("[DEBUG] Clients size: "+clients.size());
+					if (!unique(newUsername)) {
+						out.println("Someone is already connected with this username. Please choose another one");
+						JOptionPane.showMessageDialog(null,"Someone is already connected with this username. Please choose another one");
+						request = in.readLine();
 					}
-
-					
-					request = in.readLine();
+					else {
+						ClientHandler targetThread=findThread(oldUsername);
+						targetThread.setClientUsername(newUsername);
+						broadcast(oldUsername+" has changed their username to "+newUsername);
+						//for (ClientHandler client : clients) {
+						//System.out.println("[DEBUG] Client in list: "+client.getClientUsername());
+						//}
+						request = in.readLine();
+					}
 				}
 
 				else if (firstConnection){ //first connection

@@ -22,6 +22,7 @@ public class MainWindow extends JPanel implements ActionListener {
 	private JButton changeUsernameButton;
 	private JTextField newUsernameField;
 	private static String newUsername;
+	private static boolean uniqueNewUsername=false;
 
 	public MainWindow(String username) {
 		this.username=username;
@@ -39,7 +40,7 @@ public class MainWindow extends JPanel implements ActionListener {
 		chatButton = new JButton ("Chat");
 		sendButton = new JButton ("Send");
 		changeUsernameButton = new JButton ("Change Username");
-		
+
 		broadField = new JTextField (5);
 
 		changeUsernameButton.addActionListener(this);
@@ -53,9 +54,9 @@ public class MainWindow extends JPanel implements ActionListener {
 		refreshButton.setBounds (390, 95, 115, 25);
 		disconnectButton.setBounds (390, 415, 115, 25);
 		sendButton.setBounds (390, 455, 115, 25);
-		
+
 		broadField.setBounds (25, 455, 345, 25);
-		
+
 		newUsernameField.setBounds (25, 20, 305, 25);
 		UsersList.setBounds (390, 135, 115, 25);
 		broadArea.setBounds (30, 95, 340, 340);
@@ -66,9 +67,9 @@ public class MainWindow extends JPanel implements ActionListener {
 		mainFrame.add (refreshButton);
 		mainFrame.add (disconnectButton);
 		mainFrame. add (sendButton);
-		
+
 		mainFrame.add (broadField);
-		
+
 		mainFrame.add (newUsernameField);
 		mainFrame.add (UsersList);
 		mainFrame.add (broadArea);
@@ -131,26 +132,34 @@ public class MainWindow extends JPanel implements ActionListener {
 			System.out.println("[DEBUG] Chatting with "+remoteUser);
 			chatWindow = new ChatWindow(username, remoteUser);
 		}
-		
+
 		if(e.getSource() == changeUsernameButton) {
 			newUsername = newUsernameField.getText();
 			query="#"+username+" "+newUsername;
-//			System.out.println("[DEBUG] query: "+query);
+			//System.out.println("[DEBUG] query: "+query);
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e1){e1.printStackTrace();
 			}
 			query=null;
-			mainFrame.setVisible (false);
-			JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
-			MainWindow mainWindow = new MainWindow(newUsername);
-			username=newUsername;
-//			query=null;
-
-
-			
+			try {
+				Thread.sleep(500);//To give time for the server to check the
+				//validity of the username
+			} catch (InterruptedException e1){e1.printStackTrace();
+			}
+			if (uniqueNewUsername) {
+				mainFrame.setVisible (false);
+				JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
+				MainWindow mainWindow = new MainWindow(newUsername);
+				username=newUsername;
+				//query=null;
+			}
+			uniqueNewUsername=false;
 		}
+	}
 
+	public static void setUniqueNewUsername(boolean uniqueNewUsername) {
+		MainWindow.uniqueNewUsername = uniqueNewUsername;
 	}
 }
 

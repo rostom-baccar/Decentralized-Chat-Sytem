@@ -36,17 +36,22 @@ public class ServerResponseListener extends Thread{
 					Client.setUniqueUsername(true);
 				}
 
+				if (!serverResponse.equals("Someone is already connected with this username. Please choose another one")) {
+					MainWindow.setUniqueNewUsername(true);
+				}
+
+
 				//Active Users refresh button
 				if (serverResponse.equals("begin clients")) {
-//					System.out.println("[DEBUG] server:"+  serverResponse);
+					//System.out.println("[DEBUG] server:"+  serverResponse);
 					String clientsResponse = in.readLine();
 					while (!clientsResponse.equals("end clients")) {
 						localClients.add(clientsResponse);
-//						System.out.println("[DEBUG] ADDING CLIENT "+clientsResponse);
+						//System.out.println("[DEBUG] ADDING CLIENT "+clientsResponse);
 						MainWindow.UsersList.addItem(clientsResponse);
 						clientsResponse=in.readLine();
 					}
-//					System.out.println("[DEBUG] server: "+clientsResponse);
+					//					System.out.println("[DEBUG] server: "+clientsResponse);
 					for (int i=0; i<=localClients.size()-1; i++) {
 						System.out.println("Local Client: "+localClients.get(i));
 					}
@@ -62,7 +67,7 @@ public class ServerResponseListener extends Thread{
 
 				}
 				if (serverResponse.contains("@")) {
-					
+
 					int spaceIndex=serverResponse.indexOf(" ");
 					String remoteUser=serverResponse.substring(1,spaceIndex);
 					if (firstWindow) {
@@ -73,11 +78,11 @@ public class ServerResponseListener extends Thread{
 					chatWindow.chatArea.append("["+remoteUser+"] "+message+"\n");
 
 				}
-				
+
 				if (serverResponse.contains("disconnected")) {
 					MainWindow.broadArea.append(serverResponse+"\n");
 				}
-				
+
 				if (serverResponse.contains("has changed their username to")) {
 					MainWindow.broadArea.append(serverResponse+"\n");
 				}
