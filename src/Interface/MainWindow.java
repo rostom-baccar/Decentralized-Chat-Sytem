@@ -17,10 +17,11 @@ public class MainWindow extends JPanel implements ActionListener {
 	public static JFrame mainFrame;
 	private JPanel mainPanel;
 	public static String query;
-	private String username;
+	private static String username;
 	private ChatWindow chatWindow=null;
 	private JButton changeUsernameButton;
-	private JTextField usernameField;
+	private JTextField newUsernameField;
+	private static String newUsername;
 
 	public MainWindow(String username) {
 		this.username=username;
@@ -31,7 +32,7 @@ public class MainWindow extends JPanel implements ActionListener {
 		mainPanel = new JPanel(new GridLayout(10,10));
 
 		broadArea = new JTextArea (5, 5);
-		usernameField = new JTextField (5);
+		newUsernameField = new JTextField (5);
 		groupChatLabel = new JLabel ("GROUP CHAT");
 		refreshButton = new JButton ("Refresh List");
 		disconnectButton = new JButton ("Disconnect");
@@ -55,7 +56,7 @@ public class MainWindow extends JPanel implements ActionListener {
 		
 		broadField.setBounds (25, 455, 345, 25);
 		
-		usernameField.setBounds (25, 20, 305, 25);
+		newUsernameField.setBounds (25, 20, 305, 25);
 		UsersList.setBounds (390, 135, 115, 25);
 		broadArea.setBounds (30, 95, 340, 340);
 		groupChatLabel.setBounds (160, 65, 100, 25);
@@ -68,7 +69,7 @@ public class MainWindow extends JPanel implements ActionListener {
 		
 		mainFrame.add (broadField);
 		
-		mainFrame.add (usernameField);
+		mainFrame.add (newUsernameField);
 		mainFrame.add (UsersList);
 		mainFrame.add (broadArea);
 		mainFrame. add (groupChatLabel);
@@ -120,7 +121,6 @@ public class MainWindow extends JPanel implements ActionListener {
 		if(e.getSource() == sendButton) {
 			String message = broadField.getText();
 			query="broad "+message;
-			System.out.println("query: "+query);
 			//broadArea.append(username+": "+message);
 			query=null;
 
@@ -131,6 +131,26 @@ public class MainWindow extends JPanel implements ActionListener {
 			System.out.println("[DEBUG] Chatting with "+remoteUser);
 			chatWindow = new ChatWindow(username, remoteUser);
 		}
+		
+		if(e.getSource() == changeUsernameButton) {
+			newUsername = newUsernameField.getText();
+			query="#"+username+" "+newUsername;
+//			System.out.println("[DEBUG] query: "+query);
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e1){e1.printStackTrace();
+			}
+			query=null;
+			mainFrame.setVisible (false);
+			JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
+			MainWindow mainWindow = new MainWindow(newUsername);
+			username=newUsername;
+//			query=null;
+
+
+			
+		}
+
 	}
 }
 

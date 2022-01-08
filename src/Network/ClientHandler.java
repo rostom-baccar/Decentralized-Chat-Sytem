@@ -25,6 +25,10 @@ public class ClientHandler extends Thread {
 		return clientUsername;
 	}
 
+	public void setClientUsername(String clientUsername) {
+		this.clientUsername = clientUsername;
+	}
+
 	private Socket clientSocket;
 	private static ArrayList<ClientHandler> clients;
 	private String clientUsername; 
@@ -56,7 +60,7 @@ public class ClientHandler extends Thread {
 					int spaceIndex=request.indexOf(" ");
 					String remoteUser=request.substring(1,spaceIndex);
 					if (among(remoteUser)) {
-						String message=request.substring(spaceIndex);
+						String message=request.substring(spaceIndex+1);
 						ClientHandler remoteClientHandler=findThread(remoteUser);
 						remoteClientHandler.out.println("@"+this.clientUsername+" "+message);
 						//we do not send ourself the message to avoid opening an extra window
@@ -78,6 +82,23 @@ public class ClientHandler extends Thread {
 						broadcast(request.substring(spaceIndex+1),clientUsername);
 						request = in.readLine();
 					}
+				}
+				else if (request.contains("#")) {
+					int spaceIndex=request.indexOf(" ");
+					String oldUsername=request.substring(1,spaceIndex);
+					String newUsername=request.substring(spaceIndex+1);
+					System.out.println("[DEBUG] Old Username: "+oldUsername);
+					System.out.println("[DEBUG] New Username: "+newUsername);
+					System.out.println("[DEBUG] Clients size: "+clients.size());
+					ClientHandler targetThread=findThread(oldUsername);
+					targetThread.setClientUsername(newUsername);
+					broadcast(oldUsername+" has changed their username to "+newUsername);
+					for (ClientHandler client : clients) {
+						System.out.println("[DEBUG] Client in list: "+client.getClientUsername());
+					}
+
+					
+					request = in.readLine();
 				}
 
 				else if (firstConnection){ //first connection
@@ -139,6 +160,8 @@ public class ClientHandler extends Thread {
 	}
 
 
+
+
 	public void setCanBeAdded(boolean canBeAdded) {
 		this.canBeAdded = canBeAdded;
 	}
@@ -158,7 +181,7 @@ public class ClientHandler extends Thread {
 		return target;
 	}
 
-	//for disconnecting: custom message without the | | 
+	//for changing username
 	private void broadcast(String message) {
 		//we send a message to all the clientHandlers that are active
 		for (ClientHandler client : clients) {

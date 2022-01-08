@@ -45,12 +45,12 @@ public class Client {
 		while(username==null) { //waiting for user to type username in text field
 			username=LoginWindow.username;
 		}
-		System.out.println("[DEBUG] client "+username);
+		System.out.println("[DEBUG] Client "+username);
 		out.println(username);
 		Thread.sleep(400); //to give time for ServerConnection to set uniqueUsername to true if it's unique
 		while(!uniqueUsername) {
 			//			username=s.nextLine();
-			System.out.println("[DEBUG] username not unique");
+//			System.out.println("[DEBUG] username not unique");
 			username=null;
 			while(username==null) { 
 				username=LoginWindow.username;
@@ -70,12 +70,12 @@ public class Client {
 
 		while(true) {
 			Thread.sleep(1000);
-			System.out.println("[DEBUG] WAITING FOR QUERY");
-			System.out.println("[DEBUG] "+query);
+//			System.out.println("[DEBUG] WAITING FOR QUERY");
+//			System.out.println("[DEBUG] "+query);
 			while (query==null) {
 				query=MainWindow.query;
 			}
-			System.out.println("[DEBUG] query recieved: "+query);
+//			System.out.println("[DEBUG] query recieved: "+query);
 
 			//		}
 			//		while(query!=null) {

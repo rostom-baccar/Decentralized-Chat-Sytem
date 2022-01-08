@@ -38,14 +38,15 @@ public class ServerResponseListener extends Thread{
 
 				//Active Users refresh button
 				if (serverResponse.equals("begin clients")) {
-					System.out.println("[DEBUG] server:"+  serverResponse);
+//					System.out.println("[DEBUG] server:"+  serverResponse);
 					String clientsResponse = in.readLine();
 					while (!clientsResponse.equals("end clients")) {
 						localClients.add(clientsResponse);
+//						System.out.println("[DEBUG] ADDING CLIENT "+clientsResponse);
 						MainWindow.UsersList.addItem(clientsResponse);
 						clientsResponse=in.readLine();
 					}
-					System.out.println("[DEBUG] server: "+clientsResponse);
+//					System.out.println("[DEBUG] server: "+clientsResponse);
 					for (int i=0; i<=localClients.size()-1; i++) {
 						System.out.println("Local Client: "+localClients.get(i));
 					}
@@ -71,6 +72,14 @@ public class ServerResponseListener extends Thread{
 					String message=serverResponse.substring(spaceIndex);
 					chatWindow.chatArea.append("["+remoteUser+"] "+message+"\n");
 
+				}
+				
+				if (serverResponse.contains("disconnected")) {
+					MainWindow.broadArea.append(serverResponse+"\n");
+				}
+				
+				if (serverResponse.contains("has changed their username to")) {
+					MainWindow.broadArea.append(serverResponse+"\n");
 				}
 
 				System.out.println(serverResponse);
