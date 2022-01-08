@@ -19,16 +19,14 @@ public class ChatWindow extends JPanel implements ActionListener {
     	
     	this.username=username;
     	this.remoteUser=remoteUser;
-    	
         chatFrame = new JFrame ("[PRIVATE CHAT] "+username+" - "+remoteUser);
 		chatPanel = new JPanel(new GridLayout(10,10));
-
 
         sendButton = new JButton ("SEND");
         chatField = new JTextField (5);
         chatArea = new JTextArea (5, 5);
+        
 		sendButton.addActionListener(this);
-
 
         sendButton.setBounds (180, 215, 70, 25);
         chatField.setBounds (15, 215, 150, 25);

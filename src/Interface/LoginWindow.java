@@ -1,66 +1,63 @@
-package Interface ;
+package Interface;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
+import javax.swing.event.*;
 
-public class LoginWindow extends JFrame implements ActionListener {
+public class LoginWindow extends JPanel implements ActionListener {
+
 	public static String username;
-	public static JFrame loginFrame;
-	public static JPanel loginPanel;
-	public static JTextField pseudoField;
-	JLabel pseudoLabel;
-	JButton loginButton;
+    private JButton loginButton;
+    private JTextField usernameField;
+    public static JFrame loginFrame;
+    private JPanel loginPanel;
+    private JLabel typeUsernameLabel;
 
-	public LoginWindow() {
+    public LoginWindow() {
+    	
+    	loginFrame = new JFrame ("Login Window");
+        loginPanel = new JPanel(new GridLayout(10,10));
+        typeUsernameLabel = new JLabel("Type Username");
 
-		loginFrame = new JFrame("Login Window");
-		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		loginFrame.setSize(new Dimension(2000, 500));
-		loginPanel = new JPanel(new GridLayout(10,10));
-		
-		pseudoField = new JTextField(40);
-		pseudoLabel = new JLabel("Pseudo", SwingConstants.LEFT);
-		loginButton = new JButton("Login");
-		loginButton.addActionListener(this);
+		loginButton = new JButton ("SEND");
+		usernameField = new JTextField (5);
+        
+        loginButton.addActionListener(this);
 
-		loginPanel.add(pseudoField);
-		loginPanel.add(pseudoLabel);
-		loginPanel.add(loginButton);
-
-		pseudoLabel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-
-		loginFrame.getRootPane().setDefaultButton(loginButton);
-		loginFrame.getContentPane().add(loginPanel, BorderLayout.CENTER);
+        loginButton.setBounds (77, 75, 85, 23);
+        usernameField.setBounds (22, 45, 190, 23);
+        typeUsernameLabel.setBounds (72, 10, 100, 25); 
+       
+        loginFrame.add (typeUsernameLabel);
+        loginFrame.add (usernameField);
+        loginFrame.add (loginButton);
+        
+        loginFrame.getRootPane().setDefaultButton(loginButton);
+        loginFrame.setSize(new Dimension(2000, 500));
+		loginFrame.getContentPane().add (loginPanel, BorderLayout.CENTER);
 		loginFrame.pack();
-		//		loginFrame.setLocationRelativeTo(null) ;
-		loginFrame.setSize(300,300);
-		loginFrame.setVisible(true);
+		loginFrame.setLocationRelativeTo(null) ;
+        loginFrame.setSize(250,150);
+        loginFrame.setVisible (true);
+        
+    }
 
 
-	}
+    public static void main (String[] args) {
+    	LoginWindow A = new LoginWindow();
 
+    }
 
 	public void actionPerformed(ActionEvent event) {
 
-		username = pseudoField.getText();
+		username = usernameField.getText();
 		username=null;
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(500);
 		} catch (InterruptedException e){e.printStackTrace();
 		}
 		
-		//		loginFrame.setVisible(false);
-
-
-
 	}
-	
-	public static void main(String [] argv) {
-		LoginWindow loginWindow = new LoginWindow();
-
-	}
-
 
 }
