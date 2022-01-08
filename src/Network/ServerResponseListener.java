@@ -58,6 +58,7 @@ public class ServerResponseListener extends Thread{
 				//Broadcast
 				if (serverResponse.contains("[BROADCAST]")) {
 					MainWindow.broadArea.append(serverResponse+"\n");
+
 				}
 				if (serverResponse.contains("@")) {
 					
