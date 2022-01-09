@@ -70,6 +70,7 @@ public class ServerResponseListener extends Thread{
 				}
 				if (serverResponse.contains("wants to chat")) {
 					JOptionPane.showMessageDialog(null,serverResponse);
+					
 				}
 				if (serverResponse.contains("@")) {
 

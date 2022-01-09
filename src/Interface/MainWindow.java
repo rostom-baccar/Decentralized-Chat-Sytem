@@ -23,7 +23,7 @@ public class MainWindow extends JPanel implements ActionListener {
 	private JTextField newUsernameField;
 	private static String newUsername;
 	private static boolean uniqueNewUsername=false;
-	public static boolean chatInitiator=false;
+	
 
 	public MainWindow(String username) {
 		this.username=username;

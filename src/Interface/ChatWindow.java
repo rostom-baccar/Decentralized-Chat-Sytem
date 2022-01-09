@@ -16,7 +16,6 @@ public class ChatWindow extends JPanel implements ActionListener {
     private JFrame chatFrame;
     private JPanel chatPanel;
     public String query;
-    public static boolean chatInitiator=false;;
 
     public ChatWindow(String username, String remoteUser) {
     	
