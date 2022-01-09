@@ -23,6 +23,7 @@ public class MainWindow extends JPanel implements ActionListener {
 	private JTextField newUsernameField;
 	private static String newUsername;
 	private static boolean uniqueNewUsername=false;
+	public static boolean chatInitiator=false;
 
 	public MainWindow(String username) {
 		this.username=username;
@@ -124,8 +125,12 @@ public class MainWindow extends JPanel implements ActionListener {
 
 		if(e.getSource() == chatButton) {
 			String remoteUser=(String) UsersList.getSelectedItem();
-			System.out.println("[DEBUG] Chatting with "+remoteUser);
+//			System.out.println("[DEBUG] Chatting with "+remoteUser);
 			chatWindow = new ChatWindow(username, remoteUser);
+//			if (ServerResponseListener.chatInitiator) {
+			query="chat "+username;
+			query=null;
+//			}
 		}
 
 		if(e.getSource() == changeUsernameButton) {

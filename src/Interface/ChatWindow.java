@@ -5,6 +5,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import Network.MessageListener;
+
 public class ChatWindow extends JPanel implements ActionListener {
 	private String username;
 	private String remoteUser;
@@ -14,6 +16,7 @@ public class ChatWindow extends JPanel implements ActionListener {
     private JFrame chatFrame;
     private JPanel chatPanel;
     public String query;
+    public static boolean chatInitiator=false;;
 
     public ChatWindow(String username, String remoteUser) {
     	
@@ -41,6 +44,11 @@ public class ChatWindow extends JPanel implements ActionListener {
         chatFrame.pack();
 		chatFrame.setSize(370,290);
         chatFrame.setVisible (true);
+        
+        //Thread that listens to incoming messages from remote user and 
+        //displays them on the chat area
+        MessageListener messageThread = new MessageListener(chatArea,remoteUser);
+        messageThread.start();
         
     }
 

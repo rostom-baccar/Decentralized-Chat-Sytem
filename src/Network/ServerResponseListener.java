@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 
 import Interface.ChatWindow;
 import Interface.MainWindow;
@@ -20,6 +21,7 @@ public class ServerResponseListener extends Thread{
 	private ArrayList<String> localClients = new ArrayList<>();
 	private boolean firstWindow=true;
 	private ChatWindow chatWindow = null;
+	public static String message=null;
 
 	public ServerResponseListener(Socket clientSocket) throws IOException {
 		this.clientSocket=clientSocket;
@@ -66,17 +68,21 @@ public class ServerResponseListener extends Thread{
 					MainWindow.broadArea.append(serverResponse+"\n");
 
 				}
+				if (serverResponse.contains("wants to chat")) {
+					JOptionPane.showMessageDialog(null,serverResponse);
+				}
 				if (serverResponse.contains("@")) {
 
 					int spaceIndex=serverResponse.indexOf(" ");
 					String remoteUser=serverResponse.substring(1,spaceIndex);
-					if (firstWindow) {
-						chatWindow = new ChatWindow(Client.getUsername(),remoteUser);
-					}
-					firstWindow=false;
-					String message=serverResponse.substring(spaceIndex);
-					chatWindow.chatArea.append("["+remoteUser+"] "+message+"\n");
-
+					message=serverResponse.substring(spaceIndex);
+//					if (firstWindow) {
+//						chatWindow = new ChatWindow(Client.getUsername(),remoteUser);
+//					}
+//					firstWindow=false;
+//					chatWindow.chatArea.append("["+remoteUser+"] "+message+"\n");
+					message=null;
+					
 				}
 
 				if (serverResponse.contains("disconnected")) {

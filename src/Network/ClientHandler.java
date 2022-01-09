@@ -65,7 +65,7 @@ public class ClientHandler extends Thread {
 						remoteClientHandler.out.println("@"+this.clientUsername+" "+message);
 						//we do not send ourself the message to avoid opening an extra window
 						//we simply append the message we send to the chat area
-						//						this.out.println("@"+this.clientUsername+" "+message); //the user also sees what they have sent privately to the remote user
+						//this.out.println("@"+this.clientUsername+" "+message); //the user also sees what they have sent privately to the remote user
 						request = in.readLine();
 
 					}
@@ -82,6 +82,13 @@ public class ClientHandler extends Thread {
 						broadcast(request.substring(spaceIndex+1),clientUsername);
 						request = in.readLine();
 					}
+				}
+				else if (request.contains("chat")) {
+					int spaceIndex=request.indexOf(" ");
+					String remoteUser=request.substring(spaceIndex+1);
+					System.out.println("[DEBUG] Query recieved: "+request);
+					out.println(remoteUser+" wants to chat. Open a Chat Window with them!");
+					request = in.readLine();
 				}
 				else if (request.contains("#")) {
 					int spaceIndex=request.indexOf(" ");
