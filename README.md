@@ -4,7 +4,7 @@ Professional Decentralized Chat system
 ## [APP STILL IN DEVELOPMENT]
 
 ## Authors:
-- Rostom BACCAR 4IR B1\
+- Rostom BACCAR 4IR B1
 - Wissem FERCHICHI 4IR B1
 
 ## Requirements:
@@ -19,22 +19,22 @@ Professional Decentralized Chat system
 
 ## App Features:
 - Group Chat with all the connected users
-- Edit username while being connected (it has to be unique)\
-- Chat with multiple users\
-- Getting notified when someone:\
-  *connects\
-  *disconnects\
-  *changes their username\
-  *wants to chat with you\
-  *the person you want to chat with opens a Chat Window with you\
-- Get the names of all connected people (the list is not dynamic. You'll have to refresh it if you see that someone has just connected/disconnected/changed their username)\
+- Edit username while being connected (it has to be unique)
+- Chat with multiple users
+- Getting notified when someone:
+  -connects\
+  -disconnects\
+  -changes their username\
+  -wants to chat with you\
+  -the person you want to chat with opens a Chat Window with you
+- Get the names of all connected people (the list is not dynamic. You'll have to refresh it if you see that someone has just connected/disconnected/changed their username)
 - Disconnect at any moment
 
 ## Limitations/Aspects to improve:
-- When a user changes their username while chatting with someone, they'll have to close that Chat Window and re-open it again with the same person in order to send/recieve messages\
-- The Dialog Boxes that notify the user that someone wants to chat with them or that someone has opened a Chat Window with them only work when no other user attemps to connect with you while connecting with someone\
-- Buttons are sometimes laggy / Dialog Boxes sometimes show with a delay\
-- The code needs a lot of cleaning and optimization\
+- When a user changes their username while chatting with someone, they'll have to close that Chat Window and re-open it again with the same person in order to send/recieve messages
+- The Dialog Boxes that notify the user that someone wants to chat with them or that someone has opened a Chat Window with them only work when no other user attemps to connect with you while connecting with someone
+- Buttons are sometimes laggy / Dialog Boxes sometimes show with a delay
+- The code needs a lot of cleaning and optimization
 - No database for now
-
+- Other bugs that are yet to be discovered
 
