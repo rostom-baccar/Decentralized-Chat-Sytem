@@ -1,7 +1,7 @@
 # INSA-POO-Project-Chat-Sytem-4IR
 Professional Decentralized Chat system
 
-## APP STILL IN DEVELOPMENT
+## [APP STILL IN DEVELOPMENT]
 
 ## Authors:
 - Rostom BACCAR 4IR B1\
@@ -18,6 +18,7 @@ Professional Decentralized Chat system
 4. Run as many instances of the Client class as you want there to be clients (on differents computers or not)
 
 ## App Features:
+- Group Chat with all the connected users
 - Edit username while being connected (it has to be unique)\
 - Chat with multiple users\
 - Getting notified when someone:\
