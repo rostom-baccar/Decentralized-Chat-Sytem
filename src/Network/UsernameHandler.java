@@ -1,5 +1,8 @@
 package Network;
 
+//Thread that adds the client thread to the list of threads as soon as its 
+//username becomes unique
+
 public class UsernameHandler extends Thread{
 	private ClientHandler clientThread;
 
