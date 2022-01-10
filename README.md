@@ -22,11 +22,11 @@ Professional Decentralized Chat system
 - Chat with multiple users
 - Group Chat with all the connected users
 - Getting notified when someone:
-  - Sub connects
-  - Sub disconnects
-  - Sub changes their username
-  - Sub wants to chat with you
-  - Sub the person you want to chat with opens a Chat Window with you
+  - connects
+  - disconnects
+  - changes their username
+  - wants to chat with you
+  - the person you want to chat with opens a Chat Window with you
 - Get the names of all connected people (the list is not dynamic. You'll have to refresh it if you see that someone has just connected/disconnected/changed their username)
 - Disconnect at any moment
 
