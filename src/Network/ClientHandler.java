@@ -128,9 +128,9 @@ public class ClientHandler extends Thread {
 						//						MainWindow mainWindow = new MainWindow();
 						this.canBeAdded=true;
 						System.out.println(request + " just connected");
-						broadcast(clientUsername+" just connected");
 						out.println("You are connected");
 						clientUsername=request; //we save it so that each client handler knows its primary client
+						broadcast(clientUsername+" just connected");
 						request = in.readLine();
 						firstConnection=false;
 					}
