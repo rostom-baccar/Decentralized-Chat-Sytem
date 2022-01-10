@@ -5,6 +5,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import Network.ServerResponseListener;
+
 public class MainWindow extends JPanel implements ActionListener {
 	private JButton refreshButton;
 	private JButton disconnectButton;
@@ -23,7 +25,7 @@ public class MainWindow extends JPanel implements ActionListener {
 	private JTextField newUsernameField;
 	private static String newUsername;
 	private static boolean uniqueNewUsername=false;
-	
+
 
 	public MainWindow(String username) {
 		this.username=username;
@@ -42,7 +44,7 @@ public class MainWindow extends JPanel implements ActionListener {
 		sendButton = new JButton ("Send");
 		changeUsernameButton = new JButton ("Change Username");
 		broadField = new JTextField (5);
-		
+
 		changeUsernameButton.addActionListener(this);
 		refreshButton.addActionListener(this);
 		disconnectButton.addActionListener(this);
@@ -125,17 +127,28 @@ public class MainWindow extends JPanel implements ActionListener {
 
 		if(e.getSource() == chatButton) {
 			String remoteUser=(String) UsersList.getSelectedItem();
-//			System.out.println("[DEBUG] Chatting with "+remoteUser);
+			//			System.out.println("[DEBUG] Chatting with "+remoteUser);
 			chatWindow = new ChatWindow(username, remoteUser);
-//			if (ServerResponseListener.chatInitiator) {
-			query="*"+username+" "+remoteUser;
+			//			if (ServerResponseListener.chatInitiator) {
+			if (ServerResponseListener.conversationInitiator)
+			{
+				query="*"+username+" "+remoteUser;
+			}
+			else {
+				query="$"+username+" "+remoteUser;
+			}
+			ServerResponseListener.setConversationInitiator(true);
+
 			query=null;
-//			}
+			//			}
 		}
 
 		if(e.getSource() == changeUsernameButton) {
 			newUsername = newUsernameField.getText();
+
+
 			query="#"+username+" "+newUsername;
+
 			//System.out.println("[DEBUG] query: "+query);
 			try {
 				Thread.sleep(50);
@@ -149,10 +162,10 @@ public class MainWindow extends JPanel implements ActionListener {
 			}
 			if (uniqueNewUsername) {
 				mainFrame.setTitle(newUsername);
-//				mainFrame.setVisible (false);
+				//				mainFrame.setVisible (false);
 				JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
-//				MainWindow mainWindow = new MainWindow(newUsername);
-				
+				//				MainWindow mainWindow = new MainWindow(newUsername);
+
 				username=newUsername;
 				//query=null;
 			}

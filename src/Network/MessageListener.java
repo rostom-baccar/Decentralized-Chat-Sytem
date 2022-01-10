@@ -25,7 +25,7 @@ public class MessageListener extends Thread {
 			
 			int spaceIndex=incomingRequest.indexOf(" ");
 			String potentialRemoteUser=incomingRequest.substring(1,spaceIndex);
-			message=incomingRequest.substring(spaceIndex);
+			message=incomingRequest.substring(spaceIndex+1);
 			if (remoteUser.equals(potentialRemoteUser)) {
 //			System.out.println("[DEBUG] Message Listener: "+incomingMessage);
 			chatArea.append("["+remoteUser+"] "+message+"\n");

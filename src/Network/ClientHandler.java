@@ -92,6 +92,15 @@ public class ClientHandler extends Thread {
 					remoteClientHandler.out.println(initiator+" wants to chat. Open a Chat Window with them!");
 					request = in.readLine();
 				}
+				else if (request.contains("$")) {
+					int spaceIndex=request.indexOf(" ");
+					String recipient = request.substring(1,spaceIndex);
+					String remoteUser=request.substring(spaceIndex+1);
+					ClientHandler remoteClientHandler=findThread(remoteUser);
+					System.out.println("[DEBUG] Query recieved: "+request);
+					remoteClientHandler.out.println(recipient+" has opened a chat. You can now chat with them!");
+					request = in.readLine();
+				}
 				else if (request.contains("#")) {
 					int spaceIndex=request.indexOf(" ");
 					String oldUsername=request.substring(1,spaceIndex);

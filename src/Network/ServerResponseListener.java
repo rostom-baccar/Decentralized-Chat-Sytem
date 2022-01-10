@@ -22,6 +22,7 @@ public class ServerResponseListener extends Thread{
 	private boolean firstWindow=true;
 	private ChatWindow chatWindow = null;
 	public static String message=null;
+	public static boolean conversationInitiator=true;
 
 	public ServerResponseListener(Socket clientSocket) throws IOException {
 		this.clientSocket=clientSocket;
@@ -69,6 +70,11 @@ public class ServerResponseListener extends Thread{
 
 				}
 				if (serverResponse.contains("wants to chat")) {
+					conversationInitiator=false;
+					JOptionPane.showMessageDialog(null,serverResponse);
+					
+				}
+				if (serverResponse.contains("has opened a chat")) {
 					JOptionPane.showMessageDialog(null,serverResponse);
 					
 				}
@@ -98,5 +104,9 @@ public class ServerResponseListener extends Thread{
 			} catch (IOException e){e.printStackTrace();
 			}
 		}
+	}
+
+	public static void setConversationInitiator(boolean conversationInitiator) {
+		ServerResponseListener.conversationInitiator = conversationInitiator;
 	}
 }
