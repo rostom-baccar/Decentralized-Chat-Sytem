@@ -74,16 +74,13 @@ public class ServerResponseListener extends Thread{
 				}
 				if (serverResponse.contains("@")) {
 
-					int spaceIndex=serverResponse.indexOf(" ");
-					String remoteUser=serverResponse.substring(1,spaceIndex);
-					message=serverResponse.substring(spaceIndex);
-//					if (firstWindow) {
-//						chatWindow = new ChatWindow(Client.getUsername(),remoteUser);
-//					}
-//					firstWindow=false;
-//					chatWindow.chatArea.append("["+remoteUser+"] "+message+"\n");
+					message=serverResponse;
 					message=null;
-					
+//					int spaceIndex=serverResponse.indexOf(" ");
+//					String remoteUser=serverResponse.substring(1,spaceIndex);
+//					message=serverResponse.substring(spaceIndex);
+//					message=null;
+//					
 				}
 
 				if (serverResponse.contains("//")) {
