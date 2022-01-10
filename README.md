@@ -1,9 +1,9 @@
 # INSA-POO-Project-Chat-Sytem-4IR
 Professional Decentralized Chat system
 
-**APP STILL IN DEVELOPMENT**
+## APP STILL IN DEVELOPMENT
 
-*Authors:\
+## Authors:
 Rostom BACCAR 4IR B1\
 Wissem FERCHICHI 4IR B1
 
