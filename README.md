@@ -4,8 +4,8 @@ Professional Decentralized Chat system
 ## APP STILL IN DEVELOPMENT
 
 ## Authors:
-Rostom BACCAR 4IR B1\
-Wissem FERCHICHI 4IR B1
+- Rostom BACCAR 4IR B1\
+- Wissem FERCHICHI 4IR B1
 
 ## Requirements:
 - Local Network
