@@ -3,7 +3,7 @@ Professional Decentralized Chat system
 
 **APP STILL IN DEVELOPMENT**
 
-*Authors:
+*Authors:\
 Rostom BACCAR 4IR B1\
 Wissem FERCHICHI 4IR B1
 
