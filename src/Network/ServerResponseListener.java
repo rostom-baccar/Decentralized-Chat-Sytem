@@ -69,7 +69,6 @@ public class ServerResponseListener extends Thread{
 
 				}
 				if (serverResponse.contains("wants to chat")) {
-
 					JOptionPane.showMessageDialog(null,serverResponse);
 					
 				}
@@ -87,11 +86,7 @@ public class ServerResponseListener extends Thread{
 					
 				}
 
-				if (serverResponse.contains("disconnected")) {
-					MainWindow.broadArea.append(serverResponse+"\n");
-				}
-
-				if (serverResponse.contains("has changed their username to")) {
+				if (serverResponse.contains("//")) {
 					MainWindow.broadArea.append(serverResponse+"\n");
 				}
 

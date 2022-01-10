@@ -128,7 +128,7 @@ public class MainWindow extends JPanel implements ActionListener {
 //			System.out.println("[DEBUG] Chatting with "+remoteUser);
 			chatWindow = new ChatWindow(username, remoteUser);
 //			if (ServerResponseListener.chatInitiator) {
-			query="chat "+username;
+			query="chat "+remoteUser;
 			query=null;
 //			}
 		}
