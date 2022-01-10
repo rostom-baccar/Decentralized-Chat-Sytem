@@ -76,7 +76,6 @@ public class ServerResponseListener extends Thread{
 				}
 				if (serverResponse.contains("has opened a chat")) {
 					JOptionPane.showMessageDialog(null,serverResponse);
-					
 				}
 				if (serverResponse.contains("@")) {
 
