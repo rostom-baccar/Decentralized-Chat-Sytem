@@ -83,12 +83,13 @@ public class ClientHandler extends Thread {
 						request = in.readLine();
 					}
 				}
-				else if (request.contains("chat")) {
+				else if (request.contains("*")) {
 					int spaceIndex=request.indexOf(" ");
+					String initiator = request.substring(1,spaceIndex);
 					String remoteUser=request.substring(spaceIndex+1);
 					ClientHandler remoteClientHandler=findThread(remoteUser);
 					System.out.println("[DEBUG] Query recieved: "+request);
-					remoteClientHandler.out.println(remoteUser+" wants to chat. Open a Chat Window with them!");
+					remoteClientHandler.out.println(initiator+" wants to chat. Open a Chat Window with them!");
 					request = in.readLine();
 				}
 				else if (request.contains("#")) {
