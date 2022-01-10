@@ -18,15 +18,15 @@ Professional Decentralized Chat system
 4. Run as many instances of the Client class as you want there to be clients (on differents computers or not)
 
 ## App Features:
-- Group Chat with all the connected users
 - Edit username while being connected (it has to be unique)
 - Chat with multiple users
+- Group Chat with all the connected users
 - Getting notified when someone:
-  -connects\
-  -disconnects\
-  -changes their username\
-  -wants to chat with you\
-  -the person you want to chat with opens a Chat Window with you
+  - Sub connects
+  - Sub disconnects
+  - Sub changes their username
+  - Sub wants to chat with you
+  - Sub the person you want to chat with opens a Chat Window with you
 - Get the names of all connected people (the list is not dynamic. You'll have to refresh it if you see that someone has just connected/disconnected/changed their username)
 - Disconnect at any moment
 
