@@ -86,8 +86,9 @@ public class ClientHandler extends Thread {
 				else if (request.contains("chat")) {
 					int spaceIndex=request.indexOf(" ");
 					String remoteUser=request.substring(spaceIndex+1);
+					ClientHandler remoteClientHandler=findThread(remoteUser);
 					System.out.println("[DEBUG] Query recieved: "+request);
-					out.println(remoteUser+" wants to chat. Open a Chat Window with them!");
+					remoteClientHandler.out.println(remoteUser+" wants to chat. Open a Chat Window with them!");
 					request = in.readLine();
 				}
 				else if (request.contains("#")) {
@@ -127,6 +128,7 @@ public class ClientHandler extends Thread {
 						//						MainWindow mainWindow = new MainWindow();
 						this.canBeAdded=true;
 						System.out.println(request + " just connected");
+						broadcast(clientUsername+" just connected");
 						out.println("You are connected");
 						clientUsername=request; //we save it so that each client handler knows its primary client
 						request = in.readLine();
