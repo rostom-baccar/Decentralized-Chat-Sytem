@@ -5,6 +5,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import Network.ClientHandler;
+import Network.Server;
 import Network.ServerResponseListener;
 
 public class MainWindow extends JPanel implements ActionListener {
@@ -118,7 +120,9 @@ public class MainWindow extends JPanel implements ActionListener {
 
 		if(e.getSource() == chatButton) {
 			String remoteUser=(String) UsersList.getSelectedItem();
+//			if (ClientHandler.among(remoteUser)) {
 			chatWindow = new ChatWindow(username, remoteUser);
+//			}
 			if (ServerResponseListener.isConversationInitiator())
 			{
 				query="*"+username+" "+remoteUser;
@@ -127,7 +131,6 @@ public class MainWindow extends JPanel implements ActionListener {
 				query="$"+username+" "+remoteUser;
 			}
 			ServerResponseListener.setConversationInitiator(true);
-
 			query=null;
 		}
 
@@ -136,11 +139,6 @@ public class MainWindow extends JPanel implements ActionListener {
 
 
 			query="#"+username+" "+newUsername;
-
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e1){e1.printStackTrace();
-			}
 			query=null;
 			try {
 				Thread.sleep(500);//To give time for the server to check the
@@ -158,6 +156,7 @@ public class MainWindow extends JPanel implements ActionListener {
 
 	//Getters and Setters
 	
+
 	public static void setUniqueNewUsername(boolean uniqueNewUsername) {
 		MainWindow.uniqueNewUsername = uniqueNewUsername;
 	}
@@ -181,5 +180,6 @@ public class MainWindow extends JPanel implements ActionListener {
 	public static void setQuery(String query) {
 		MainWindow.query = query;
 	}
+	
 }
 

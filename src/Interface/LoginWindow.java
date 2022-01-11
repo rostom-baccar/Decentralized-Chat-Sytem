@@ -17,7 +17,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 
     public LoginWindow() {
     	
-    	setLoginFrame(new JFrame ("Login Window"));
+    	loginFrame=new JFrame ("Login Window");
         loginPanel = new JPanel(new GridLayout(10,10));
         typeUsernameLabel = new JLabel("Type Username");
 
@@ -30,25 +30,25 @@ public class LoginWindow extends JPanel implements ActionListener {
         usernameField.setBounds (22, 45, 190, 23);
         typeUsernameLabel.setBounds (72, 10, 100, 25); 
        
-        getLoginFrame().add (typeUsernameLabel);
-        getLoginFrame().add (usernameField);
-        getLoginFrame().add (loginButton);
+        loginFrame.add (typeUsernameLabel);
+        loginFrame.add (usernameField);
+        loginFrame.add (loginButton);
         
-        getLoginFrame().getRootPane().setDefaultButton(loginButton);
-        getLoginFrame().setSize(new Dimension(2000, 500));
-		getLoginFrame().getContentPane().add (loginPanel, BorderLayout.CENTER);
-		getLoginFrame().pack();
-		getLoginFrame().setLocationRelativeTo(null) ;
-        getLoginFrame().setSize(250,150);
-        getLoginFrame().setVisible (true);
+        loginFrame.getRootPane().setDefaultButton(loginButton);
+        loginFrame.setSize(new Dimension(2000, 500));
+        loginFrame.getContentPane().add (loginPanel, BorderLayout.CENTER);
+        loginFrame.pack();
+        loginFrame.setLocationRelativeTo(null) ;
+        loginFrame.setSize(250,150);
+        loginFrame.setVisible (true);
         
     }
 
 
 	public void actionPerformed(ActionEvent event) {
 
-		setUsername(usernameField.getText());
-		setUsername(null);
+		username=usernameField.getText();
+		username=null;
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e){e.printStackTrace();

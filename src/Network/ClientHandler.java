@@ -7,11 +7,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
-import Interface.LoginWindow;
-import Interface.MainWindow;
-
 //each client will have its own client handler with which it can communicate (like a server instance)
 //in order to have multiple client we need multiple threads handling each client
 //otherwise we would have blocking functions that would not allow the program to finish
@@ -73,7 +68,12 @@ public class ClientHandler extends Thread {
 					String initiator = request.substring(1,spaceIndex);
 					String remoteUser=request.substring(spaceIndex+1);
 					ClientHandler remoteClientHandler=findThread(remoteUser);
+					if (remoteClientHandler!=null) {
 					remoteClientHandler.out.println(initiator+" wants to chat. Open a Chat Window with them!");
+					}
+					else {
+					out.println("Sorry, the user you are trying to chat with is not connected!");
+					}
 					request = in.readLine();
 				}
 				else if (request.contains("$")) {
@@ -90,21 +90,18 @@ public class ClientHandler extends Thread {
 					String newUsername=request.substring(spaceIndex+1);
 					if (!unique(newUsername)) {
 						out.println("Someone is already connected with this username. Please choose another one");
-						JOptionPane.showMessageDialog(null,"Someone is already connected with this username. Please choose another one");
-						request = in.readLine();
 					}
 					else {
 						ClientHandler targetThread=findThread(oldUsername);
 						targetThread.setClientUsername(newUsername);
 						broadcast(oldUsername+" has changed their username to "+newUsername);
-						request = in.readLine();
 					}
+					request = in.readLine();
 				}
 
 				else if (firstConnection){ //first connection
 					if (!unique(request)) {
 						out.println("Username already taken, please choose another one");
-						JOptionPane.showMessageDialog(null,"Username already taken, please choose another one");
 						request = in.readLine();
 					}
 
@@ -156,7 +153,7 @@ public class ClientHandler extends Thread {
 	//Useful functions used above
 	public static ClientHandler findThread(String remoteUser) {
 		ClientHandler target = null;
-		for (ClientHandler client : clients) {
+		for (ClientHandler client : Server.getClients()) {
 			if (remoteUser.equals(client.clientUsername)){
 				target=client;
 			}
@@ -167,14 +164,14 @@ public class ClientHandler extends Thread {
 	//for changing username
 	private void broadcast(String message) {
 		//we send a message to all the clientHandlers that are active
-		for (ClientHandler client : clients) {
+		for (ClientHandler client : Server.getClients()) {
 			client.out.println("//"+message+"//");
 		}
 	}
 
 	private void broadcast(String message, String clientUsername) {
 		//we send a message to all the clientHandlers that are active
-		for (ClientHandler client : clients) {
+		for (ClientHandler client : Server.getClients()) {
 			client.out.println("[BROADCAST] |"+clientUsername+"| "+message);
 		}
 	}
@@ -182,16 +179,17 @@ public class ClientHandler extends Thread {
 
 	private static boolean unique(String username) {
 		boolean unique=true;
-		ArrayList<ClientHandler> clients = Server.getClients();
-		for (ClientHandler client : clients) {
-			if ((client.clientUsername!=null) && (client.clientUsername.equals(username))) unique=false;
+		for (ClientHandler client : Server.getClients()) {
+			if (client.clientUsername.equals(username)) {
+				unique=false;
+			}
 		}
 		return unique;
 	}
 
-	private static boolean among(String remoteUser) {
+	public static boolean among(String remoteUser) {
 		boolean contain=false;
-		for (ClientHandler client : clients) {
+		for (ClientHandler client : Server.getClients()) {
 			if (remoteUser.equals(client.clientUsername)){
 				contain=true;
 			}

@@ -14,6 +14,7 @@ import Interface.MainWindow;
 
 //Thread for each client which listens constantly to what the server broadcasts
 //we only need an input attribute since we won't be sending the server any messages with these threads
+
 public class ServerResponseListener extends Thread{
 
 	private BufferedReader in;
@@ -37,11 +38,19 @@ public class ServerResponseListener extends Thread{
 
 				if (serverResponse==null) break;
 				Thread.sleep(200); //to give time to the client handler to send its response
+				
 				if (!serverResponse.equals("Username already taken, please choose another one")) {
 					Client.setUniqueUsername(true);
 				}
+				else {
+					JOptionPane.showMessageDialog(null,serverResponse);
+				}
+				
 				if (!serverResponse.equals("Someone is already connected with this username. Please choose another one")) {
 					MainWindow.setUniqueNewUsername(true);
+				}
+				else {
+					JOptionPane.showMessageDialog(null,serverResponse);
 				}
 
 				//Active Users refresh button
@@ -59,16 +68,21 @@ public class ServerResponseListener extends Thread{
 					MainWindow.getBroadArea().append(serverResponse+"\n");
 				}
 
-				if (serverResponse.contains("wants to chat")) {
-					setConversationInitiator(false);
+				if (serverResponse.contains(" wants to chat. Open a Chat Window with them!")) {
+					conversationInitiator=false;
 					JOptionPane.showMessageDialog(null,serverResponse);
 				}
 
-				if (serverResponse.contains("has opened a chat")) {
+				if (serverResponse.equals("Sorry, the user you are trying to chat with is not connected!")) {
+					JOptionPane.showMessageDialog(null,serverResponse);
+				}
+				
+				if (serverResponse.contains(" has opened a chat. You can now chat with them!")) {
 					JOptionPane.showMessageDialog(null,serverResponse);
 				}
 				if (serverResponse.contains("@")) {
-					setMessage(serverResponse);				
+					message=serverResponse;		
+					message=null;
 				}
 
 				if (serverResponse.contains("//")) {
