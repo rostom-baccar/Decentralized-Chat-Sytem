@@ -36,5 +36,6 @@ Professional Decentralized Chat system
 - Buttons are sometimes laggy / Dialog Boxes sometimes show with a delay
 - The code needs a lot of cleaning and optimization
 - No database for now
+- The whole code is text-coded. You can mess up the execution if you write the right things in the chat areas (needs to be changed)
 - Other bugs that are yet to be discovered
 
