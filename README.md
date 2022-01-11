@@ -9,7 +9,7 @@ Professional Decentralized Chat system
 
 ## Requirements:
 - Local Network
-- More that two computers on that Local Network (in order to test all the features)
+- Ideally more that two computers on that Local Network (in order to properly test all the app features)
 
 ## User Manual: 
 1. Identify the IP Adress of the computer that will act as the Server
@@ -27,11 +27,11 @@ Professional Decentralized Chat system
   - changes their username
   - wants to chat with you
   - the person you want to chat with opens a Chat Window with you
-- Get the names of all connected people (the list is not dynamic. You'll have to refresh it if you see that someone has just connected/disconnected/changed their username)
+- Get the names of all connected people at any time (the list is not dynamic. You'll have to refresh it if you see that someone has just connected / disconnected / changed their username)
 - Disconnect at any moment
 
-## Limitations/Aspects to improve:
-- When a user changes their username while chatting with someone, they'll have to close that Chat Window and re-open it again with the same person in order to send/recieve messages
+## Limitations / Aspects to improve:
+- When a user changes their username while chatting with someone, they'll have to close that Chat Window and re-open it again with the same person in order to send / recieve messages from there on
 - The Dialog Boxes that notify the user that someone wants to chat with them or that someone has opened a Chat Window with them only work when no other user attemps to connect with you while connecting with someone
 - Buttons are sometimes laggy / Dialog Boxes sometimes show with a delay
 - The code needs a lot of cleaning and optimization
