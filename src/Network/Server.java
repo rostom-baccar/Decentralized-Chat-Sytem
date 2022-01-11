@@ -16,19 +16,16 @@ public class Server {
 
 	public static void main(String[] args) throws InterruptedException {
 
-
 		//Sockets
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
-			System.out.println("1");
 			e.printStackTrace();
 		}
 		while(true) {
 			try {
 				clientSocket = serverSocket.accept();
 			} catch (IOException e) {
-				System.out.println("2");
 				e.printStackTrace();
 			}
 
@@ -38,19 +35,19 @@ public class Server {
 			try {
 				clientThread = new ClientHandler(clientSocket,clients);
 			} catch (IOException e) {
-				System.out.println("3");
 				e.printStackTrace();
 			}
 			clientThread.start();
 
 			//thread that will add the thread to clients as soon as its
 			//username will be unique (while loop is a blocking process)
-
 			usernameThread = new UsernameHandler(clientThread);
 			usernameThread.start();
-
+			
 		}
 	}
+	
+	//Setters and Getters
 
 	public static ArrayList<ClientHandler> getClients(){
 		return clients;

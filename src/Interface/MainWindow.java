@@ -8,33 +8,35 @@ import javax.swing.event.*;
 import Network.ServerResponseListener;
 
 public class MainWindow extends JPanel implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+	private static JComboBox<String> UsersList = null;
+	private static JTextArea broadArea;
+	private static JFrame mainFrame;
+	private static String query;
+	private static String username;
+	private static String newUsername;
+	private static boolean uniqueNewUsername=false;
 	private JButton refreshButton;
 	private JButton disconnectButton;
 	private JButton chatButton;
-	public static JComboBox<String> UsersList = null;
-	public static JTextArea broadArea;
 	private JTextField broadField;
 	private JButton sendButton;
 	private JLabel groupChatLabel;
-	public static JFrame mainFrame;
 	private JPanel mainPanel;
-	public static String query;
-	private static String username;
 	private ChatWindow chatWindow=null;
 	private JButton changeUsernameButton;
 	private JTextField newUsernameField;
-	private static String newUsername;
-	private static boolean uniqueNewUsername=false;
-
 
 	public MainWindow(String username) {
+		
 		this.username=username;
+		
 		String[] init= {};
 		UsersList = new JComboBox<String>(init);
 		mainFrame = new JFrame (username);
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		mainPanel = new JPanel(new GridLayout(10,10));
-
 		broadArea = new JTextArea (5, 5);
 		newUsernameField = new JTextField (5);
 		groupChatLabel = new JLabel ("GROUP CHAT");
@@ -66,12 +68,12 @@ public class MainWindow extends JPanel implements ActionListener {
 		mainFrame.add (chatButton);
 		mainFrame.add (refreshButton);
 		mainFrame.add (disconnectButton);
-		mainFrame. add (sendButton);
+		mainFrame.add (sendButton);
 		mainFrame.add (broadField);
 		mainFrame.add (newUsernameField);
-		mainFrame.add (UsersList);
-		mainFrame.add (broadArea);
-		mainFrame. add (groupChatLabel);
+		mainFrame.add (getUsersList());
+		mainFrame.add (getBroadArea());
+		mainFrame.add (groupChatLabel);
 
 		mainFrame.setSize(new Dimension(2000, 500));
 		mainFrame.getContentPane().add (mainPanel, BorderLayout.CENTER);
@@ -80,13 +82,6 @@ public class MainWindow extends JPanel implements ActionListener {
 		mainFrame.setVisible (true);
 
 	}
-
-
-	public static void main (String[] args) {
-		String testUsername="test username";
-		MainWindow mainWindow = new MainWindow(testUsername);
-	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -101,8 +96,6 @@ public class MainWindow extends JPanel implements ActionListener {
 		}
 
 		if(e.getSource() == refreshButton) {
-			//			String[] init = {};
-			//			UsersList = new JComboBox<String>(init);
 			UsersList.removeAllItems();
 			query="active";
 			try {
@@ -111,8 +104,7 @@ public class MainWindow extends JPanel implements ActionListener {
 			}
 			query=null;
 			try {
-				Thread.sleep(250); //to give time for the server response
-				//listener to add the clients to the table
+				Thread.sleep(250); //to give time for the server response listener to add the clients to the table
 			}
 			catch (InterruptedException e1) {e1.printStackTrace();}
 		}
@@ -120,17 +112,14 @@ public class MainWindow extends JPanel implements ActionListener {
 		if(e.getSource() == sendButton) {
 			String message = broadField.getText();
 			query="broad "+message;
-			//broadArea.append(username+": "+message);
 			query=null;
 
 		}
 
 		if(e.getSource() == chatButton) {
 			String remoteUser=(String) UsersList.getSelectedItem();
-			//			System.out.println("[DEBUG] Chatting with "+remoteUser);
 			chatWindow = new ChatWindow(username, remoteUser);
-			//			if (ServerResponseListener.chatInitiator) {
-			if (ServerResponseListener.conversationInitiator)
+			if (ServerResponseListener.isConversationInitiator())
 			{
 				query="*"+username+" "+remoteUser;
 			}
@@ -140,7 +129,6 @@ public class MainWindow extends JPanel implements ActionListener {
 			ServerResponseListener.setConversationInitiator(true);
 
 			query=null;
-			//			}
 		}
 
 		if(e.getSource() == changeUsernameButton) {
@@ -149,7 +137,6 @@ public class MainWindow extends JPanel implements ActionListener {
 
 			query="#"+username+" "+newUsername;
 
-			//System.out.println("[DEBUG] query: "+query);
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e1){e1.printStackTrace();
@@ -162,19 +149,37 @@ public class MainWindow extends JPanel implements ActionListener {
 			}
 			if (uniqueNewUsername) {
 				mainFrame.setTitle(newUsername);
-				//				mainFrame.setVisible (false);
 				JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
-				//				MainWindow mainWindow = new MainWindow(newUsername);
-
 				username=newUsername;
-				//query=null;
 			}
 			uniqueNewUsername=false;
 		}
 	}
 
+	//Getters and Setters
+	
 	public static void setUniqueNewUsername(boolean uniqueNewUsername) {
 		MainWindow.uniqueNewUsername = uniqueNewUsername;
+	}
+
+	public static JComboBox<String> getUsersList() {
+		return UsersList;
+	}
+
+	public static JTextArea getBroadArea() {
+		return broadArea;
+	}
+
+	public static JFrame getMainFrame() {
+		return mainFrame;
+	}
+
+	public static String getQuery() {
+		return query;
+	}
+
+	public static void setQuery(String query) {
+		MainWindow.query = query;
 	}
 }
 

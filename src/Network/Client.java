@@ -16,77 +16,60 @@ public class Client {
 
 	private static String username=null;
 	private static String query;
+	private final static int port = 5001;
+	private final static String Server_IP="127.0.0.1"; //Put Server IP here
+	private static boolean uniqueUsername=false;
+
 	public Client(String username) {
-		this.username=username;
+		Client.username=username;
 	}
 
-	InetAddress myIP = null;
-
-
-	private final static int port = 5001;
-	private final static String Server_IP="127.0.0.1";
-	private static boolean uniqueUsername=false;
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 
-		//Socket
+		//Creating socket client from port and the Server IP. Note: The server uses the same port. 
+		//The whole app runs on one port only
 		Socket socket = new Socket(Server_IP, port);
-		ServerResponseListener serverConnection = new ServerResponseListener(socket);
 
 		//Sending
 		PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
 
-		//Receiving
+		//Receiving: we use a thread because we need a while loop in order to recieve information, which is a blocking process
+		ServerResponseListener serverConnection = new ServerResponseListener(socket);
 		serverConnection.start();
+
+		//Login Window
 		LoginWindow loginWindow = new LoginWindow();
-		System.out.println("Type username");
-		//		Scanner s = new Scanner(System.in);
-		//		username=s.nextLine();
+
 		while(username==null) { //waiting for user to type username in text field
-			username=LoginWindow.username;
+			username=LoginWindow.getUsername();
 		}
-		System.out.println("[DEBUG] Client "+username);
 		out.println(username);
 		Thread.sleep(400); //to give time for ServerConnection to set uniqueUsername to true if it's unique
+
 		while(!uniqueUsername) {
-			//			username=s.nextLine();
-//			System.out.println("[DEBUG] username not unique");
 			username=null;
 			while(username==null) { 
-				username=LoginWindow.username;
+				username=LoginWindow.getUsername();
 			}
 			out.println(username);
 		}
-		LoginWindow.loginFrame.setVisible(false);
+
+		//Login Window closes and Main Window opens if username is unique
+		LoginWindow.getLoginFrame().setVisible(false);
 		JOptionPane.showMessageDialog(null,"You are connected");
 		MainWindow mainWindow = new MainWindow(username);
-		System.out.println("Type @ + name of remote user + message to send a message to a remote user privately");
-		System.out.println("Type broad + the message you want to broadcast to all active clients");
-		System.out.println("Type disconnect to disconnect");
-		System.out.println("Type active to see all active users");
 
-		//		Scanner s = new Scanner(System.in);
-		//		String query=s.nextLine();
 
 		while(true) {
 			Thread.sleep(1000);
-//			System.out.println("[DEBUG] WAITING FOR QUERY");
-//			System.out.println("[DEBUG] "+query);
 			while (query==null) {
-				query=MainWindow.query;
+				query=MainWindow.getQuery(); //Waiting for the user to send a query via the Main Window (through the buttons)
 			}
-//			System.out.println("[DEBUG] query recieved: "+query);
-
-			//		}
-			//		while(query!=null) {
-			//			out.println(query);
-			//			query=s.nextLine();
-			//		}
-
-
 			out.println(query);
+
 			if (query.equals("disconnect")) {
-				MainWindow.mainFrame.setVisible(false);
+				MainWindow.getMainFrame().setVisible(false);
 				JOptionPane.showMessageDialog(null,"You are disconnected");
 			}
 			query=null;
@@ -94,6 +77,7 @@ public class Client {
 	}
 
 
+	//Setters and Getters
 	public static void setUniqueUsername(boolean uniqueUsername) {
 		Client.uniqueUsername = uniqueUsername;
 	}
@@ -101,6 +85,5 @@ public class Client {
 	public static String getUsername() {
 		return username;
 	}
-
 
 }

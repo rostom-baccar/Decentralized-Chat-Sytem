@@ -21,8 +21,8 @@ public class ServerResponseListener extends Thread{
 	private ArrayList<String> localClients = new ArrayList<>();
 	private boolean firstWindow=true;
 	private ChatWindow chatWindow = null;
-	public static String message=null;
-	public static boolean conversationInitiator=true;
+	private static String message=null;
+	private static boolean conversationInitiator=true;
 
 	public ServerResponseListener(Socket clientSocket) throws IOException {
 		this.clientSocket=clientSocket;
@@ -32,71 +32,53 @@ public class ServerResponseListener extends Thread{
 	public void run() {
 		try {
 			while(true) {
+
 				String serverResponse = in.readLine();
+
 				if (serverResponse==null) break;
 				Thread.sleep(200); //to give time to the client handler to send its response
 				if (!serverResponse.equals("Username already taken, please choose another one")) {
 					Client.setUniqueUsername(true);
 				}
-
 				if (!serverResponse.equals("Someone is already connected with this username. Please choose another one")) {
 					MainWindow.setUniqueNewUsername(true);
 				}
 
-
 				//Active Users refresh button
 				if (serverResponse.equals("begin clients")) {
-					//System.out.println("[DEBUG] server:"+  serverResponse);
 					String clientsResponse = in.readLine();
 					while (!clientsResponse.equals("end clients")) {
 						localClients.add(clientsResponse);
-						//System.out.println("[DEBUG] ADDING CLIENT "+clientsResponse);
-						MainWindow.UsersList.addItem(clientsResponse);
+						MainWindow.getUsersList().addItem(clientsResponse);
 						clientsResponse=in.readLine();
 					}
-					//					System.out.println("[DEBUG] server: "+clientsResponse);
-					for (int i=0; i<=localClients.size()-1; i++) {
-						System.out.println("Local Client: "+localClients.get(i));
-					}
 				}
-				//problème: cette liste sera dépendante de si on appuie sur
-				//le bouton refresh ou non
-
-				//localClients n'est pour l'instant pas utilisée
 
 				//Broadcast
 				if (serverResponse.contains("[BROADCAST]")) {
-					MainWindow.broadArea.append(serverResponse+"\n");
+					MainWindow.getBroadArea().append(serverResponse+"\n");
+				}
 
-				}
 				if (serverResponse.contains("wants to chat")) {
-					conversationInitiator=false;
+					setConversationInitiator(false);
 					JOptionPane.showMessageDialog(null,serverResponse);
-					
 				}
+
 				if (serverResponse.contains("has opened a chat")) {
 					JOptionPane.showMessageDialog(null,serverResponse);
 				}
 				if (serverResponse.contains("@")) {
-
-					message=serverResponse;
-					message=null;
-//					int spaceIndex=serverResponse.indexOf(" ");
-//					String remoteUser=serverResponse.substring(1,spaceIndex);
-//					message=serverResponse.substring(spaceIndex);
-//					message=null;
-//					
+					setMessage(serverResponse);				
 				}
 
 				if (serverResponse.contains("//")) {
-					MainWindow.broadArea.append(serverResponse+"\n");
+					MainWindow.getBroadArea().append(serverResponse+"\n");
 				}
-
-				System.out.println(serverResponse);
 			} 
 		}catch (IOException e){e.printStackTrace();} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+
 		finally {
 			try {
 				in.close();
@@ -104,8 +86,22 @@ public class ServerResponseListener extends Thread{
 			}
 		}
 	}
+	
+	//Setters and Getters
 
 	public static void setConversationInitiator(boolean conversationInitiator) {
 		ServerResponseListener.conversationInitiator = conversationInitiator;
+	}
+
+	public static String getMessage() {
+		return message;
+	}
+
+	public static void setMessage(String message) {
+		ServerResponseListener.message = message;
+	}
+
+	public static boolean isConversationInitiator() {
+		return conversationInitiator;
 	}
 }

@@ -8,19 +8,22 @@ import javax.swing.event.*;
 import Network.MessageListener;
 
 public class ChatWindow extends JPanel implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
 	private String username;
 	private String remoteUser;
     private JButton sendButton;
     private JTextField chatField;
-    public JTextArea chatArea;
+    private JTextArea chatArea;
     private JFrame chatFrame;
     private JPanel chatPanel;
-    public String query;
+    private String query;
 
     public ChatWindow(String username, String remoteUser) {
     	
     	this.username=username;
     	this.remoteUser=remoteUser;
+    	
         chatFrame = new JFrame ("[PRIVATE CHAT] "+username+" - "+remoteUser);
 		chatPanel = new JPanel(new GridLayout(10,10));
 
@@ -51,35 +54,25 @@ public class ChatWindow extends JPanel implements ActionListener {
         
     }
 
-
-    public static void main (String[] args) {
-    	String user1 = "user1";
-    	String user2 = "user2";
-		ChatWindow chatWindow = new ChatWindow(user1,user2);
-
-    }
-
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == sendButton) {
 			String message = chatField.getText();
 			chatArea.append("["+username+"]: "+message+"\n");
-			MainWindow.query="@"+remoteUser+" "+message;
+			MainWindow.setQuery("@"+remoteUser+" "+message);
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e1){e1.printStackTrace();
 			}
-			MainWindow.query=null;
+			MainWindow.setQuery(null);
 		}
-
 	}
 
+	//Setters and Getters
 
 	public String getQuery() {
 		return query;
 	}
-
 
 	public void setQuery(String query) {
 		this.query = query;

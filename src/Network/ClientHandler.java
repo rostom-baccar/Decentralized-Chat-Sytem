@@ -20,30 +20,17 @@ public class ClientHandler extends Thread {
 
 	private BufferedReader in;
 	private PrintWriter out;
-
-	public String getClientUsername() {
-		return clientUsername;
-	}
-
-	public void setClientUsername(String clientUsername) {
-		this.clientUsername = clientUsername;
-	}
-
 	private Socket clientSocket;
 	private static ArrayList<ClientHandler> clients;
 	private String clientUsername; 
 	private boolean firstConnection=true;
 	private boolean canBeAdded=false;
 
-	public boolean getCanBeAdded() {
-		return canBeAdded;
-	}
-
 
 	//Every handler of a certain client will have access to the other handlers of the other clients
 	public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException{
 		this.clientSocket=clientSocket;
-		this.clients=clients;
+		ClientHandler.clients=clients;
 		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		out = new PrintWriter(clientSocket.getOutputStream(),true);
 	}
@@ -65,7 +52,6 @@ public class ClientHandler extends Thread {
 						remoteClientHandler.out.println("@"+this.clientUsername+" "+message);
 						//we do not send ourself the message to avoid opening an extra window
 						//we simply append the message we send to the chat area
-						//this.out.println("@"+this.clientUsername+" "+message); //the user also sees what they have sent privately to the remote user
 						request = in.readLine();
 
 					}
@@ -76,7 +62,6 @@ public class ClientHandler extends Thread {
 					}
 				}
 				else if (request.contains("broad")) {
-					System.out.println("Server: request recieved: "+request);
 					int spaceIndex = request.indexOf(" ");
 					if (spaceIndex!=-1) { //if it exists
 						broadcast(request.substring(spaceIndex+1),clientUsername);
@@ -88,7 +73,6 @@ public class ClientHandler extends Thread {
 					String initiator = request.substring(1,spaceIndex);
 					String remoteUser=request.substring(spaceIndex+1);
 					ClientHandler remoteClientHandler=findThread(remoteUser);
-					System.out.println("[DEBUG] Query recieved: "+request);
 					remoteClientHandler.out.println(initiator+" wants to chat. Open a Chat Window with them!");
 					request = in.readLine();
 				}
@@ -97,7 +81,6 @@ public class ClientHandler extends Thread {
 					String recipient = request.substring(1,spaceIndex);
 					String remoteUser=request.substring(spaceIndex+1);
 					ClientHandler remoteClientHandler=findThread(remoteUser);
-					System.out.println("[DEBUG] Query recieved: "+request);
 					remoteClientHandler.out.println(recipient+" has opened a chat. You can now chat with them!");
 					request = in.readLine();
 				}
@@ -105,9 +88,6 @@ public class ClientHandler extends Thread {
 					int spaceIndex=request.indexOf(" ");
 					String oldUsername=request.substring(1,spaceIndex);
 					String newUsername=request.substring(spaceIndex+1);
-					//System.out.println("[DEBUG] Old Username: "+oldUsername);
-					//System.out.println("[DEBUG] New Username: "+newUsername);
-					//System.out.println("[DEBUG] Clients size: "+clients.size());
 					if (!unique(newUsername)) {
 						out.println("Someone is already connected with this username. Please choose another one");
 						JOptionPane.showMessageDialog(null,"Someone is already connected with this username. Please choose another one");
@@ -117,9 +97,6 @@ public class ClientHandler extends Thread {
 						ClientHandler targetThread=findThread(oldUsername);
 						targetThread.setClientUsername(newUsername);
 						broadcast(oldUsername+" has changed their username to "+newUsername);
-						//for (ClientHandler client : clients) {
-						//System.out.println("[DEBUG] Client in list: "+client.getClientUsername());
-						//}
 						request = in.readLine();
 					}
 				}
@@ -128,16 +105,11 @@ public class ClientHandler extends Thread {
 					if (!unique(request)) {
 						out.println("Username already taken, please choose another one");
 						JOptionPane.showMessageDialog(null,"Username already taken, please choose another one");
-
 						request = in.readLine();
-
 					}
 
 					else {
-						//						LoginWindow.loginFrame.setVisible(false);
-						//						MainWindow mainWindow = new MainWindow();
 						this.canBeAdded=true;
-						System.out.println(request + " just connected");
 						out.println("You are connected");
 						clientUsername=request; //we save it so that each client handler knows its primary client
 						broadcast(clientUsername+" just connected");
@@ -147,7 +119,6 @@ public class ClientHandler extends Thread {
 
 				}
 				else if (request.contains("disconnect")) {
-					System.out.println(clientUsername + " just disconnected");
 					broadcast(clientUsername+" disconnected");
 					clients.remove(this);
 					this.canBeAdded=false;
@@ -177,24 +148,12 @@ public class ClientHandler extends Thread {
 			try {
 				in.close();
 			} catch (IOException e) {
-				System.out.println("4");
 				e.printStackTrace();}
 		}
 
 	}
 
-
-
-
-	public void setCanBeAdded(boolean canBeAdded) {
-		this.canBeAdded = canBeAdded;
-	}
-
-
-	public ArrayList<ClientHandler> getClients() {
-		return this.clients;
-	}
-
+	//Useful functions used above
 	public static ClientHandler findThread(String remoteUser) {
 		ClientHandler target = null;
 		for (ClientHandler client : clients) {
@@ -238,6 +197,27 @@ public class ClientHandler extends Thread {
 			}
 		}
 		return contain;
+	}
+	
+	//Setters and Getters
+	
+	public String getClientUsername() {
+		return clientUsername;
+	}
+
+	public void setClientUsername(String clientUsername) {
+		this.clientUsername = clientUsername;
+	}
+	
+	public boolean getCanBeAdded() {
+		return canBeAdded;
+	}
+	
+	public void setCanBeAdded(boolean canBeAdded) {
+		this.canBeAdded = canBeAdded;
+	}
+	public ArrayList<ClientHandler> getClients() {
+		return this.clients;
 	}
 
 }
