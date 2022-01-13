@@ -25,8 +25,8 @@ public class Server {
 			e.printStackTrace();
 		}
 		
-		ClientsLoopTest clientLoop = new ClientsLoopTest();
-		clientLoop.start(); //started only once
+//		ClientsLoopTest clientLoop = new ClientsLoopTest();
+//		clientLoop.start(); //started only once
 		
 		//THIS SECTION IS EXECUTED ONCE//
 		
