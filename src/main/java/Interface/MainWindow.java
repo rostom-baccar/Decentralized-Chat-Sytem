@@ -182,4 +182,3 @@ public class MainWindow extends JPanel implements ActionListener {
 	}
 	
 }
-
