@@ -14,6 +14,7 @@ import Interface.MainWindow;
 
 public class Client {
 
+	
 	private static String username=null;
 	private static String query;
 	private final static int port = 5001;
