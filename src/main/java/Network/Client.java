@@ -38,6 +38,7 @@ public class Client {
 		ServerResponseListener serverConnection = new ServerResponseListener(socket);
 		serverConnection.start();
 
+		
 		//Login Window
 		LoginWindow loginWindow = new LoginWindow();
 
