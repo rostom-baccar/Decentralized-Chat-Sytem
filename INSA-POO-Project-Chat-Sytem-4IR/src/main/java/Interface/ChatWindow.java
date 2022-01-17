@@ -54,6 +54,7 @@ public class ChatWindow extends JPanel implements ActionListener {
         
     }
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == sendButton) {
 			String message = chatField.getText();
