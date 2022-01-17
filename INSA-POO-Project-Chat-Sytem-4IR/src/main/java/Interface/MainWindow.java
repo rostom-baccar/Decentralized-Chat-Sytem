@@ -85,6 +85,7 @@ public class MainWindow extends JPanel implements ActionListener {
 
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		if(e.getSource() == disconnectButton) {
