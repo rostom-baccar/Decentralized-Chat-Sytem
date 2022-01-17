@@ -2,13 +2,8 @@ package Network;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import javax.swing.JOptionPane;
-
 import Interface.LoginWindow;
 import Interface.MainWindow;
 
