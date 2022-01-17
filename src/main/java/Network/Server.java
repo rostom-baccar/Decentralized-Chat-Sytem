@@ -14,8 +14,6 @@ public class Server {
 
 
 	public static void main(String[] args) throws InterruptedException {
-
-		//THIS SECTION IS EXECUTED ONCE//
 		
 		//Sockets
 		try {
@@ -24,12 +22,10 @@ public class Server {
 			e.printStackTrace();
 		}
 		
-//		ClientsLoopTest clientLoop = new ClientsLoopTest();
-//		clientLoop.start(); //started only once
-		
-		//THIS SECTION IS EXECUTED ONCE//
 		
 		while(true) {
+			
+			//Server accepts all connections 
 			try {
 				clientSocket = serverSocket.accept();
 			} catch (IOException e) {
@@ -52,18 +48,6 @@ public class Server {
 			usernameThread.start();
 			
 		}
-	}
-	
-	
-	
-	public static boolean among(String remoteUser) {
-		boolean contain=false;
-		for (ClientHandler client : clients) {
-			if (remoteUser.equals(client.getClientUsername())){
-				contain=true;
-			}
-		}
-		return contain;
 	}
 	
 	//Setters and Getters

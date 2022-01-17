@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class LoginWindow extends JPanel implements ActionListener {
+public class LoginWindow extends JPanel implements ActionListener, Runnable{
 
 	private static final long serialVersionUID = 1L;
 	private static String username;
@@ -74,6 +74,13 @@ public class LoginWindow extends JPanel implements ActionListener {
 
 	public static void setUsername(String username) {
 		LoginWindow.username = username;
+	}
+
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
