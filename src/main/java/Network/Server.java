@@ -56,6 +56,7 @@ public class Server {
 	}
 	
 	
+	
 	public static boolean among(String remoteUser) {
 		boolean contain=false;
 		for (ClientHandler client : clients) {
