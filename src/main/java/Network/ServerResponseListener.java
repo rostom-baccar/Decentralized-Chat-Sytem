@@ -19,7 +19,7 @@ public class ServerResponseListener extends Thread{
 
 	private BufferedReader in;
 	private Socket clientSocket;
-	private ArrayList<String> localClients = new ArrayList<>();
+	private ArrayList<String> localClients = new ArrayList<String>();
 	private boolean firstWindow=true;
 	private ChatWindow chatWindow = null;
 	private static String message=null;

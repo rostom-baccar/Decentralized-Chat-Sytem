@@ -11,7 +11,7 @@ public class Server {
 	final static int port = 5001;
 	private static ServerSocket serverSocket;
 	private static Socket clientSocket;
-	private static ArrayList<ClientHandler> clients = new ArrayList<>();
+	private static ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
 
 
 	public static void main(String[] args) throws InterruptedException {
