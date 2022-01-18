@@ -1,16 +1,14 @@
-package Network;
+package NetworkListeners;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
-
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-
 import Interface.ChatWindow;
 import Interface.MainWindow;
+import NetworkManagers.Client;
 
 //Thread for each client which listens constantly to what the server broadcasts
 //we only need an input attribute since we won't be sending the server any messages with these threads

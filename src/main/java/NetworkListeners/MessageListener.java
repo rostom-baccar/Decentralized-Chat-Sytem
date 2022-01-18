@@ -1,4 +1,4 @@
-package Network;
+package NetworkListeners;
 
 import javax.swing.JTextArea;
 

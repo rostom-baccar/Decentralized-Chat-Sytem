@@ -5,9 +5,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import Network.ClientHandler;
-import Network.Server;
-import Network.ServerResponseListener;
+import NetworkListeners.ServerResponseListener;
+import NetworkManagers.ClientHandler;
+import NetworkManagers.Server;
 
 public class MainWindow extends JPanel implements ActionListener {
 

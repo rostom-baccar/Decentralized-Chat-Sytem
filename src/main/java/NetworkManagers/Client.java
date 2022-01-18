@@ -1,4 +1,4 @@
-package Network;
+package NetworkManagers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -6,6 +6,7 @@ import java.net.Socket;
 import javax.swing.JOptionPane;
 import Interface.LoginWindow;
 import Interface.MainWindow;
+import NetworkListeners.ServerResponseListener;
 
 public class Client {
 
@@ -36,15 +37,13 @@ public class Client {
 		
 		//Login Window
 		LoginWindow loginWindow = new LoginWindow();
-
-		
-//		this.wait();
 		
 		//waiting for user to type username in text field
 		while(username==null) {
 			username=LoginWindow.getUsername();
 		}
 		out.println(username);
+		
 		Thread.sleep(400); //to give time for ServerConnection to set uniqueUsername to true if it's unique
 
 		while(!uniqueUsername) {

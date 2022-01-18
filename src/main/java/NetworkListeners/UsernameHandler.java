@@ -1,4 +1,7 @@
-package Network;
+package NetworkListeners;
+
+import NetworkManagers.ClientHandler;
+import NetworkManagers.Server;
 
 //Thread that adds the client thread to the list of threads as soon as its 
 //username becomes unique

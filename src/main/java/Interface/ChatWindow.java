@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import Network.MessageListener;
+import NetworkListeners.MessageListener;
 
 public class ChatWindow extends JPanel implements ActionListener {
 
