@@ -1,6 +1,7 @@
 package NetworkManagers;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import javax.swing.JOptionPane;
@@ -15,6 +16,8 @@ public class Client {
 	private static boolean uniqueUsername=false;
 	private static String username=null;
 	private static String query;
+	private static ObjectOutputStream out;
+	private static Socket socket;
 
 	
 	public Client(String username) {
@@ -26,10 +29,10 @@ public class Client {
 	public static void main(String[] args) throws IOException, InterruptedException {
 
 		//Creating socket client from port and the Server IP. Note: The server uses the same port. 
-		Socket socket = new Socket(Server_IP, port);
+		socket = new Socket(Server_IP, port);
 
 		//Sending
-		PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
+		out = new ObjectOutputStream(socket.getOutputStream());
 
 		//Receiving: we use a thread because we need a while loop in order to receive information, which is a blocking process
 		ServerResponseListener serverConnection = new ServerResponseListener(socket);
@@ -42,7 +45,7 @@ public class Client {
 		while(username==null) {
 			username=LoginWindow.getUsername();
 		}
-		out.println(username);
+		out.writeObject(username);
 		
 		Thread.sleep(400); //to give time for ServerConnection to set uniqueUsername to true if it's unique
 
@@ -51,7 +54,7 @@ public class Client {
 			while(username==null) { 
 				username=LoginWindow.getUsername();
 			}
-			out.println(username);
+			out.writeObject(username);
 		}
 
 		//Login Window closes and Main Window opens if username is unique
@@ -65,7 +68,7 @@ public class Client {
 			while (query==null) {
 				query=MainWindow.getQuery(); //Waiting for the user to send a query via the Main Window (through the buttons)
 			}
-			out.println(query);
+			out.writeObject(query);
 
 			if (query.equals("disconnect")) {
 				MainWindow.getMainFrame().setVisible(false);
