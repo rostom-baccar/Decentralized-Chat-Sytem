@@ -2,9 +2,11 @@ package NetworkManagers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -30,11 +32,14 @@ public class ClientHandler extends Thread {
 	public ClientHandler(Socket clientSocket) throws IOException{
 		this.clientSocket=clientSocket;
 		this.ipAdress=InetAddress.getLocalHost().getHostAddress();
-		in = new ObjectInputStream(clientSocket.getInputStream());
-		out = new ObjectOutputStream(clientSocket.getOutputStream());
+		InputStream inputStream = clientSocket.getInputStream();
+        in = new ObjectInputStream(inputStream);
+        OutputStream outputStream = clientSocket.getOutputStream();
+        out = new ObjectOutputStream(outputStream);
 	}
 
 	public void run() {
+		
 		Message request = null;
 		try {
 			request = (Message) in.readObject();}
@@ -62,7 +67,7 @@ public class ClientHandler extends Thread {
 					break;
 
 				case Disconnect:
-
+					System.out.println("clienthandler receivec disconnect query");
 					broadcast(clientUsername+" disconnected");
 					Server.getClients().remove(this);
 					this.canBeAdded=false;

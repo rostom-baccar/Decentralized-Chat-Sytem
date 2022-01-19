@@ -2,6 +2,7 @@ package NetworkListeners;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import Interface.ChatWindow;
 import Interface.MainWindow;
+import Model.ChatMessageType;
 import Model.Message;
 import NetworkManagers.Client;
 
@@ -17,23 +19,27 @@ import NetworkManagers.Client;
 
 public class ServerResponseListener extends Thread{
 
-	private ObjectInputStream in;
 	private Socket clientSocket;
 	private ArrayList<String> localClients = new ArrayList<String>();
-	private static String message=null;
+	private static Message message=null;
 	private static boolean conversationInitiator=true;
 
 	public ServerResponseListener(Socket clientSocket) throws IOException {
 		this.clientSocket=clientSocket;
-		in = new ObjectInputStream(clientSocket.getInputStream());
+
+
 	}
 
 	public void run() {
 		try {
-			while(true) {
-
-				Message serverResponse = (Message) in.readObject();
-				switch(serverResponse.getType()) {
+			
+			InputStream inputStream = clientSocket.getInputStream();
+			ObjectInputStream in = new ObjectInputStream(inputStream);
+			Message serverResponse = (Message) in.readObject();
+			
+			while(serverResponse!=null) {
+				
+				switch( (ChatMessageType) serverResponse.getType()) {
 				
 				case Notification:
 					if (!serverResponse.getContent().equals("Username already taken, please choose another one")) {
@@ -43,7 +49,6 @@ public class ServerResponseListener extends Thread{
 					if (!serverResponse.getContent().equals("Someone is already connected with this username. Please choose another one")) {
 						MainWindow.setUniqueNewUsername(true);
 					}
-					
 					JOptionPane.showMessageDialog(null,serverResponse.getContent());
 					break;
 					
@@ -73,29 +78,19 @@ public class ServerResponseListener extends Thread{
 					break;
 					
 				case PrivateMessage :
-					message=serverResponse.getContent();
+					message=serverResponse;
 					message=null;
 					
 				default:
 					break;
 				}
-
 				
-
-//				if (serverResponse.contains("//")) {
-//					MainWindow.getBroadArea().append(serverResponse+"\n");
-//				}
-				
+				serverResponse = (Message) in.readObject();
 			} 
 		}
 		catch (IOException e){e.printStackTrace();}
 		catch (ClassNotFoundException e) {e.printStackTrace();}
 
-		finally {
-			try {
-				in.close();
-			} catch (IOException e){e.printStackTrace();}
-		}
 	}
 	
 	//Setters and Getters
@@ -104,11 +99,11 @@ public class ServerResponseListener extends Thread{
 		ServerResponseListener.conversationInitiator = conversationInitiator;
 	}
 
-	public static String getMessage() {
+	public static Message getMessage() {
 		return message;
 	}
 
-	public static void setMessage(String message) {
+	public static void setMessage(Message message) {
 		ServerResponseListener.message = message;
 	}
 

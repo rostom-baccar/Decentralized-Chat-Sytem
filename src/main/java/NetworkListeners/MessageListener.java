@@ -2,6 +2,8 @@ package NetworkListeners;
 
 import javax.swing.JTextArea;
 
+import Model.Message;
+
 //Thread that listens to the server response in case of direct message and
 //appends the message to the corresponding chat area
 
@@ -9,7 +11,7 @@ public class MessageListener extends Thread {
 
 	private JTextArea chatArea;
 	private String remoteUser;
-	private String incomingRequest=null;
+	private Message incomingRequest=null;
 	private String message;
 
 	public MessageListener(JTextArea chatArea, String remoteUser) {
@@ -19,14 +21,12 @@ public class MessageListener extends Thread {
 
 	public void run() {
 		while(true) {
-			
 			while (incomingRequest==null) {
 				incomingRequest=ServerResponseListener.getMessage();
 			}
 			
-			int spaceIndex=incomingRequest.indexOf(" ");
-			String potentialRemoteUser=incomingRequest.substring(1,spaceIndex);
-			message=incomingRequest.substring(spaceIndex+1);
+			String potentialRemoteUser=incomingRequest.getArgument1();
+			message=incomingRequest.getContent();
 			if (remoteUser.equals(potentialRemoteUser)) {
 				chatArea.append("["+remoteUser+"] "+message+"\n");
 			}

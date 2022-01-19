@@ -2,7 +2,9 @@ package Model;
 import java.io.Serializable;
 
 
-public class Message  implements Serializable {
+public class Message implements Serializable {
+
+
 	private static final long serialVersionUID = 1L;
 	private ChatMessageType type;
 	private String content;
@@ -79,6 +81,11 @@ public class Message  implements Serializable {
 
 	public void setArgument2(String remoteUser) {
 		this.argument2 = remoteUser;
+	}
+	
+	public static String toString2(Message msg) {
+		return "Message [type=" + msg.type + ", content=" + msg.content + ", argument1=" + msg.argument1 + ", argument2="
+				+ msg.argument2 + "]";
 	}
 	
 }

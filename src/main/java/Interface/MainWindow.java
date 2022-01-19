@@ -129,14 +129,16 @@ public class MainWindow extends JPanel implements ActionListener {
 		if(e.getSource() == changeUsernameButton) {
 			newUsername = newUsernameField.getText();
 			Message query = new Message(ChatMessageType.UsernameChange,null,username,newUsername);
-			if (uniqueNewUsername) {
-				mainFrame.setTitle(newUsername);
-				JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
-				username=newUsername;
-			}
+
 			uniqueNewUsername=false;
 			queryToSend=query;
 			queryToSend=null;
+			if (uniqueNewUsername) {
+				mainFrame.setTitle(newUsername);
+				username=newUsername;
+				JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
+
+			}
 		}
 	}
 

@@ -2,6 +2,7 @@ package NetworkManagers;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import javax.swing.JOptionPane;
@@ -18,9 +19,6 @@ public class Client {
 	private static boolean uniqueUsername=false;
 	private static String username=null;
 	private static Message query;
-	private static ObjectOutputStream out;
-	private static Socket socket;
-
 
 	public Client(String username) {
 		Client.username=username;
@@ -31,11 +29,12 @@ public class Client {
 	public static void main(String[] args) throws IOException, InterruptedException {
 
 		//Creating socket client from port and the Server IP. Note: The server uses the same port. 
-		socket = new Socket(Server_IP, port);
-
+		Socket socket = new Socket(Server_IP, port);
+		
 		//Sending
-		out = new ObjectOutputStream(socket.getOutputStream());
-
+        OutputStream outputStream = socket.getOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(outputStream);
+		
 		//Receiving: we use a thread because we need a while loop in order to receive information, which is a blocking process
 		ServerResponseListener serverConnection = new ServerResponseListener(socket);
 		serverConnection.start();
@@ -47,6 +46,8 @@ public class Client {
 		while(username==null) {
 			username=LoginWindow.getUsername();
 		}
+		System.out.println("[Client] Username: "+username);
+		
 
 		out.writeObject(Message.buildMessage(ChatMessageType.Connect,username));
 
@@ -57,6 +58,7 @@ public class Client {
 			while(username==null) { 
 				username=LoginWindow.getUsername();
 			}
+			System.out.println("[Client] Username: "+username);
 			out.writeObject(Message.buildMessage(ChatMessageType.Connect,username));
 		}
 
@@ -67,15 +69,22 @@ public class Client {
 
 
 		while(true) {
+			
 			while (query==null) {
 				query=MainWindow.getQuery(); //Waiting for the user to send a query via the Main Window (through the buttons)
 			}
-			out.writeObject(query);
-
-			if (query.getType()==ChatMessageType.Disconnect) {
-				MainWindow.getMainFrame().setVisible(false);
-				JOptionPane.showMessageDialog(null,"You are disconnected");
-			}
+			
+			System.out.println("[Client] Query type: "+query.getType());
+			System.out.println("[Client] Query content: "+query.getContent());
+			System.out.println("[Client] Query argument1: "+query.getArgument1());
+			System.out.println("[Client] Query argument2: "+query.getArgument2());
+			System.out.println();
+			
+//			out.writeObject(query);
+//			if (query.getType()==ChatMessageType.Disconnect) {
+//				MainWindow.getMainFrame().setVisible(false);
+//				JOptionPane.showMessageDialog(null,"You are disconnected");
+//			}
 			query=null;
 		}
 	}
