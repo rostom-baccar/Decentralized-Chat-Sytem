@@ -1,6 +1,7 @@
 package Model;
 
 public enum ChatMessageType {
-	Connect,Disconnect,Broad,Private,UsersList,UsernameChange
+	Connect,Disconnect,BroadMessage,PrivateMessage,UsersList,UsernameChange,
+	Notification,Initiator,Recipient, UserInexistant
 
 }

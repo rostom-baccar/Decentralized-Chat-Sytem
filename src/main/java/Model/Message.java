@@ -5,18 +5,80 @@ import java.io.Serializable;
 public class Message  implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private ChatMessageType type;
-	private String message;
+	private String content;
+	private String argument1;
+	private String argument2;
 
-	public Message(ChatMessageType type, String message) {
+	public Message(ChatMessageType type) {
 		this.type = type;
-		this.message = message;
+		this.content = null;
+		this.argument1=null;
+		this.argument2=null;
 	}
+
+	public Message(ChatMessageType type, String content) {
+		this.type = type;
+		this.content = content;
+		this.argument1=null;
+		this.argument2=null;
+	}
+	
+	public Message(ChatMessageType type, String content, String argument1) {
+		this.type = type;
+		this.content = content;
+		this.argument1=argument1;
+		this.argument2=null;
+	}
+	
+	public Message(ChatMessageType type, String content, String argument1, String argument2) {
+		this.type = type;
+		this.content = content;
+		this.argument1=argument1;
+		this.argument2=argument2;
+	}
+
+	public static Message buildMessage(ChatMessageType type, String content) {
+		Message message = new Message(type,content);
+		return message;
+	}
+	
+	public static Message buildMessageWithArgument(ChatMessageType type, String content, String argument1) {
+		Message message = new Message(type,content,argument1);
+		return message;
+	}
+	
+	//Getters and Setters
 
 	public ChatMessageType getType() {
 		return type;
 	}
 
-	public String getMessage() {
-		return message;
+	public void setType(ChatMessageType type) {
+		this.type = type;
 	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+	
+	public String getArgument1() {
+		return argument1;
+	}
+
+	public void setArgument1(String username) {
+		this.argument1 = username;
+	}
+	
+	public String getArgument2() {
+		return argument2;
+	}
+
+	public void setArgument2(String remoteUser) {
+		this.argument2 = remoteUser;
+	}
+	
 }

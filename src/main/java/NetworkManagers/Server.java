@@ -38,7 +38,7 @@ public class Server {
 			ClientHandler clientThread = null;
 			UsernameHandler usernameThread = null;
 			try {
-				clientThread = new ClientHandler(clientSocket,clients);
+				clientThread = new ClientHandler(clientSocket);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

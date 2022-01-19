@@ -5,6 +5,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import Model.ChatMessageType;
+import Model.Message;
 import NetworkListeners.MessageListener;
 
 public class ChatWindow extends JPanel implements ActionListener {
@@ -17,7 +19,7 @@ public class ChatWindow extends JPanel implements ActionListener {
     private JTextArea chatArea;
     private JFrame chatFrame;
     private JPanel chatPanel;
-    private String query;
+    private Message query;
 
     public ChatWindow(String username, String remoteUser) {
     	
@@ -58,7 +60,8 @@ public class ChatWindow extends JPanel implements ActionListener {
 		if(e.getSource() == sendButton) {
 			String message = chatField.getText();
 			chatArea.append("["+username+"]: "+message+"\n");
-			MainWindow.setQuery("@"+remoteUser+" "+message);
+			
+			MainWindow.setQuery(Message.buildMessageWithArgument(ChatMessageType.PrivateMessage,message,remoteUser));
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e1){e1.printStackTrace();
@@ -69,11 +72,11 @@ public class ChatWindow extends JPanel implements ActionListener {
 
 	//Setters and Getters
 
-	public String getQuery() {
+	public Message getQuery() {
 		return query;
 	}
 
-	public void setQuery(String query) {
+	public void setQuery(Message query) {
 		this.query = query;
 	}
 }

@@ -7,6 +7,8 @@ import java.net.Socket;
 import javax.swing.JOptionPane;
 import Interface.LoginWindow;
 import Interface.MainWindow;
+import Model.ChatMessageType;
+import Model.Message;
 import NetworkListeners.ServerResponseListener;
 
 public class Client {
@@ -15,11 +17,11 @@ public class Client {
 	private final static String Server_IP="127.0.0.1"; //Put Server IP here
 	private static boolean uniqueUsername=false;
 	private static String username=null;
-	private static String query;
+	private static Message query;
 	private static ObjectOutputStream out;
 	private static Socket socket;
 
-	
+
 	public Client(String username) {
 		Client.username=username;
 	}
@@ -37,40 +39,40 @@ public class Client {
 		//Receiving: we use a thread because we need a while loop in order to receive information, which is a blocking process
 		ServerResponseListener serverConnection = new ServerResponseListener(socket);
 		serverConnection.start();
-		
+
 		//Login Window
 		LoginWindow loginWindow = new LoginWindow();
-		
+
 		//waiting for user to type username in text field
 		while(username==null) {
 			username=LoginWindow.getUsername();
 		}
-		out.writeObject(username);
-		
-		Thread.sleep(400); //to give time for ServerConnection to set uniqueUsername to true if it's unique
+
+		out.writeObject(Message.buildMessage(ChatMessageType.Connect,username));
+
+		Thread.sleep(100); //to give time for ServerConnection to set uniqueUsername to true if it's unique
 
 		while(!uniqueUsername) {
 			username=null;
 			while(username==null) { 
 				username=LoginWindow.getUsername();
 			}
-			out.writeObject(username);
+			out.writeObject(Message.buildMessage(ChatMessageType.Connect,username));
 		}
 
 		//Login Window closes and Main Window opens if username is unique
 		LoginWindow.getLoginFrame().setVisible(false);
-		JOptionPane.showMessageDialog(null,"You are connected");
+//		JOptionPane.showMessageDialog(null,"You are connected");
 		MainWindow mainWindow = new MainWindow(username);
 
 
 		while(true) {
-			Thread.sleep(1000);
 			while (query==null) {
 				query=MainWindow.getQuery(); //Waiting for the user to send a query via the Main Window (through the buttons)
 			}
 			out.writeObject(query);
 
-			if (query.equals("disconnect")) {
+			if (query.getType()==ChatMessageType.Disconnect) {
 				MainWindow.getMainFrame().setVisible(false);
 				JOptionPane.showMessageDialog(null,"You are disconnected");
 			}

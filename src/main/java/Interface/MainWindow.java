@@ -5,6 +5,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import Model.ChatMessageType;
+import Model.Message;
 import NetworkListeners.ServerResponseListener;
 import NetworkManagers.ClientHandler;
 import NetworkManagers.Server;
@@ -15,7 +17,7 @@ public class MainWindow extends JPanel implements ActionListener {
 	private static JComboBox<String> UsersList = null;
 	private static JTextArea broadArea;
 	private static JFrame mainFrame;
-	private static String query;
+	private static Message queryToSend;
 	private static String username;
 	private static String newUsername;
 	private static boolean uniqueNewUsername=false;
@@ -31,9 +33,9 @@ public class MainWindow extends JPanel implements ActionListener {
 	private JTextField newUsernameField;
 
 	public MainWindow(String username) {
-		
+
 		this.username=username;
-		
+
 		String[] init= {};
 		UsersList = new JComboBox<String>(init);
 		mainFrame = new JFrame (username);
@@ -88,73 +90,58 @@ public class MainWindow extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if(e.getSource() == disconnectButton) {
-			query="disconnect";
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e1){e1.printStackTrace();
-			}
-			query=null;
+			Message query = new Message(ChatMessageType.Disconnect);		
+			queryToSend=query;
+			queryToSend=null;
 		}
 
 		if(e.getSource() == refreshButton) {
+			Message query = new Message(ChatMessageType.UsersList);		
 			UsersList.removeAllItems();
-			query="active";
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e1){e1.printStackTrace();
-			}
-			query=null;
-			try {
-				Thread.sleep(250); //to give time for the server response listener to add the clients to the table
-			}
-			catch (InterruptedException e1) {e1.printStackTrace();}
+			queryToSend=query;
+			queryToSend=null;
 		}
 
 		if(e.getSource() == sendButton) {
 			String message = broadField.getText();
-			query="broad "+message;
-			query=null;
-
+			Message query = new Message(ChatMessageType.BroadMessage,message);
+			queryToSend=query;
+			queryToSend=null;
 		}
 
 		if(e.getSource() == chatButton) {
 			String remoteUser=(String) UsersList.getSelectedItem();
-//			if (ClientHandler.among(remoteUser)) {
 			chatWindow = new ChatWindow(username, remoteUser);
-//			}
+
 			if (ServerResponseListener.isConversationInitiator())
 			{
-				query="*"+username+" "+remoteUser;
+				Message query = new Message(ChatMessageType.Initiator,null,username,remoteUser);
+				queryToSend=query;
 			}
 			else {
-				query="$"+username+" "+remoteUser;
+				Message query = new Message(ChatMessageType.Recipient,null,username,remoteUser);
+				queryToSend=query;
 			}
 			ServerResponseListener.setConversationInitiator(true);
-			query=null;
+			queryToSend=null;
 		}
 
 		if(e.getSource() == changeUsernameButton) {
 			newUsername = newUsernameField.getText();
-
-
-			query="#"+username+" "+newUsername;
-			query=null;
-			try {
-				Thread.sleep(500);//To give time for the server to check the
-				//validity of the username
-			} catch (InterruptedException e1){e1.printStackTrace();
-			}
+			Message query = new Message(ChatMessageType.UsernameChange,null,username,newUsername);
 			if (uniqueNewUsername) {
 				mainFrame.setTitle(newUsername);
 				JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
 				username=newUsername;
 			}
 			uniqueNewUsername=false;
+			queryToSend=query;
+			queryToSend=null;
 		}
 	}
 
 	//Getters and Setters
-	
+
 
 	public static void setUniqueNewUsername(boolean uniqueNewUsername) {
 		MainWindow.uniqueNewUsername = uniqueNewUsername;
@@ -172,12 +159,12 @@ public class MainWindow extends JPanel implements ActionListener {
 		return mainFrame;
 	}
 
-	public static String getQuery() {
-		return query;
+	public static Message getQuery() {
+		return queryToSend;
 	}
 
-	public static void setQuery(String query) {
-		MainWindow.query = query;
+	public static void setQuery(Message query) {
+		MainWindow.queryToSend = query;
 	}
-	
+
 }

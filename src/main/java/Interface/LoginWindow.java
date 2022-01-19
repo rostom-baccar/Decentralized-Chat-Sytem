@@ -52,7 +52,6 @@ public class LoginWindow extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 
 		username=usernameField.getText();
-		Message usernameMessage = new Message(ChatMessageType.Connect,username);
 		username=null;
 		try {
 			Thread.sleep(500);
