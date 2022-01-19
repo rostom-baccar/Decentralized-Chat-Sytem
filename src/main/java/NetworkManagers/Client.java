@@ -60,6 +60,7 @@ public class Client {
 			}
 			System.out.println("[Client] Username: "+username);
 			out.writeObject(Message.buildMessage(ChatMessageType.Connect,username));
+			uniqueUsername=true; //JUST TO TEST
 		}
 
 		//Login Window closes and Main Window opens if username is unique
@@ -80,11 +81,11 @@ public class Client {
 			System.out.println("[Client] Query argument2: "+query.getArgument2());
 			System.out.println();
 			
-//			out.writeObject(query);
-//			if (query.getType()==ChatMessageType.Disconnect) {
-//				MainWindow.getMainFrame().setVisible(false);
-//				JOptionPane.showMessageDialog(null,"You are disconnected");
-//			}
+			out.writeObject(query);
+			if (query.getType()==ChatMessageType.Disconnect) {
+				MainWindow.getMainFrame().setVisible(false);
+				JOptionPane.showMessageDialog(null,"You are disconnected");
+			}
 			query=null;
 		}
 	}

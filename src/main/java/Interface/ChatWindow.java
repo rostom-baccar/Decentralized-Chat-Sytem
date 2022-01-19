@@ -62,10 +62,6 @@ public class ChatWindow extends JPanel implements ActionListener {
 			chatArea.append("["+username+"]: "+message+"\n");
 			
 			MainWindow.setQuery(Message.buildMessageWithArgument(ChatMessageType.PrivateMessage,message,remoteUser));
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e1){e1.printStackTrace();
-			}
 			MainWindow.setQuery(null);
 		}
 	}

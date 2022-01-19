@@ -15,8 +15,12 @@ public class ClientTest {
 		System.out.println("Connected!");
 
 		OutputStream outputStream = socket.getOutputStream();
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-
+		ObjectOutputStream out = new ObjectOutputStream(outputStream);
+		
+		ServerResponseListenerTest serverConnection = new ServerResponseListenerTest(socket);
+		serverConnection.start();
+		
+		
 		Scanner s = new Scanner(System.in);
 		String msg=s.nextLine();
 		MessageTest msg1;
@@ -26,7 +30,7 @@ public class ClientTest {
 			} else {
 				msg1 = new MessageTest("Bye",ChatMessageType.Disconnect);
 			}
-			objectOutputStream.writeObject(msg1);
+			out.writeObject(msg1);
 			msg=s.nextLine();
 		}
 	}
