@@ -16,16 +16,14 @@ public class ClientHandler extends Thread {
 	private BufferedReader in;
 	private PrintWriter out;
 	private Socket clientSocket;
-	private static ArrayList<ClientHandler> clients;
 	private String clientUsername; 
 	private boolean firstConnection=true;
 	private boolean canBeAdded=false;
 
 
 	//Every handler of a certain client will have access to the other handlers of the other clients
-	public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException{
+	public ClientHandler(Socket clientSocket) throws IOException{
 		this.clientSocket=clientSocket;
-		ClientHandler.clients=clients;
 		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		out = new PrintWriter(clientSocket.getOutputStream(),true);
 	}
@@ -117,14 +115,14 @@ public class ClientHandler extends Thread {
 				}
 				else if (request.contains("disconnect")) {
 					broadcast(clientUsername+" disconnected");
-					clients.remove(this);
+					Server.getClients().remove(this);
 					this.canBeAdded=false;
 					this.clientSocket.close();
 					request = in.readLine();
 				}
 				else if (request.contains("active")) {
 					out.println("begin clients");
-					for (ClientHandler client : clients) {
+					for (ClientHandler client : Server.getClients()) {
 						if (client!=this) { //we do not show the user's own nickname
 							out.println(client.clientUsername);
 						}
@@ -213,9 +211,6 @@ public class ClientHandler extends Thread {
 	
 	public void setCanBeAdded(boolean canBeAdded) {
 		this.canBeAdded = canBeAdded;
-	}
-	public ArrayList<ClientHandler> getClients() {
-		return this.clients;
 	}
 
 }
