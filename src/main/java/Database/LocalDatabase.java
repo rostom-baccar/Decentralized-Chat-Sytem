@@ -9,16 +9,16 @@ public class LocalDatabase {
 	private String mdp = "root";
 
 //  DB insa
-//	private String dbaddr="jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_008?";
-//	private String username="tp_servlet_008";
-//	private String mdp = "ees7Lozu";
+//	private String dbaddr="jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_018?";
+//	private String username="tp_servlet_018";
+//	private String mdp = "izu6uNgu";
 	
 	private static Connection con;
 	private static Statement stmt ;
 	
 	
 	////// QUERIES \\\\\\
-	String sqlCreateTab = "CREATE TABLE IF NOT EXISTS LOCALDB"
+	String sqlCreateTab = "CREATE TABLE IF NOT EXISTS chatsysDB"
 			+ "  (id			INT NOT NULL AUTO_INCREMENT,"
 			+ "   sender           VARCHAR(45) NOT NULL,"
 			+ "   receiver            VARCHAR(45) NOT NULL,"
@@ -28,26 +28,28 @@ public class LocalDatabase {
 			
 //	String sqlGetMsg = "SELECT message FROM localdb WHERE sender = ?" ;
 	
-	String sqlInsert = "Insert into localdb (sender, receiver,message,tstamp) values (?,?,?,?)" ;
+	String sqlInsert = "Insert into chatsysDB (sender, receiver,message,tstamp) values (?,?,?,?)" ;
 	
 	// For local use
 //	String getChatHistory = "SELECT sender, receiver, message, tstamp " 
-//						  + "FROM localdb "
+//						  + "FROM chatsysDB "
 //						  + "WHERE sender = ? OR receiver = ?" 
 //						  + "ORDER BY tstamp ASC Limit ?";
 	
 	// For INSA DB
-	String getChatHistory = "SELECT sender, receiver, message, tstamp " 
-			  + "FROM localdb "
+	String sqlChatHistory = "SELECT sender, receiver, message, tstamp " 
+			  + "FROM chatsysDB "
 			  + "WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)" 
 			  + "ORDER BY tstamp ASC Limit ?";
 
+	String sqlDrop = "DROP TABLE chatsysDB ;" ;
+	
 	public LocalDatabase () {
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			this.con=DriverManager.getConnection(dbaddr,username,mdp);
-			this.stmt = con.createStatement();
+			LocalDatabase.con=DriverManager.getConnection(dbaddr,username,mdp);
+			LocalDatabase.stmt = con.createStatement();
 			System.out.println("Connected to Database. \n");
 			
 			stmt.execute(sqlCreateTab);
@@ -78,7 +80,7 @@ public class LocalDatabase {
 	
 	public ResultSet getHistory(String LocalUserIP ,String RemoteUserIP) {
 		try {
-			PreparedStatement pstmt = con.prepareStatement(getChatHistory);
+			PreparedStatement pstmt = con.prepareStatement(sqlChatHistory);
 			pstmt.setString(1, LocalUserIP);
 			pstmt.setString(2, RemoteUserIP);
 			pstmt.setString(3, RemoteUserIP);
@@ -92,4 +94,13 @@ public class LocalDatabase {
 		}
 
 	}
+	
+	public void dropDatabase() {	
+		try { 
+			LocalDatabase.stmt.executeUpdate(sqlDrop) ;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
