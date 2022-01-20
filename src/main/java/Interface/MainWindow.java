@@ -5,9 +5,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import Database.LocalDatabase;
 import Network.ClientHandler;
 import Network.Server;
 import Network.ServerResponseListener;
+import java.sql.*;
 
 public class MainWindow extends JPanel implements ActionListener {
 
@@ -29,10 +31,15 @@ public class MainWindow extends JPanel implements ActionListener {
 	private ChatWindow chatWindow=null;
 	private JButton changeUsernameButton;
 	private JTextField newUsernameField;
+	
+	private static LocalDatabase localdb;
 
-	public MainWindow(String username) {
+	
+
+	public MainWindow(String username, LocalDatabase localdb) {
 		
 		this.username=username;
+		this.localdb=localdb ;
 		
 		String[] init= {};
 		UsersList = new JComboBox<String>(init);
@@ -121,6 +128,24 @@ public class MainWindow extends JPanel implements ActionListener {
 			String remoteUser=(String) UsersList.getSelectedItem();
 //			if (ClientHandler.among(remoteUser)) {
 			chatWindow = new ChatWindow(username, remoteUser);
+			//
+			// Load historique //////////////////////////////////////////////////////////////
+			//
+			try {
+				ResultSet rs = localdb.getHistory("LocalipAddress","RemoteipAddress");
+				while (rs.next()){
+					if (rs.getString(1).equals("LocalipAddress")) {
+						chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
+					}else {
+						chatWindow.getChatArea().append("["+remoteUser+"]: "+rs.getString(3)+"\n");
+					}
+				}
+			} catch (Exception ee) {
+				// TODO Auto-generated catch block
+				System.out.print("Error while loading History ! \n");
+				ee.printStackTrace();
+				
+			}
 //			}
 			if (ServerResponseListener.isConversationInitiator())
 			{
@@ -178,6 +203,10 @@ public class MainWindow extends JPanel implements ActionListener {
 
 	public static void setQuery(String query) {
 		MainWindow.query = query;
+	}
+	
+	public static LocalDatabase getLocaldb() {
+		return localdb;
 	}
 	
 }

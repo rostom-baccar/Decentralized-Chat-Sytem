@@ -6,6 +6,9 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import Network.MessageListener;
+import Network.ClientHandler;
+
+import Database.LocalDatabase;
 
 public class ChatWindow extends JPanel implements ActionListener {
 
@@ -15,9 +18,12 @@ public class ChatWindow extends JPanel implements ActionListener {
     private JButton sendButton;
     private JTextField chatField;
     private JTextArea chatArea;
-    private JFrame chatFrame;
+    
+
+	private JFrame chatFrame;
     private JPanel chatPanel;
     private String query;
+    
 
     public ChatWindow(String username, String remoteUser) {
     	
@@ -58,6 +64,14 @@ public class ChatWindow extends JPanel implements ActionListener {
 		if(e.getSource() == sendButton) {
 			String message = chatField.getText();
 			chatArea.append("["+username+"]: "+message+"\n");
+			//
+			// clientHandler.getIpAddress()
+			// Add message to bdd , initiator=1 ///////////////////////////////////////////////////////////////
+			//
+			//String ip = ClientHandler.getIpAddress() ;
+			
+			int num = MainWindow.getLocaldb().insertLine("LocalipAddress", "RemoteipAddress", message, "2022-01-01 00:00:01");
+			
 			MainWindow.setQuery("@"+remoteUser+" "+message);
 			try {
 				Thread.sleep(50);
@@ -75,5 +89,9 @@ public class ChatWindow extends JPanel implements ActionListener {
 
 	public void setQuery(String query) {
 		this.query = query;
+	}
+	
+	public JTextArea getChatArea() {
+		return chatArea;
 	}
 }

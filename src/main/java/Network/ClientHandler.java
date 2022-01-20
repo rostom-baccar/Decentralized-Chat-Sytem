@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -16,19 +17,20 @@ public class ClientHandler extends Thread {
 	private BufferedReader in;
 	private PrintWriter out;
 	private Socket clientSocket;
-	private static ArrayList<ClientHandler> clients;
 	private String clientUsername; 
 	private boolean firstConnection=true;
 	private boolean canBeAdded=false;
+	private static String ipAddress;
 
 
 	//Every handler of a certain client will have access to the other handlers of the other clients
-	public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException{
+	public ClientHandler(Socket clientSocket) throws IOException{
 		this.clientSocket=clientSocket;
-		ClientHandler.clients=clients;
+		this.ipAddress=InetAddress.getLocalHost().getHostAddress();
 		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		out = new PrintWriter(clientSocket.getOutputStream(),true);
 	}
+
 
 	public void run() {
 		String request = null;
@@ -117,14 +119,14 @@ public class ClientHandler extends Thread {
 				}
 				else if (request.contains("disconnect")) {
 					broadcast(clientUsername+" disconnected");
-					clients.remove(this);
+					Server.getClients().remove(this);
 					this.canBeAdded=false;
 					this.clientSocket.close();
 					request = in.readLine();
 				}
 				else if (request.contains("active")) {
 					out.println("begin clients");
-					for (ClientHandler client : clients) {
+					for (ClientHandler client : Server.getClients()) {
 						if (client!=this) { //we do not show the user's own nickname
 							out.println(client.clientUsername);
 						}
@@ -214,8 +216,9 @@ public class ClientHandler extends Thread {
 	public void setCanBeAdded(boolean canBeAdded) {
 		this.canBeAdded = canBeAdded;
 	}
-	public ArrayList<ClientHandler> getClients() {
-		return this.clients;
+	
+	public static String getIpAddress() {
+		return ipAddress;
 	}
 
 }

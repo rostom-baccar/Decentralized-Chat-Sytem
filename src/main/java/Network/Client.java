@@ -6,6 +6,7 @@ import java.net.Socket;
 import javax.swing.JOptionPane;
 import Interface.LoginWindow;
 import Interface.MainWindow;
+import Database.LocalDatabase;
 
 public class Client {
 
@@ -36,6 +37,13 @@ public class Client {
 		
 		//Login Window
 		LoginWindow loginWindow = new LoginWindow();
+		
+		
+		
+		///////////////CREATION BDD\\\\\\\\\\\\\\\
+		LocalDatabase localdb = new LocalDatabase ("demodb");
+		
+		
 
 		while(username==null) { //waiting for user to type username in text field
 			username=LoginWindow.getUsername();
@@ -54,7 +62,7 @@ public class Client {
 		//Login Window closes and Main Window opens if username is unique
 		LoginWindow.getLoginFrame().setVisible(false);
 		JOptionPane.showMessageDialog(null,"You are connected");
-		MainWindow mainWindow = new MainWindow(username);
+		MainWindow mainWindow = new MainWindow(username,localdb);
 
 
 		while(true) {
