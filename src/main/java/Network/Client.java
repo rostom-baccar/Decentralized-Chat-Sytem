@@ -41,8 +41,7 @@ public class Client {
 		
 		
 		///////////////CREATION BDD\\\\\\\\\\\\\\\
-		LocalDatabase localdb = new LocalDatabase ("demodb");
-		
+		LocalDatabase localdb = new LocalDatabase ();
 		
 
 		while(username==null) { //waiting for user to type username in text field

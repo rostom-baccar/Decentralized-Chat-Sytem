@@ -4,7 +4,15 @@ import java.sql.* ;
 
 public class LocalDatabase {
 	
-	private String dbname;
+	private String dbaddr="jdbc:mysql://localhost:3306/demodb";
+	private String username="root";
+	private String mdp = "root";
+
+//  DB insa
+//	private String dbaddr="jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_008?";
+//	private String username="tp_servlet_008";
+//	private String mdp = "ees7Lozu";
+	
 	private static Connection con;
 	private static Statement stmt ;
 	
@@ -34,11 +42,11 @@ public class LocalDatabase {
 			  + "WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)" 
 			  + "ORDER BY tstamp ASC Limit ?";
 
-	public LocalDatabase (String dbname) {
-		this.dbname = dbname ;
+	public LocalDatabase () {
+
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			this.con=DriverManager.getConnection("jdbc:mysql://localhost:3306/"+dbname,"root","root");
+			this.con=DriverManager.getConnection(dbaddr,username,mdp);
 			this.stmt = con.createStatement();
 			System.out.println("Connected to Database. \n");
 			
@@ -51,21 +59,6 @@ public class LocalDatabase {
 	}
 	
 	
-//	public String getMessage (int id) {
-//		PreparedStatement pstmt;
-//		try {
-//			pstmt = con.prepareStatement(sqlGetMsg) ;
-//			pstmt.setInt(1, id);
-//			ResultSet rs = pstmt.executeQuery();
-//			rs.next();
-//			return rs.getString(4);
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			return null;
-//		}
-//		
-//	}
 	
 	public int insertLine(String sender, String receiver, String message, String timestamp) {
 		
