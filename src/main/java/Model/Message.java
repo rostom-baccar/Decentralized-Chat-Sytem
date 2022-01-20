@@ -39,13 +39,23 @@ public class Message implements Serializable {
 		this.argument2=argument2;
 	}
 
+	public static Message buildTypeMessage(ChatMessageType type) {
+		Message message = new Message(type);
+		return message;
+	}
+	
 	public static Message buildMessage(ChatMessageType type, String content) {
 		Message message = new Message(type,content);
 		return message;
 	}
 	
-	public static Message buildMessageWithArgument(ChatMessageType type, String content, String argument1) {
+	public static Message buildMessage1(ChatMessageType type, String content, String argument1) {
 		Message message = new Message(type,content,argument1);
+		return message;
+	}
+	
+	public static Message buildMessage2(ChatMessageType type, String content, String argument1, String argument2) {
+		Message message = new Message(type,content,argument1,argument2);
 		return message;
 	}
 	

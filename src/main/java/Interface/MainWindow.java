@@ -2,6 +2,9 @@ package Interface;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -17,7 +20,6 @@ public class MainWindow extends JPanel implements ActionListener {
 	private static JComboBox<String> UsersList = null;
 	private static JTextArea broadArea;
 	private static JFrame mainFrame;
-	private static Message queryToSend;
 	private static String username;
 	private static String newUsername;
 	private static boolean uniqueNewUsername=false;
@@ -31,15 +33,17 @@ public class MainWindow extends JPanel implements ActionListener {
 	private ChatWindow chatWindow=null;
 	private JButton changeUsernameButton;
 	private JTextField newUsernameField;
+    private ObjectOutputStream out;
 
-	public MainWindow(String username) {
+	public MainWindow(String username, ObjectOutputStream out) {
 
 		this.username=username;
+    	this.out=out;
+    	System.out.println("[MainWindow] Username: "+this.username);
 
 		String[] init= {};
 		UsersList = new JComboBox<String>(init);
 		mainFrame = new JFrame (username);
-		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		mainPanel = new JPanel(new GridLayout(10,10));
 		broadArea = new JTextArea (5, 5);
 		newUsernameField = new JTextField (5);
@@ -79,6 +83,7 @@ public class MainWindow extends JPanel implements ActionListener {
 		mainFrame.add (getBroadArea());
 		mainFrame.add (groupChatLabel);
 
+		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		mainFrame.setSize(new Dimension(2000, 500));
 		mainFrame.getContentPane().add (mainPanel, BorderLayout.CENTER);
 		mainFrame.pack();
@@ -90,54 +95,61 @@ public class MainWindow extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if(e.getSource() == disconnectButton) {
-			Message query = new Message(ChatMessageType.Disconnect);		
-			queryToSend=query;
-			queryToSend=null;
+			try {
+				out.writeObject(Message.buildTypeMessage(ChatMessageType.Disconnect));
+			} catch (IOException e1) {e1.printStackTrace();}
+			mainFrame.setVisible (false);
 		}
 
 		if(e.getSource() == refreshButton) {
-			Message query = new Message(ChatMessageType.UsersList);		
 			UsersList.removeAllItems();
-			queryToSend=query;
-			queryToSend=null;
+			try {
+				out.writeObject(Message.buildTypeMessage(ChatMessageType.UsersList));
+			} catch (IOException e1) {e1.printStackTrace();}
 		}
 
 		if(e.getSource() == sendButton) {
 			String message = broadField.getText();
-			Message query = new Message(ChatMessageType.BroadMessage,message);
-			queryToSend=query;
-			queryToSend=null;
+			try {
+				out.writeObject(Message.buildMessage(ChatMessageType.BroadMessage,message));
+			} catch (IOException e1) {e1.printStackTrace();}
+
 		}
 
 		if(e.getSource() == chatButton) {
 			String remoteUser=(String) UsersList.getSelectedItem();
-			chatWindow = new ChatWindow(username, remoteUser);
+			chatWindow = new ChatWindow(username, remoteUser, out);
 
 			if (ServerResponseListener.isConversationInitiator())
 			{
-				Message query = new Message(ChatMessageType.Initiator,null,username,remoteUser);
-				queryToSend=query;
+				try {
+					out.writeObject(Message.buildMessage2(ChatMessageType.Initiator,null,username,remoteUser));
+				} catch (IOException e1) {e1.printStackTrace();}
 			}
 			else {
-				Message query = new Message(ChatMessageType.Recipient,null,username,remoteUser);
-				queryToSend=query;
+				try {
+					out.writeObject(Message.buildMessage2(ChatMessageType.Recipient,null,username,remoteUser));
+				} catch (IOException e1) {e1.printStackTrace();}
 			}
 			ServerResponseListener.setConversationInitiator(true);
-			queryToSend=null;
 		}
 
 		if(e.getSource() == changeUsernameButton) {
 			newUsername = newUsernameField.getText();
-			Message query = new Message(ChatMessageType.UsernameChange,null,username,newUsername);
-			uniqueNewUsername=false;
-			queryToSend=query;
-			queryToSend=null;
+			try {
+				out.writeObject(Message.buildMessage2(ChatMessageType.UsernameChange,null,username,newUsername));
+			} catch (IOException e1) {e1.printStackTrace();}
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e1) {e1.printStackTrace();}
+			
 			if (uniqueNewUsername) {
 				mainFrame.setTitle(newUsername);
 				username=newUsername;
 				JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
-
 			}
+			uniqueNewUsername=false;
 		}
 	}
 
@@ -158,14 +170,6 @@ public class MainWindow extends JPanel implements ActionListener {
 
 	public static JFrame getMainFrame() {
 		return mainFrame;
-	}
-
-	public static Message getQuery() {
-		return queryToSend;
-	}
-
-	public static void setQuery(Message query) {
-		MainWindow.queryToSend = query;
 	}
 
 }

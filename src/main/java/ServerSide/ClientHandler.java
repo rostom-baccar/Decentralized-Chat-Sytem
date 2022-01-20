@@ -75,7 +75,6 @@ public class ClientHandler extends Thread {
 					break;
 
 				case Disconnect:
-					System.out.println("clienthandler receivec disconnect query");
 					broadcast(clientUsername+" disconnected");
 					Server.getClients().remove(this);
 					this.canBeAdded=false;
@@ -97,6 +96,7 @@ public class ClientHandler extends Thread {
 
 				case PrivateMessage:
 
+					
 					String remoteUser=request.getArgument2();
 					if (among(remoteUser)) {
 						ClientHandler remoteClientHandler=findThread(remoteUser);
@@ -137,7 +137,7 @@ public class ClientHandler extends Thread {
 					String recipient=request.getArgument1();
 					String remoteUser2=request.getArgument2();
 					ClientHandler remoteClientHandler2=findThread(remoteUser2);
-					remoteClientHandler2.out.writeObject(Message.buildMessage(ChatMessageType.Notification,recipient+" has opened a chat. You can now chat with them!"));
+					remoteClientHandler2.out.writeObject(Message.buildMessage(ChatMessageType.Recipient,recipient+" has opened a chat. You can now chat with them!"));
 					request = (Message) in.readObject();
 					break;
 
@@ -153,10 +153,10 @@ public class ClientHandler extends Thread {
 						if (targetThread!=null) {
 							targetThread.setClientUsername(newUsername);
 							broadcast(oldUsername+" has changed their username to "+newUsername);
+							out.writeObject(Message.buildTypeMessage(ChatMessageType.UsernameChange));
 						}
 					}
 				default:
-					out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Unknown request"));
 					request = (Message) in.readObject();
 					break;
 
@@ -194,17 +194,16 @@ public class ClientHandler extends Thread {
 	//for changing username
 	private void broadcast(String message) throws IOException {
 		//we send a message to all the clientHandlers that are active
-		Message broadcastUsernameMessage = new Message(ChatMessageType.BroadMessage,"//"+message+"//");
 		for (ClientHandler client : Server.getClients()) {
-			client.out.writeObject(broadcastUsernameMessage);
+			client.out.writeObject(Message.buildMessage(ChatMessageType.BroadMessage,"**"+message+"**"));
+
 		}
 	}
 
 	private void broadcast(String message, String clientUsername) throws IOException {
 		//we send a message to all the clientHandlers that are active
-		Message broadcastMessage = new Message(ChatMessageType.BroadMessage,"[BROADCAST] |"+clientUsername+"| "+message);
 		for (ClientHandler client : Server.getClients()) {
-			client.out.writeObject(broadcastMessage);
+			client.out.writeObject(Message.buildMessage(ChatMessageType.BroadMessage,"["+clientUsername+"] "+message));
 		}
 	}
 

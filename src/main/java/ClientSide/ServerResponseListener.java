@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import Interface.ChatWindow;
+import Interface.LoginWindow;
 import Interface.MainWindow;
 import Model.ChatMessageType;
 import Model.Message;
@@ -19,7 +20,6 @@ import Model.Message;
 public class ServerResponseListener extends Thread{
 
 	private Socket clientSocket;
-	private ArrayList<String> localClients = new ArrayList<String>();
 	private static Message message=null;
 	private static boolean conversationInitiator=true;
 
@@ -45,18 +45,19 @@ public class ServerResponseListener extends Thread{
 				switch( (ChatMessageType) serverResponse.getType()) {
 				
 				case Notification:
-					if (!serverResponse.getContent().equals("Username already taken, please choose another one")) {
+					if (serverResponse.getContent().equals("You are connected")) {
 						Client.setUniqueUsername(true);
 					}
 					
-					if (!serverResponse.getContent().equals("Someone is already connected with this username. Please choose another one")) {
-						MainWindow.setUniqueNewUsername(true);
+//					if (!serverResponse.getContent().equals("Someone is already connected with this username. Please choose another one")) {
+//						MainWindow.setUniqueNewUsername(true);
+//					}
+					else {
+						JOptionPane.showMessageDialog(null,serverResponse.getContent());
 					}
-					JOptionPane.showMessageDialog(null,serverResponse.getContent());
 					break;
 					
 				case UsersList:
-					localClients.add(serverResponse.getContent());
 					MainWindow.getUsersList().addItem(serverResponse.getContent());
 					break;
 					
@@ -83,6 +84,9 @@ public class ServerResponseListener extends Thread{
 				case PrivateMessage :
 					message=serverResponse;
 					message=null;
+					
+				case UsernameChange :
+					MainWindow.setUniqueNewUsername(true);
 					
 				default:
 					break;

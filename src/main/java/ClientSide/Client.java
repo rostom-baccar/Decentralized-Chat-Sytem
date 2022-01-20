@@ -19,6 +19,7 @@ public class Client {
 	private static boolean uniqueUsername=false;
 	private static String username=null;
 	private static Message query;
+	private static Socket socket;
 
 	public Client(String username) {
 		Client.username=username;
@@ -29,7 +30,7 @@ public class Client {
 	public static void main(String[] args) throws IOException, InterruptedException {
 
 		//Creating socket client from port and the Server IP. Note: The server uses the same port. 
-		Socket socket = new Socket(Server_IP, port);
+		socket = new Socket(Server_IP, port);
 
 		//Sending
 		OutputStream outputStream = socket.getOutputStream();
@@ -40,54 +41,41 @@ public class Client {
 		serverConnection.start();
 
 		//Login Window
-		LoginWindow loginWindow = new LoginWindow();
-
-		//waiting for user to type username in text field
-		while(username==null) {
-			username=LoginWindow.getUsername();
-		}
+		LoginWindow loginWindow = new LoginWindow(out);
+		
+		System.out.println("[Client] Checking if username is unique");
+		while (!uniqueUsername) {Thread.sleep(1);}
+		username=LoginWindow.getUsername();
 		System.out.println("[Client] Username: "+username);
-
-		out.writeObject(Message.buildMessage(ChatMessageType.Connect,username));
-
-		while(!uniqueUsername) {
-			username=null;
-			while(username==null) { 
-				username=LoginWindow.getUsername();
-			}
-			System.out.println("[Client] Username: "+username);
-			out.writeObject(Message.buildMessage(ChatMessageType.Connect,username));
-		}
-
-		//Login Window closes and Main Window opens if username is unique
 		LoginWindow.getLoginFrame().setVisible(false);
-		JOptionPane.showMessageDialog(null,"You are connected");
-		MainWindow mainWindow = new MainWindow(username);
-
+		System.out.println("[Client] Username is unique");
+		MainWindow mainWindow = new MainWindow(username,out);
+		
 
 		while(true) {
-
-			while (query==null) {
-				query=MainWindow.getQuery(); //Waiting for the user to send a query via the Main Window (through the buttons)
-			}
-
-			System.out.println("[Client] Query type: "+query.getType());
-			System.out.println("[Client] Query content: "+query.getContent());
-			System.out.println("[Client] Query argument1: "+query.getArgument1());
-			System.out.println("[Client] Query argument2: "+query.getArgument2());
-			System.out.println();
-
-			out.writeObject(query);
-			if (query.getType()==ChatMessageType.Disconnect) {
-				MainWindow.getMainFrame().setVisible(false);
-				JOptionPane.showMessageDialog(null,"You are disconnected");
-			}
-			query=null;
+//
+//			while (query==null) {
+//				query=MainWindow.getQuery(); //Waiting for the user to send a query via the Main Window (through the buttons)
+//			}
+//
+//			System.out.println("[Client] Query type: "+query.getType());
+//			System.out.println("[Client] Query content: "+query.getContent());
+//			System.out.println("[Client] Query argument1: "+query.getArgument1());
+//			System.out.println("[Client] Query argument2: "+query.getArgument2());
+//			System.out.println();
+//
+//			out.writeObject(query);
+//			if (query.getType()==ChatMessageType.Disconnect) {
+//				MainWindow.getMainFrame().setVisible(false);
+//				JOptionPane.showMessageDialog(null,"You are disconnected");
+//			}
+//			query=null;
 		}
 	}
 
 
 	//Setters and Getters
+
 	public static void setUniqueUsername(boolean uniqueUsername) {
 		Client.uniqueUsername = uniqueUsername;
 	}
@@ -96,4 +84,7 @@ public class Client {
 		return username;
 	}
 
+	public static Socket getSocket() {
+		return socket;
+	}
 }
