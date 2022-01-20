@@ -1,5 +1,10 @@
 package Network;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.JTextArea;
 
 import Interface.MainWindow;
@@ -34,8 +39,16 @@ public class MessageListener extends Thread {
 				//
 				// Add message Initiator=0 /////////////////////////////////////////////////////////////////
 				//
-				int num = MainWindow.getLocaldb().insertLine("RemoteipAddress", "LocalipAddress", message, "2022-01-01 00:00:01");
 				
+				try {
+					String RemoteipAddress = ServerResponseListener.getRemoteIpAddress();
+					String LocalipAddress = InetAddress.getLocalHost().getHostAddress();
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+					LocalDateTime now = LocalDateTime.now();  
+					String tstamp = dtf.format(now);  
+					int num = MainWindow.getLocaldb().insertLine(RemoteipAddress, LocalipAddress, message, tstamp);
+				
+				} catch (UnknownHostException e) {e.printStackTrace();}
 			}
 			incomingRequest=null;
 		}

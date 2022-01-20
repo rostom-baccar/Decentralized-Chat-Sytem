@@ -22,6 +22,13 @@ public class ServerResponseListener extends Thread{
 	private ArrayList<String> localClients = new ArrayList<String>();
 	private boolean firstWindow=true;
 	private ChatWindow chatWindow = null;
+	private static String ipRemoteAddress;
+
+
+	public static void setIpAdress(String ipAdress) {
+		ServerResponseListener.ipRemoteAddress = ipAdress;
+	}
+
 	private static String message=null;
 	private static boolean conversationInitiator=true;
 
@@ -73,13 +80,24 @@ public class ServerResponseListener extends Thread{
 					JOptionPane.showMessageDialog(null,serverResponse);
 				}
 
+
 				if (serverResponse.equals("Sorry, the user you are trying to chat with is not connected!")) {
 					JOptionPane.showMessageDialog(null,serverResponse);
 				}
 				
 				if (serverResponse.contains(" has opened a chat. You can now chat with them!")) {
 					JOptionPane.showMessageDialog(null,serverResponse);
+
+
 				}
+				
+				if (serverResponse.contains("ipAdress")) {
+					int ipIndex=serverResponse.indexOf("ipAdress");
+					ipRemoteAddress = serverResponse.substring(ipIndex+8);
+					System.out.println("[ServerResponseListener] "+serverResponse);
+					System.out.println("[ServerResponseListener] "+ipRemoteAddress);
+				}
+				
 				if (serverResponse.contains("@")) {
 					message=serverResponse;		
 					message=null;
@@ -117,5 +135,9 @@ public class ServerResponseListener extends Thread{
 
 	public static boolean isConversationInitiator() {
 		return conversationInitiator;
+	}
+	
+	public static String getRemoteIpAddress() {
+		return ipRemoteAddress;
 	}
 }

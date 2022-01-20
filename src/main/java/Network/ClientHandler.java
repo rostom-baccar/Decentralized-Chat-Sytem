@@ -71,7 +71,11 @@ public class ClientHandler extends Thread {
 					String remoteUser=request.substring(spaceIndex+1);
 					ClientHandler remoteClientHandler=findThread(remoteUser);
 					if (remoteClientHandler!=null) {
+					String ipAddress=remoteClientHandler.getIpAddress();
 					remoteClientHandler.out.println(initiator+" wants to chat. Open a Chat Window with them!");
+					out.println("ipAdress "+ipAddress);
+
+					
 					}
 					else {
 					out.println("Sorry, the user you are trying to chat with is not connected!");
@@ -83,9 +87,15 @@ public class ClientHandler extends Thread {
 					String recipient = request.substring(1,spaceIndex);
 					String remoteUser=request.substring(spaceIndex+1);
 					ClientHandler remoteClientHandler=findThread(remoteUser);
+					String ipAddress=remoteClientHandler.getIpAddress();
 					remoteClientHandler.out.println(recipient+" has opened a chat. You can now chat with them!");
+					out.println("ipAdress "+ipAddress);
+
 					request = in.readLine();
 				}
+				
+
+				
 				else if (request.contains("#")) {
 					int spaceIndex=request.indexOf(" ");
 					String oldUsername=request.substring(1,spaceIndex);

@@ -2,10 +2,16 @@ package Interface;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.*;
 import javax.swing.event.*;
 
 import Network.MessageListener;
+import Network.ServerResponseListener;
 import Network.ClientHandler;
 
 import Database.LocalDatabase;
@@ -69,8 +75,17 @@ public class ChatWindow extends JPanel implements ActionListener {
 			// Add message to bdd , initiator=1 ///////////////////////////////////////////////////////////////
 			//
 			//String ip = ClientHandler.getIpAddress() ;
+			try {
+				String RemoteipAddress = ServerResponseListener.getRemoteIpAddress();
+				String LocalipAddress = InetAddress.getLocalHost().getHostAddress();
 			
-			int num = MainWindow.getLocaldb().insertLine("LocalipAddress", "RemoteipAddress", message, "2022-01-01 00:00:01");
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+				LocalDateTime now = LocalDateTime.now();  
+				String tstamp = dtf.format(now);  
+				
+				int num = MainWindow.getLocaldb().insertLine(LocalipAddress, RemoteipAddress, message, tstamp);
+			} catch (UnknownHostException e2) {e2.printStackTrace();}
+			
 			
 			MainWindow.setQuery("@"+remoteUser+" "+message);
 			try {
