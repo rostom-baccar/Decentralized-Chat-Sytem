@@ -5,9 +5,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import ClientSide.MessageListener;
 import Model.ChatMessageType;
 import Model.Message;
-import NetworkListeners.MessageListener;
 
 public class ChatWindow extends JPanel implements ActionListener {
 

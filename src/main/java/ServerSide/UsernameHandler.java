@@ -1,7 +1,4 @@
-package NetworkListeners;
-
-import NetworkManagers.ClientHandler;
-import NetworkManagers.Server;
+package ServerSide;
 
 //Thread that adds the client thread to the list of threads as soon as its 
 //username becomes unique
@@ -21,6 +18,7 @@ public class UsernameHandler extends Thread{
 			} catch (InterruptedException e){e.printStackTrace();
 			}
 		}
+		System.out.println("Username "+clientThread.getClientUsername()+" can be added");
 		Server.getClients().add(clientThread);
 	}
 }

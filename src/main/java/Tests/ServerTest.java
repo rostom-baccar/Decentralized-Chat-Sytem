@@ -9,7 +9,8 @@ import Model.ChatMessageType;
 
 public class ServerTest {
 	
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException {	
+		
 		ServerSocket ss = new ServerSocket(7777);
 		System.out.println("ServerSocket awaiting connections...");
 		Socket socket = ss.accept(); 

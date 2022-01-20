@@ -1,11 +1,9 @@
-package NetworkManagers;
+package ServerSide;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-
-import NetworkListeners.UsernameHandler;
 
 public class Server {
 

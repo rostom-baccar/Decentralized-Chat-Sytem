@@ -1,4 +1,4 @@
-package NetworkListeners;
+package ClientSide;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,6 @@ import Interface.ChatWindow;
 import Interface.MainWindow;
 import Model.ChatMessageType;
 import Model.Message;
-import NetworkManagers.Client;
 
 //Thread for each client which listens constantly to what the server broadcasts
 //we only need an input attribute since we won't be sending the server any messages with these threads
@@ -44,7 +43,7 @@ public class ServerResponseListener extends Thread{
 				System.out.println("[ServerResponseListener] Query argument2: "+serverResponse.getArgument2());
 				System.out.println();
 				switch( (ChatMessageType) serverResponse.getType()) {
-//				
+				
 				case Notification:
 					if (!serverResponse.getContent().equals("Username already taken, please choose another one")) {
 						Client.setUniqueUsername(true);
@@ -55,40 +54,39 @@ public class ServerResponseListener extends Thread{
 					}
 					JOptionPane.showMessageDialog(null,serverResponse.getContent());
 					break;
-//					
-//				case UsersList:
-//					localClients.add(serverResponse.getContent());
-//					MainWindow.getUsersList().addItem(serverResponse.getContent());
-//					break;
-//					
-//					
-//				case BroadMessage:
-//					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
-//					break;
-//					
-//				case Recipient:
-//					conversationInitiator=false;
-//					JOptionPane.showMessageDialog(null,serverResponse.getContent());
-//					break;
-//					
-//					
-//				case Initiator:
-//					JOptionPane.showMessageDialog(null,serverResponse.getContent());
-//					break;
-//					
-//					
-//				case UserInexistant	:
-//					JOptionPane.showMessageDialog(null,serverResponse.getContent());
-//					break;
-//					
-//				case PrivateMessage :
-//					message=serverResponse;
-//					message=null;
-//					
+					
+				case UsersList:
+					localClients.add(serverResponse.getContent());
+					MainWindow.getUsersList().addItem(serverResponse.getContent());
+					break;
+					
+					
+				case BroadMessage:
+					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
+					break;
+					
+				case Recipient:
+					conversationInitiator=false;
+					JOptionPane.showMessageDialog(null,serverResponse.getContent());
+					break;
+					
+					
+				case Initiator:
+					JOptionPane.showMessageDialog(null,serverResponse.getContent());
+					break;
+					
+					
+				case UserInexistant	:
+					JOptionPane.showMessageDialog(null,serverResponse.getContent());
+					break;
+					
+				case PrivateMessage :
+					message=serverResponse;
+					message=null;
+					
 				default:
 					break;
 				}
-				
 				serverResponse = (Message) in.readObject();
 			} 
 		}

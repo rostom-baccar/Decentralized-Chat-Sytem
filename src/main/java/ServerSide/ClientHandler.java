@@ -1,4 +1,4 @@
-package NetworkManagers;
+package ServerSide;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,29 +33,32 @@ public class ClientHandler extends Thread {
 		this.clientSocket=clientSocket;
 		this.ipAdress=InetAddress.getLocalHost().getHostAddress();
 		InputStream inputStream = clientSocket.getInputStream();
-        in = new ObjectInputStream(inputStream);
-        OutputStream outputStream = clientSocket.getOutputStream();
-        out = new ObjectOutputStream(outputStream);
+		in = new ObjectInputStream(inputStream);
+		OutputStream outputStream = clientSocket.getOutputStream();
+		out = new ObjectOutputStream(outputStream);
 	}
 
 	public void run() {
-		
+		System.out.println("IP Adress: "+ipAdress);
 		Message request = null;
 		try {
 			request = (Message) in.readObject();
-			}
+		}
 		catch (ClassNotFoundException e2) {e2.printStackTrace();}
 		catch (IOException e2) {e2.printStackTrace();}
 
 		try {
 			while(request!=null) {
+				
 				System.out.println("[ClientHandler] Query type: "+request.getType());
 				System.out.println("[ClientHandler] Query content: "+request.getContent());
 				System.out.println("[ClientHandler] Query argument1: "+request.getArgument1());
 				System.out.println("[ClientHandler] Query argument2: "+request.getArgument2());
 				System.out.println();
+
+				Message responseToClient;
 				switch(request.getType()) {
-//
+
 				case Connect:
 
 					if (!unique(request.getContent())) {
@@ -79,86 +82,89 @@ public class ClientHandler extends Thread {
 					this.clientSocket.close();
 					request = (Message) in.readObject();
 					break;
-//
-//				case UsersList:
-//					//A REVOIR
-//
-//					for (ClientHandler client : Server.getClients()) {
-//						if (client!=this) { //we do not show the user's own nickname
-//							out.writeObject(Message.buildMessage(ChatMessageType.UsersList,client.clientUsername));
-//							Thread.sleep(10);
-//						}
-//					}
-//					request = (Message) in.readObject();
-//					break;
-//
-//				case PrivateMessage:
-//
-//					String remoteUser=request.getArgument2();
-//					if (among(remoteUser)) {
-//						ClientHandler remoteClientHandler=findThread(remoteUser);
-//						remoteClientHandler.out.writeObject(request);
-//						request = (Message) in.readObject();
-//
-//					}
-//					else {
-//						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Sorry, this user is not connected"));
-//						request = (Message) in.readObject();
-//					}
-//					break;
-//
-//				case BroadMessage:
-//
-//					broadcast(request.getContent(),clientUsername);
-//					request = (Message) in.readObject();
-//					break;
-//
-//				case Initiator:
-//					//A REVOIR
-//					String initiator=request.getArgument1();
-//					String remoteUser1=request.getArgument2();
-//					ClientHandler remoteClientHandler1=findThread(remoteUser1);
-//
-//					if (remoteClientHandler1!=null) {
-//						remoteClientHandler1.out.writeObject(Message.buildMessage(ChatMessageType.Initiator,initiator+" wants to chat. Open a Chat Window with them!"));
-//					}
-//					else {
-//						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Sorry, the user you are trying to chat with is not connected!"));
-//					}
-//					request = (Message) in.readObject();
-//					break;
-//					
-//				case Recipient:
-//					//A REVOIR
-//					String recipient=request.getArgument1();
-//					String remoteUser2=request.getArgument2();
-//					ClientHandler remoteClientHandler2=findThread(remoteUser2);
-//					remoteClientHandler2.out.writeObject(Message.buildMessage(ChatMessageType.Notification,recipient+" has opened a chat. You can now chat with them!"));
-//					request = (Message) in.readObject();
-//					break;
-//
-//				case UsernameChange:
-//					String oldUsername=request.getArgument1();
-//					String newUsername=request.getArgument2();
-//					if (!unique(newUsername)) {
-//						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Someone is already connected with this username. Please choose another one"));
-//					}
-//					else {
-//						ClientHandler targetThread=findThread(oldUsername);
-//						targetThread.setClientUsername(newUsername);
-//						broadcast(oldUsername+" has changed their username to "+newUsername);
-//					}
-//
-				default:
-					out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Sent from ClientHandler"));
+
+				case UsersList:
+
+					for (ClientHandler client : Server.getClients()) {
+						if (client!=this) {
+							//we do not show the user's own nickname
+							out.writeObject(Message.buildMessage(ChatMessageType.UsersList,client.clientUsername));
+							Thread.sleep(10);
+						}
+					}
 					request = (Message) in.readObject();
 					break;
-//
-//
+
+				case PrivateMessage:
+
+					String remoteUser=request.getArgument2();
+					if (among(remoteUser)) {
+						ClientHandler remoteClientHandler=findThread(remoteUser);
+						remoteClientHandler.out.writeObject(request);
+						request = (Message) in.readObject();
+
+					}
+					else {
+						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Sorry, this user is not connected"));
+						request = (Message) in.readObject();
+					}
+					break;
+
+				case BroadMessage:
+
+					broadcast(request.getContent(),clientUsername);
+					request = (Message) in.readObject();
+					break;
+
+				case Initiator:
+
+					String initiator=request.getArgument1();
+					String remoteUser1=request.getArgument2();
+					ClientHandler remoteClientHandler1=findThread(remoteUser1);
+
+					if (remoteClientHandler1!=null) {
+						Message responseToRemoteUser = new Message(ChatMessageType.Initiator,initiator+" wants to chat. Open a Chat Window with them!");
+						remoteClientHandler1.out.writeObject(responseToRemoteUser);
+					}
+					else {
+						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Sorry, the user you are trying to chat with is not connected!"));
+					}
+					request = (Message) in.readObject();
+					break;
+
+				case Recipient:
+
+					String recipient=request.getArgument1();
+					String remoteUser2=request.getArgument2();
+					ClientHandler remoteClientHandler2=findThread(remoteUser2);
+					remoteClientHandler2.out.writeObject(Message.buildMessage(ChatMessageType.Notification,recipient+" has opened a chat. You can now chat with them!"));
+					request = (Message) in.readObject();
+					break;
+
+				case UsernameChange:
+
+					String oldUsername=request.getArgument1();
+					String newUsername=request.getArgument2();
+					if (!unique(newUsername)) {
+						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Someone is already connected with this username. Please choose another one"));
+					}
+					else {
+						ClientHandler targetThread=findThread(oldUsername);
+						if (targetThread!=null) {
+							targetThread.setClientUsername(newUsername);
+							broadcast(oldUsername+" has changed their username to "+newUsername);
+						}
+					}
+				default:
+					out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Unknown request"));
+					request = (Message) in.readObject();
+					break;
+
+
 				}
 			}
 		} 
-		catch (IOException | ClassNotFoundException e) {} //to avoid errors when disconnecting
+		catch (IOException | ClassNotFoundException | InterruptedException e) {} //to avoid errors when disconnecting
 		finally {
 			//When we manually break off the loop
 			try {
@@ -188,15 +194,17 @@ public class ClientHandler extends Thread {
 	//for changing username
 	private void broadcast(String message) throws IOException {
 		//we send a message to all the clientHandlers that are active
+		Message broadcastUsernameMessage = new Message(ChatMessageType.BroadMessage,"//"+message+"//");
 		for (ClientHandler client : Server.getClients()) {
-			client.out.writeObject("//"+message+"//");
+			client.out.writeObject(broadcastUsernameMessage);
 		}
 	}
 
 	private void broadcast(String message, String clientUsername) throws IOException {
 		//we send a message to all the clientHandlers that are active
+		Message broadcastMessage = new Message(ChatMessageType.BroadMessage,"[BROADCAST] |"+clientUsername+"| "+message);
 		for (ClientHandler client : Server.getClients()) {
-			client.out.writeObject("[BROADCAST] |"+clientUsername+"| "+message);
+			client.out.writeObject(broadcastMessage);
 		}
 	}
 

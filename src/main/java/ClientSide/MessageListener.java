@@ -1,4 +1,4 @@
-package NetworkListeners;
+package ClientSide;
 
 import javax.swing.JTextArea;
 

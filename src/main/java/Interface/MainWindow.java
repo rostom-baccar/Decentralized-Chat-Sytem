@@ -5,11 +5,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import ClientSide.ServerResponseListener;
 import Model.ChatMessageType;
 import Model.Message;
-import NetworkListeners.ServerResponseListener;
-import NetworkManagers.ClientHandler;
-import NetworkManagers.Server;
+import ServerSide.ClientHandler;
+import ServerSide.Server;
 
 public class MainWindow extends JPanel implements ActionListener {
 
@@ -129,7 +129,6 @@ public class MainWindow extends JPanel implements ActionListener {
 		if(e.getSource() == changeUsernameButton) {
 			newUsername = newUsernameField.getText();
 			Message query = new Message(ChatMessageType.UsernameChange,null,username,newUsername);
-
 			uniqueNewUsername=false;
 			queryToSend=query;
 			queryToSend=null;
