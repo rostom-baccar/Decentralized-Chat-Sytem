@@ -15,10 +15,12 @@ Professional Decentralized Chat System using Socket Programming
 - Assign that value to the Server_IP attribute in the Client class. You'll have to do that with every computer that you want to use as Client
 - Run Jenkins Pipeline 
 - Open a terminal in the Folder that contains the generated jar file
+
   - Use this command to run the Server
   ```
   java -cp INSA-POO-Project-Chat-Sytem-4IR-0.0.1-SNAPSHOT.jar ServerSide.Server
   ```
+  
   - Use this command to create a Client
   ```
   java -cp INSA-POO-Project-Chat-Sytem-4IR-0.0.1-SNAPSHOT.jar ClientSide.Client
