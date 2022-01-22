@@ -26,10 +26,10 @@ public class ClientHandler extends Thread {
 	public ClientHandler(Socket clientSocket) throws IOException{
 		this.clientSocket=clientSocket;
 		this.ipAdress=InetAddress.getLocalHost().getHostAddress();
-		
+
 		InputStream inputStream = clientSocket.getInputStream();
 		in = new ObjectInputStream(inputStream);
-		
+
 		OutputStream outputStream = clientSocket.getOutputStream();
 		out = new ObjectOutputStream(outputStream);
 	}
@@ -44,9 +44,9 @@ public class ClientHandler extends Thread {
 		catch (IOException e2) {e2.printStackTrace();}
 
 		try {
-			
+
 			while(request!=null) {
-				
+
 				System.out.println("[ClientHandler] Query type: "+request.getType());
 				System.out.println("[ClientHandler] Query content: "+request.getContent());
 				System.out.println("[ClientHandler] Query argument1: "+request.getArgument1());
@@ -54,7 +54,7 @@ public class ClientHandler extends Thread {
 				System.out.println();
 
 				Message responseToClient;
-				
+
 				switch(request.getType()) {
 
 				case Connect:
@@ -67,14 +67,15 @@ public class ClientHandler extends Thread {
 						this.canBeAdded=true;
 						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"You are connected"));
 						clientUsername=request.getContent(); //we save it so that each client handler knows its primary client
-						broadcast(clientUsername+" just connected");
+						broadcast(ChatMessageType.BroadConnect,clientUsername+" just connected",clientUsername,null);
 						request = (Message) in.readObject();
+
 					}
 					break;
 
 				case Disconnect:
-					
-					broadcast(clientUsername+" disconnected");
+
+					broadcast(ChatMessageType.BroadDisconnect,clientUsername+" disconnected",clientUsername,null);
 					Server.getClients().remove(this);
 					this.canBeAdded=false;
 					this.clientSocket.close();
@@ -82,7 +83,7 @@ public class ClientHandler extends Thread {
 					break;
 
 				case UsersList:
-					
+
 					for (ClientHandler client : Server.getClients()) {
 						if (client!=this) {
 							//we do not show the user's own nickname
@@ -110,7 +111,7 @@ public class ClientHandler extends Thread {
 
 				case BroadMessage:
 
-					broadcast(request.getContent(),clientUsername);
+					broadcast(ChatMessageType.BroadMessage,"["+clientUsername+"] "+request.getContent(),null,null);
 					request = (Message) in.readObject();
 					break;
 
@@ -150,7 +151,7 @@ public class ClientHandler extends Thread {
 						ClientHandler targetThread=findThread(oldUsername);
 						if (targetThread!=null) {
 							targetThread.setClientUsername(newUsername);
-							broadcast(oldUsername+" has changed their username to "+newUsername);
+							broadcast(ChatMessageType.BroadUsernameChange,oldUsername+" has changed their username to "+newUsername,oldUsername,newUsername);
 							out.writeObject(Message.buildTypeMessage(ChatMessageType.UsernameChange));
 						}
 					}
@@ -190,18 +191,29 @@ public class ClientHandler extends Thread {
 	}
 
 	//for changing username
-	private void broadcast(String message) throws IOException {
+	private void broadcast(ChatMessageType type, String message, String argument1, String argument2) throws IOException {
 		//we send a message to all the clientHandlers that are active
-		for (ClientHandler client : Server.getClients()) {
-			client.out.writeObject(Message.buildMessage(ChatMessageType.BroadMessage,"**"+message+"**"));
+		switch(type) {
 
-		}
-	}
+		case BroadConnect : case BroadDisconnect :
 
-	private void broadcast(String message, String clientUsername) throws IOException {
-		//we send a message to all the clientHandlers that are active
-		for (ClientHandler client : Server.getClients()) {
-			client.out.writeObject(Message.buildMessage(ChatMessageType.BroadMessage,"["+clientUsername+"] "+message));
+			for (ClientHandler client : Server.getClients()) {
+				client.out.writeObject(Message.buildMessage2(type,"**"+message+"**",argument1,argument2));
+			}
+			break;
+
+		case BroadUsernameChange :
+			for (ClientHandler client : Server.getClients()) {
+				if (client!=this) {
+					client.out.writeObject(Message.buildMessage2(type,"**"+message+"**",argument1,argument2));
+				}
+			}
+			break;
+
+		case BroadMessage :
+			for (ClientHandler client : Server.getClients()) {
+				client.out.writeObject(Message.buildMessage2(type,message,argument1,argument2));
+			}
 		}
 	}
 

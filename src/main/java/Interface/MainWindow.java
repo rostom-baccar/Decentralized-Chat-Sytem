@@ -20,7 +20,6 @@ public class MainWindow extends JPanel implements ActionListener {
 	private static JFrame mainFrame;
 	private static String username;
 	private static String newUsername;
-	private JButton refreshButton;
 	private JButton disconnectButton;
 	private JButton chatButton;
 	private JTextField broadField;
@@ -34,7 +33,7 @@ public class MainWindow extends JPanel implements ActionListener {
 
 
 
-	public MainWindow(String username, ObjectOutputStream out) {
+	public MainWindow(String username, ObjectOutputStream out) throws IOException {
 
 		MainWindow.username=username;
     	this.out=out;  	
@@ -46,7 +45,6 @@ public class MainWindow extends JPanel implements ActionListener {
 		broadArea = new JTextArea (5, 5);
 		newUsernameField = new JTextField (5);
 		groupChatLabel = new JLabel ("GROUP CHAT");
-		refreshButton = new JButton ("Refresh List");
 		disconnectButton = new JButton ("Disconnect");
 		chatButton = new JButton ("Chat");
 		sendButton = new JButton ("Send");
@@ -54,31 +52,28 @@ public class MainWindow extends JPanel implements ActionListener {
 		broadField = new JTextField (5);
 
 		changeUsernameButton.addActionListener(this);
-		refreshButton.addActionListener(this);
 		disconnectButton.addActionListener(this);
 		chatButton.addActionListener(this);
 		sendButton.addActionListener(this);
 
 		changeUsernameButton.setBounds (355, 20, 150, 25);
-		chatButton.setBounds (390, 175, 115, 25);
-		refreshButton.setBounds (390, 95, 115, 25);
+		chatButton.setBounds (390, 135, 115, 25);
 		disconnectButton.setBounds (390, 415, 115, 25);
 		sendButton.setBounds (390, 455, 115, 25);
 		broadField.setBounds (25, 455, 345, 25);
 		newUsernameField.setBounds (25, 20, 305, 25);
-		UsersList.setBounds (390, 135, 115, 25);
+		UsersList.setBounds (390, 95, 115, 25);
 		broadArea.setBounds (30, 95, 340, 340);
 		groupChatLabel.setBounds (160, 65, 100, 25);
 
 		mainFrame.add (changeUsernameButton);
 		mainFrame.add (chatButton);
-		mainFrame.add (refreshButton);
 		mainFrame.add (disconnectButton);
 		mainFrame.add (sendButton);
 		mainFrame.add (broadField);
 		mainFrame.add (newUsernameField);
-		mainFrame.add (getUsersList());
-		mainFrame.add (getBroadArea());
+		mainFrame.add (UsersList);
+		mainFrame.add (broadArea);
 		mainFrame.add (groupChatLabel);
 
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
@@ -88,6 +83,10 @@ public class MainWindow extends JPanel implements ActionListener {
 		mainFrame.setSize(540,540);
 		mainFrame.setVisible (true);
 
+		//When someone new connects we update their users list
+		out.writeObject(Message.buildTypeMessage(ChatMessageType.UsersList));
+
+		
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -97,14 +96,6 @@ public class MainWindow extends JPanel implements ActionListener {
 				out.writeObject(Message.buildTypeMessage(ChatMessageType.Disconnect));
 			} catch (IOException e1) {e1.printStackTrace();}
 			mainFrame.setVisible (false);
-		}
-
-		if(e.getSource() == refreshButton) {
-			UsersList.removeAllItems();
-			try {
-				out.writeObject(Message.buildTypeMessage(ChatMessageType.UsersList));
-			} catch (IOException e1) {e1.printStackTrace();}
-			
 		}
 
 		if(e.getSource() == sendButton) {
