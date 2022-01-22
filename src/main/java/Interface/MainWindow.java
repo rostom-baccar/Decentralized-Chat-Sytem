@@ -9,6 +9,7 @@ import javax.swing.*;
 import ClientSide.ServerResponseListener;
 import Model.ChatMessageType;
 import Model.Message;
+import Model.RemoteUser;
 
 public class MainWindow extends JPanel implements ActionListener {
 
@@ -43,6 +44,7 @@ public class MainWindow extends JPanel implements ActionListener {
 		mainFrame = new JFrame (username);
 		mainPanel = new JPanel(new GridLayout(10,10));
 		broadArea = new JTextArea (5, 5);
+		broadArea.setEditable(false);
 		newUsernameField = new JTextField (5);
 		groupChatLabel = new JLabel ("GROUP CHAT");
 		disconnectButton = new JButton ("Disconnect");

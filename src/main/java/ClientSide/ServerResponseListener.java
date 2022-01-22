@@ -8,6 +8,7 @@ import Interface.ChatWindow;
 import Interface.MainWindow;
 import Model.ChatMessageType;
 import Model.Message;
+import Model.RemoteUser;
 
 //Thread for each client which listens constantly to what the server broadcasts
 //we only need an input attribute since we won't be sending the server any messages with these threads
@@ -49,8 +50,12 @@ public class ServerResponseListener extends Thread{
 					break;
 
 				case UsersList:
+					
+					String username = serverResponse.getArgument1();
+					String ipAdress = serverResponse.getArgument2();
+//					MainWindow.getUsersList().addItem(username+" "+ipAdress);
+					MainWindow.getUsersList().addItem(username);
 
-					MainWindow.getUsersList().addItem(serverResponse.getContent());
 					break;
 
 				case BroadMessage : 
@@ -61,16 +66,22 @@ public class ServerResponseListener extends Thread{
 				case BroadConnect :
 
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
-					String connectedUser=serverResponse.getArgument1();
-					MainWindow.getUsersList().addItem(connectedUser);
+					String usernameConnected=serverResponse.getArgument1();
+					String ipAdressConnected=serverResponse.getArgument2();
+					RemoteUser connectedUser = new RemoteUser(usernameConnected,ipAdressConnected);
+//					MainWindow.getUsersList().addItem(usernameConnected+" "+ipAdressConnected);
+					MainWindow.getUsersList().addItem(usernameConnected);
 
 					break;
 
 				case BroadDisconnect :
 
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
-					String disconnectedUser=serverResponse.getArgument1();
-					MainWindow.getUsersList().removeItem(disconnectedUser);
+					String usernameDisconnected=serverResponse.getArgument1();
+					String ipAdressDisconnected=serverResponse.getArgument2();
+					RemoteUser disconnectedUser = new RemoteUser(usernameDisconnected,ipAdressDisconnected);
+//					MainWindow.getUsersList().removeItem(usernameDisconnected+" "+ipAdressDisconnected);
+					MainWindow.getUsersList().removeItem(usernameDisconnected);
 
 					break;
 
@@ -100,9 +111,9 @@ public class ServerResponseListener extends Thread{
 				case PrivateMessage :
 
 					String sender = serverResponse.getArgument1();
-					String message=serverResponse.getContent();
+					String privateMessage=serverResponse.getContent();
 					ChatWindow chatWindowTarget=findChatWindow(sender);
-					chatWindowTarget.getChatArea().append("["+sender+"] "+message+"\n");
+					chatWindowTarget.getChatArea().append("["+sender+"] "+privateMessage+"\n");
 					break;
 
 				case UsernameChange :

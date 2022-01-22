@@ -67,7 +67,7 @@ public class ClientHandler extends Thread {
 						this.canBeAdded=true;
 						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"You are connected"));
 						clientUsername=request.getContent(); //we save it so that each client handler knows its primary client
-						broadcast(ChatMessageType.BroadConnect,clientUsername+" just connected",clientUsername,null);
+						broadcast(ChatMessageType.BroadConnect,clientUsername+" just connected",clientUsername,ipAdress);
 						request = (Message) in.readObject();
 
 					}
@@ -75,7 +75,7 @@ public class ClientHandler extends Thread {
 
 				case Disconnect:
 
-					broadcast(ChatMessageType.BroadDisconnect,clientUsername+" disconnected",clientUsername,null);
+					broadcast(ChatMessageType.BroadDisconnect,clientUsername+" disconnected",clientUsername,ipAdress);
 					Server.getClients().remove(this);
 					this.canBeAdded=false;
 					this.clientSocket.close();
@@ -87,7 +87,7 @@ public class ClientHandler extends Thread {
 					for (ClientHandler client : Server.getClients()) {
 						if (client!=this) {
 							//we do not show the user's own nickname
-							out.writeObject(Message.buildMessage(ChatMessageType.UsersList,client.clientUsername));
+							out.writeObject(Message.buildMessage2(ChatMessageType.UsersList,null,client.clientUsername,this.ipAdress));
 							Thread.sleep(10);
 						}
 					}
