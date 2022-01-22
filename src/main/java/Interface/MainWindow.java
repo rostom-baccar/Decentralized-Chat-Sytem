@@ -30,7 +30,7 @@ public class MainWindow extends JPanel implements ActionListener {
 	private ChatWindow chatWindow=null;
 	private JButton changeUsernameButton;
 	private JTextField newUsernameField;
-	private ObjectOutputStream out;
+	private final ObjectOutputStream out;
 
 
 
