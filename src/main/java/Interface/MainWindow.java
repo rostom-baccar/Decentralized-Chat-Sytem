@@ -30,7 +30,7 @@ public class MainWindow extends JPanel implements ActionListener {
 	private ChatWindow chatWindow=null;
 	private JButton changeUsernameButton;
 	private JTextField newUsernameField;
-	private final ObjectOutputStream out;
+	private ObjectOutputStream out;
 
 
 
@@ -91,12 +91,12 @@ public class MainWindow extends JPanel implements ActionListener {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				try {
-					out.writeObject(Message.buildTypeMessage(ChatMessageType.Disconnect));
+					getMainWindow().out.writeObject(Message.buildTypeMessage(ChatMessageType.Disconnect));
 				} catch (IOException e1) {e1.printStackTrace();}			}
 		});
 
 		//When someone new connects we update their users list
-		out.writeObject(Message.buildTypeMessage(ChatMessageType.UsersList));
+		this.out.writeObject(Message.buildTypeMessage(ChatMessageType.UsersList));
 
 
 	}
@@ -158,6 +158,9 @@ public class MainWindow extends JPanel implements ActionListener {
 
 	//Getters and Setters
 
+	public MainWindow getMainWindow() {
+		return this;
+	}
 
 	public static ArrayList<ChatWindow> getChatWindows() {
 		return chatWindows;
