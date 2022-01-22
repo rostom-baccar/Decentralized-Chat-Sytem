@@ -1,9 +1,10 @@
 package Model;
+
 import java.io.Serializable;
+import Interface.ChatWindow;
 
 
 public class Message implements Serializable {
-
 
 	private static final long serialVersionUID = 1L;
 	private ChatMessageType type;
@@ -39,6 +40,7 @@ public class Message implements Serializable {
 		this.argument2=argument2;
 	}
 
+		
 	public static Message buildTypeMessage(ChatMessageType type) {
 		Message message = new Message(type);
 		return message;
@@ -58,6 +60,7 @@ public class Message implements Serializable {
 		Message message = new Message(type,content,argument1,argument2);
 		return message;
 	}
+	
 	
 	//Getters and Setters
 
@@ -93,9 +96,10 @@ public class Message implements Serializable {
 		this.argument2 = remoteUser;
 	}
 	
-	public static String toString2(Message msg) {
-		return "Message [type=" + msg.type + ", content=" + msg.content + ", argument1=" + msg.argument1 + ", argument2="
-				+ msg.argument2 + "]";
+	@Override
+	public String toString() {
+		return "Message [type=" + type + ", content=" + content + ", argument1=" + argument1 + ", argument2="
+				+ argument2 + "]";
 	}
 	
 }

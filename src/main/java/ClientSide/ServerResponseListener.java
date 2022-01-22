@@ -1,15 +1,10 @@
 package ClientSide;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import Interface.ChatWindow;
-import Interface.LoginWindow;
 import Interface.MainWindow;
 import Model.ChatMessageType;
 import Model.Message;
@@ -22,18 +17,16 @@ public class ServerResponseListener extends Thread{
 	private Socket clientSocket;
 	private static Message message=null;
 	private static boolean conversationInitiator=true;
+	private static ObjectInputStream in;
 
-	public ServerResponseListener(Socket clientSocket) throws IOException {
-		this.clientSocket=clientSocket;
-
+	public ServerResponseListener(ObjectInputStream in) throws IOException {
+		this.in=in;
 
 	}
 
 	public void run() {
 		try {
-			
-			InputStream inputStream = clientSocket.getInputStream();
-			ObjectInputStream in = new ObjectInputStream(inputStream);
+
 			Message serverResponse = (Message) in.readObject();
 			
 			while(serverResponse!=null) {
@@ -49,9 +42,6 @@ public class ServerResponseListener extends Thread{
 						Client.setUniqueUsername(true);
 					}
 					
-//					if (!serverResponse.getContent().equals("Someone is already connected with this username. Please choose another one")) {
-//						MainWindow.setUniqueNewUsername(true);
-//					}
 					else {
 						JOptionPane.showMessageDialog(null,serverResponse.getContent());
 					}
@@ -61,18 +51,16 @@ public class ServerResponseListener extends Thread{
 					MainWindow.getUsersList().addItem(serverResponse.getContent());
 					break;
 					
-					
 				case BroadMessage:
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
 					break;
 					
 				case Recipient:
-					conversationInitiator=false;
 					JOptionPane.showMessageDialog(null,serverResponse.getContent());
 					break;
 					
-					
 				case Initiator:
+					conversationInitiator=false;
 					JOptionPane.showMessageDialog(null,serverResponse.getContent());
 					break;
 					
@@ -82,14 +70,20 @@ public class ServerResponseListener extends Thread{
 					break;
 					
 				case PrivateMessage :
-					message=serverResponse;
-					message=null;
+					
+					String sender = serverResponse.getArgument1();
+					String message=serverResponse.getContent();
+					ChatWindow chatWindowTarget=findChatWindow(sender);
+					chatWindowTarget.getChatArea().append("["+sender+"] "+message+"\n");
+					break;
 					
 				case UsernameChange :
 					MainWindow.setUniqueNewUsername(true);
-					
+					break;
+						
 				default:
 					break;
+					
 				}
 				serverResponse = (Message) in.readObject();
 			} 
@@ -100,6 +94,17 @@ public class ServerResponseListener extends Thread{
 	}
 	
 	//Setters and Getters
+
+	private ChatWindow findChatWindow(String sender) {
+		ChatWindow chatWindowTarget = null;
+		for (ChatWindow chatWindow : MainWindow.getChatWindows()) {
+			if (chatWindow.getRemoteUser().equals(sender)) {
+				chatWindowTarget=chatWindow;
+				break;
+			}
+		}
+		return chatWindowTarget;
+	}
 
 	public static void setConversationInitiator(boolean conversationInitiator) {
 		ServerResponseListener.conversationInitiator = conversationInitiator;

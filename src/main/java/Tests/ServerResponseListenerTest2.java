@@ -7,11 +7,11 @@ import java.net.Socket;
 
 import Model.Message;
 
-public class ServerResponseListenerTest extends Thread{
+public class ServerResponseListenerTest2 extends Thread{
 
 	private Socket socket;
 
-	public ServerResponseListenerTest(Socket socket) {
+	public ServerResponseListenerTest2(Socket socket) {
 		this.socket = socket;
 
 	}

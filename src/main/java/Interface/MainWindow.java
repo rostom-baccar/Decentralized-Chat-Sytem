@@ -4,25 +4,22 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-
+import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.event.*;
-
 import ClientSide.ServerResponseListener;
 import Model.ChatMessageType;
 import Model.Message;
-import ServerSide.ClientHandler;
-import ServerSide.Server;
 
 public class MainWindow extends JPanel implements ActionListener {
 
+	private static ArrayList<ChatWindow> chatWindows = new ArrayList<ChatWindow>();
 	private static final long serialVersionUID = 1L;
+	private static boolean uniqueNewUsername=false;
 	private static JComboBox<String> UsersList = null;
 	private static JTextArea broadArea;
 	private static JFrame mainFrame;
 	private static String username;
 	private static String newUsername;
-	private static boolean uniqueNewUsername=false;
 	private JButton refreshButton;
 	private JButton disconnectButton;
 	private JButton chatButton;
@@ -35,11 +32,12 @@ public class MainWindow extends JPanel implements ActionListener {
 	private JTextField newUsernameField;
     private ObjectOutputStream out;
 
+
+
 	public MainWindow(String username, ObjectOutputStream out) {
 
-		this.username=username;
-    	this.out=out;
-    	System.out.println("[MainWindow] Username: "+this.username);
+		MainWindow.username=username;
+    	this.out=out;  	
 
 		String[] init= {};
 		UsersList = new JComboBox<String>(init);
@@ -106,6 +104,7 @@ public class MainWindow extends JPanel implements ActionListener {
 			try {
 				out.writeObject(Message.buildTypeMessage(ChatMessageType.UsersList));
 			} catch (IOException e1) {e1.printStackTrace();}
+			
 		}
 
 		if(e.getSource() == sendButton) {
@@ -119,6 +118,7 @@ public class MainWindow extends JPanel implements ActionListener {
 		if(e.getSource() == chatButton) {
 			String remoteUser=(String) UsersList.getSelectedItem();
 			chatWindow = new ChatWindow(username, remoteUser, out);
+			chatWindows.add(chatWindow);
 
 			if (ServerResponseListener.isConversationInitiator())
 			{
@@ -146,8 +146,8 @@ public class MainWindow extends JPanel implements ActionListener {
 			
 			if (uniqueNewUsername) {
 				mainFrame.setTitle(newUsername);
-				username=newUsername;
 				JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
+				username=newUsername;
 			}
 			uniqueNewUsername=false;
 		}
@@ -155,6 +155,10 @@ public class MainWindow extends JPanel implements ActionListener {
 
 	//Getters and Setters
 
+
+	public static ArrayList<ChatWindow> getChatWindows() {
+		return chatWindows;
+	}
 
 	public static void setUniqueNewUsername(boolean uniqueNewUsername) {
 		MainWindow.uniqueNewUsername = uniqueNewUsername;

@@ -1,15 +1,10 @@
-
 package Interface;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-
 import javax.swing.*;
-import javax.swing.event.*;
-
-import ClientSide.Client;
 import Model.ChatMessageType;
 import Model.Message;
 
@@ -85,9 +80,5 @@ public class LoginWindow extends JPanel implements ActionListener{
 	public static void setUsername(String username) {
 		LoginWindow.username = username;
 	}
-
-
-
-
 
 }

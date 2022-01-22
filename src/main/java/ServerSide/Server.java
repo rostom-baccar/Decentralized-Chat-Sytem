@@ -22,7 +22,6 @@ public class Server {
 			e.printStackTrace();
 		}
 		
-		
 		while(true) {
 			
 			//Server accepts all connections 

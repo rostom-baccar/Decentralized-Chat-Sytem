@@ -1,15 +1,13 @@
 package ClientSide;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
-import javax.swing.JOptionPane;
-
 import Interface.LoginWindow;
 import Interface.MainWindow;
-import Model.ChatMessageType;
 import Model.Message;
 
 public class Client {
@@ -35,44 +33,24 @@ public class Client {
 		//Sending
 		OutputStream outputStream = socket.getOutputStream();
 		ObjectOutputStream out = new ObjectOutputStream(outputStream);
+		
+		//Receiving
+		InputStream inputStream = socket.getInputStream();
+		ObjectInputStream in = new ObjectInputStream(inputStream);
 
 		//Receiving: we use a thread because we need a while loop in order to receive information, which is a blocking process
-		ServerResponseListener serverConnection = new ServerResponseListener(socket);
+		ServerResponseListener serverConnection = new ServerResponseListener(in);
 		serverConnection.start();
 
 		//Login Window
 		LoginWindow loginWindow = new LoginWindow(out);
 		
-		System.out.println("[Client] Checking if username is unique");
 		while (!uniqueUsername) {Thread.sleep(1);}
 		username=LoginWindow.getUsername();
-		System.out.println("[Client] Username: "+username);
 		LoginWindow.getLoginFrame().setVisible(false);
-		System.out.println("[Client] Username is unique");
 		MainWindow mainWindow = new MainWindow(username,out);
 		
-
-		while(true) {
-//
-//			while (query==null) {
-//				query=MainWindow.getQuery(); //Waiting for the user to send a query via the Main Window (through the buttons)
-//			}
-//
-//			System.out.println("[Client] Query type: "+query.getType());
-//			System.out.println("[Client] Query content: "+query.getContent());
-//			System.out.println("[Client] Query argument1: "+query.getArgument1());
-//			System.out.println("[Client] Query argument2: "+query.getArgument2());
-//			System.out.println();
-//
-//			out.writeObject(query);
-//			if (query.getType()==ChatMessageType.Disconnect) {
-//				MainWindow.getMainFrame().setVisible(false);
-//				JOptionPane.showMessageDialog(null,"You are disconnected");
-//			}
-//			query=null;
-		}
 	}
-
 
 	//Setters and Getters
 

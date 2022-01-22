@@ -20,6 +20,9 @@ public class ClientTest {
 		ServerResponseListenerTest serverConnection = new ServerResponseListenerTest(socket);
 		serverConnection.start();
 		
+//		ServerResponseListenerTest2 serverConnection2 = new ServerResponseListenerTest2(socket);
+//		serverConnection2.start();
+		
 		
 		Scanner s = new Scanner(System.in);
 		String msg=s.nextLine();

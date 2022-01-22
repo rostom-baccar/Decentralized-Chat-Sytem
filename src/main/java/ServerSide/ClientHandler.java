@@ -1,17 +1,12 @@
 package ServerSide;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.ArrayList;
-
 import Model.ChatMessageType;
 import Model.Message;
 
@@ -28,12 +23,13 @@ public class ClientHandler extends Thread {
 	private boolean canBeAdded=false;
 	private String ipAdress;
 
-
 	public ClientHandler(Socket clientSocket) throws IOException{
 		this.clientSocket=clientSocket;
 		this.ipAdress=InetAddress.getLocalHost().getHostAddress();
+		
 		InputStream inputStream = clientSocket.getInputStream();
 		in = new ObjectInputStream(inputStream);
+		
 		OutputStream outputStream = clientSocket.getOutputStream();
 		out = new ObjectOutputStream(outputStream);
 	}
@@ -48,6 +44,7 @@ public class ClientHandler extends Thread {
 		catch (IOException e2) {e2.printStackTrace();}
 
 		try {
+			
 			while(request!=null) {
 				
 				System.out.println("[ClientHandler] Query type: "+request.getType());
@@ -57,6 +54,7 @@ public class ClientHandler extends Thread {
 				System.out.println();
 
 				Message responseToClient;
+				
 				switch(request.getType()) {
 
 				case Connect:
@@ -75,6 +73,7 @@ public class ClientHandler extends Thread {
 					break;
 
 				case Disconnect:
+					
 					broadcast(clientUsername+" disconnected");
 					Server.getClients().remove(this);
 					this.canBeAdded=false;
@@ -83,7 +82,7 @@ public class ClientHandler extends Thread {
 					break;
 
 				case UsersList:
-
+					
 					for (ClientHandler client : Server.getClients()) {
 						if (client!=this) {
 							//we do not show the user's own nickname
@@ -96,7 +95,6 @@ public class ClientHandler extends Thread {
 
 				case PrivateMessage:
 
-					
 					String remoteUser=request.getArgument2();
 					if (among(remoteUser)) {
 						ClientHandler remoteClientHandler=findThread(remoteUser);

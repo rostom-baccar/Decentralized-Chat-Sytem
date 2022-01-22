@@ -18,7 +18,6 @@ public class UsernameHandler extends Thread{
 			} catch (InterruptedException e){e.printStackTrace();
 			}
 		}
-		System.out.println("Username "+clientThread.getClientUsername()+" can be added");
 		Server.getClients().add(clientThread);
 	}
 }
