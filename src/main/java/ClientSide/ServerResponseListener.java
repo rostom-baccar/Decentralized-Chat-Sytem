@@ -8,7 +8,6 @@ import Interface.ChatWindow;
 import Interface.MainWindow;
 import Model.ChatMessageType;
 import Model.Message;
-import ServerSide.ClientHandler;
 
 //Thread for each client which listens constantly to what the server broadcasts
 //we only need an input attribute since we won't be sending the server any messages with these threads
@@ -95,12 +94,6 @@ public class ServerResponseListener extends Thread{
 				case Initiator:
 
 					conversationInitiator=false;
-					JOptionPane.showMessageDialog(null,serverResponse.getContent());
-					break;
-
-
-				case UserInexistant	:
-
 					JOptionPane.showMessageDialog(null,serverResponse.getContent());
 					break;
 

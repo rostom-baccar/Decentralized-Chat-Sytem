@@ -29,14 +29,14 @@ public class MainWindow extends JPanel implements ActionListener {
 	private ChatWindow chatWindow=null;
 	private JButton changeUsernameButton;
 	private JTextField newUsernameField;
-    private ObjectOutputStream out;
+	private ObjectOutputStream out;
 
 
 
 	public MainWindow(String username, ObjectOutputStream out) throws IOException {
 
 		MainWindow.username=username;
-    	this.out=out;  	
+		this.out=out;  	
 
 		String[] init= {};
 		UsersList = new JComboBox<String>(init);
@@ -83,10 +83,20 @@ public class MainWindow extends JPanel implements ActionListener {
 		mainFrame.setSize(540,540);
 		mainFrame.setVisible (true);
 
+		
+		//When the window is close a disconnect query is sent 
+		mainFrame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				try {
+					out.writeObject(Message.buildTypeMessage(ChatMessageType.Disconnect));
+				} catch (IOException e1) {e1.printStackTrace();}			}
+		});
+
 		//When someone new connects we update their users list
 		out.writeObject(Message.buildTypeMessage(ChatMessageType.UsersList));
 
-		
+
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -130,11 +140,11 @@ public class MainWindow extends JPanel implements ActionListener {
 			try {
 				out.writeObject(Message.buildMessage2(ChatMessageType.UsernameChange,null,username,newUsername));
 			} catch (IOException e1) {e1.printStackTrace();}
-			
+
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e1) {e1.printStackTrace();}
-			
+
 			if (uniqueNewUsername) {
 				mainFrame.setTitle(newUsername);
 				JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);

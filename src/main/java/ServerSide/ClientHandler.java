@@ -97,16 +97,10 @@ public class ClientHandler extends Thread {
 				case PrivateMessage:
 
 					String remoteUser=request.getArgument2();
-					if (among(remoteUser)) {
-						ClientHandler remoteClientHandler=findThread(remoteUser);
-						remoteClientHandler.out.writeObject(request);
-						request = (Message) in.readObject();
+					ClientHandler remoteClientHandler=findThread(remoteUser);
+					remoteClientHandler.out.writeObject(request);
+					request = (Message) in.readObject();
 
-					}
-					else {
-						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Sorry, this user is not connected"));
-						request = (Message) in.readObject();
-					}
 					break;
 
 				case BroadMessage:
@@ -227,18 +221,6 @@ public class ClientHandler extends Thread {
 		}
 		return unique;
 	}
-
-	public static boolean among(String remoteUser) {
-		boolean contain=false;
-		for (ClientHandler client : Server.getClients()) {
-			if (remoteUser.equals(client.clientUsername)){
-				contain=true;
-			}
-		}
-		return contain;
-	}
-
-
 
 	//Setters and Getters
 
