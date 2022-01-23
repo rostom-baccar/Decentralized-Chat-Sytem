@@ -67,7 +67,7 @@ public class ClientHandler extends Thread {
 						this.canBeAdded=true;
 						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"You are connected"));
 						clientUsername=request.getContent(); //we save it so that each client handler knows its primary client
-						broadcast(ChatMessageType.BroadConnect,clientUsername+" just connected",clientUsername,ipAdress);
+						broadcast(ChatMessageType.BroadConnect,clientUsername+" just connected",clientUsername,ipAdress,null);
 						request = (Message) in.readObject();
 
 					}
@@ -75,7 +75,7 @@ public class ClientHandler extends Thread {
 
 				case Disconnect:
 
-					broadcast(ChatMessageType.BroadDisconnect,clientUsername+" disconnected",clientUsername,ipAdress);
+					broadcast(ChatMessageType.BroadDisconnect,clientUsername+" disconnected",clientUsername,ipAdress,null);
 					Server.getClients().remove(this);
 					this.canBeAdded=false;
 					this.clientSocket.close();
@@ -105,7 +105,7 @@ public class ClientHandler extends Thread {
 
 				case BroadMessage:
 
-					broadcast(ChatMessageType.BroadMessage,"["+clientUsername+"] "+request.getContent(),null,null);
+					broadcast(ChatMessageType.BroadMessage,"["+clientUsername+"] "+request.getContent(),null,null,null);
 					request = (Message) in.readObject();
 					break;
 
@@ -145,7 +145,7 @@ public class ClientHandler extends Thread {
 						ClientHandler targetThread=findThread(oldUsername);
 						if (targetThread!=null) {
 							targetThread.setClientUsername(newUsername);
-							broadcast(ChatMessageType.BroadUsernameChange,oldUsername+" has changed their username to "+newUsername,oldUsername,newUsername);
+							broadcast(ChatMessageType.BroadUsernameChange,oldUsername+" has changed their username to "+newUsername,oldUsername,newUsername,this.ipAdress);
 							out.writeObject(Message.buildTypeMessage(ChatMessageType.UsernameChange));
 						}
 					}
@@ -185,7 +185,7 @@ public class ClientHandler extends Thread {
 	}
 
 	//for changing username
-	private void broadcast(ChatMessageType type, String message, String argument1, String argument2) throws IOException {
+	private void broadcast(ChatMessageType type, String message, String argument1, String argument2, String argument3) throws IOException {
 		//we send a message to all the clientHandlers that are active
 		switch(type) {
 
@@ -198,7 +198,7 @@ public class ClientHandler extends Thread {
 
 		case BroadUsernameChange :
 			for (ClientHandler client : Server.getClients()) {
-					client.out.writeObject(Message.buildMessage2(type,"**"+message+"**",argument1,argument2));
+					client.out.writeObject(Message.buildMessage3(type,"**"+message+"**",argument1,argument2, argument3));
 			}
 			break;
 

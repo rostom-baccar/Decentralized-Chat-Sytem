@@ -11,12 +11,14 @@ public class Message implements Serializable {
 	private String content;
 	private String argument1;
 	private String argument2;
+	private String argument3;
 
 	public Message(ChatMessageType type) {
 		this.type = type;
 		this.content = null;
 		this.argument1=null;
 		this.argument2=null;
+		this.argument3=null;
 	}
 
 	public Message(ChatMessageType type, String content) {
@@ -24,6 +26,7 @@ public class Message implements Serializable {
 		this.content = content;
 		this.argument1=null;
 		this.argument2=null;
+		this.argument3=null;
 	}
 	
 	public Message(ChatMessageType type, String content, String argument1) {
@@ -31,6 +34,7 @@ public class Message implements Serializable {
 		this.content = content;
 		this.argument1=argument1;
 		this.argument2=null;
+		this.argument3=null;
 	}
 	
 	public Message(ChatMessageType type, String content, String argument1, String argument2) {
@@ -38,8 +42,16 @@ public class Message implements Serializable {
 		this.content = content;
 		this.argument1=argument1;
 		this.argument2=argument2;
+		this.argument3=null;
 	}
 
+	public Message(ChatMessageType type, String content, String argument1, String argument2, String argument3) {
+		this.type = type;
+		this.content = content;
+		this.argument1=argument1;
+		this.argument2=argument2;
+		this.argument3=argument3;
+	}
 		
 	public static Message buildTypeMessage(ChatMessageType type) {
 		Message message = new Message(type);
@@ -61,6 +73,10 @@ public class Message implements Serializable {
 		return message;
 	}
 	
+	public static Message buildMessage3(ChatMessageType type, String content, String argument1, String argument2, String argument3) {
+		Message message = new Message(type,content,argument1,argument2,argument3);
+		return message;
+	}
 	
 	//Getters and Setters
 
@@ -95,6 +111,15 @@ public class Message implements Serializable {
 	public void setArgument2(String remoteUser) {
 		this.argument2 = remoteUser;
 	}
+	
+	public String getArgument3() {
+		return argument3;
+	}
+
+	public void setArgument3(String argument3) {
+		this.argument3 = argument3;
+	}
+
 	
 	@Override
 	public String toString() {

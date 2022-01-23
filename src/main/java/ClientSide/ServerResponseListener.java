@@ -69,8 +69,8 @@ public class ServerResponseListener extends Thread{
 
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
 					String usernameConnected=serverResponse.getArgument1();
-					String ipAdressConnected=serverResponse.getArgument2();
-					RemoteUser connectedRemoteUser = new RemoteUser(usernameConnected,ipAdressConnected);
+					String ipAddressConnected=serverResponse.getArgument2();
+					RemoteUser connectedRemoteUser = new RemoteUser(usernameConnected,ipAddressConnected);
 					MainWindow.getObjectUsersList().add(connectedRemoteUser);
 //					MainWindow.getUsersList().addItem(usernameConnected+" "+ipAdressConnected);
 					MainWindow.getStringUsersList().addItem(usernameConnected);
@@ -81,8 +81,8 @@ public class ServerResponseListener extends Thread{
 
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
 					String usernameDisconnected=serverResponse.getArgument1();
-					String ipAdressDisconnected=serverResponse.getArgument2();
-					RemoteUser disconnectedRemoteUser = new RemoteUser(usernameDisconnected,ipAdressDisconnected);
+					String ipAddressDisconnected=serverResponse.getArgument2();
+					RemoteUser disconnectedRemoteUser = new RemoteUser(usernameDisconnected,ipAddressDisconnected);
 					MainWindow.getObjectUsersList().remove(disconnectedRemoteUser);
 //					MainWindow.getUsersList().removeItem(usernameDisconnected+" "+ipAdressDisconnected);
 					MainWindow.getStringUsersList().removeItem(usernameDisconnected);
@@ -94,8 +94,14 @@ public class ServerResponseListener extends Thread{
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
 					String oldUsername=serverResponse.getArgument1();
 					String newUsername=serverResponse.getArgument2();
+					String ipAddress=serverResponse.getArgument3();
+					RemoteUser oldRemoteUser = new RemoteUser(oldUsername,ipAddress);
+					RemoteUser newRemoteUser = new RemoteUser(newUsername,ipAddress);
 					MainWindow.getStringUsersList().removeItem(oldUsername);
 					MainWindow.getStringUsersList().addItem(newUsername);
+					MainWindow.getObjectUsersList().remove(oldRemoteUser);
+					MainWindow.getObjectUsersList().add(newRemoteUser);
+
 
 					break;
 

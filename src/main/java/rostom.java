@@ -78,8 +78,8 @@ public class rostom {
 		scrollPane.setBounds(20, 73, 328, 317);
 		mainFrame.getContentPane().add(scrollPane);
 		
-		JTextArea broadArea = new JTextArea();
-		scrollPane.setViewportView(broadArea);
+		JTextArea textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
 		
 		broadField = new JTextField();
 		broadField.setColumns(10);
@@ -95,7 +95,7 @@ public class rostom {
 		mainFrame.getContentPane().add(disconnectButton);
 		
 		JLabel groupChatLabel = new JLabel("GROUP CHAT");
-		groupChatLabel.setBounds(140, 48, 112, 14);
+		groupChatLabel.setBounds(140, 48, 106, 14);
 		mainFrame.getContentPane().add(groupChatLabel);
 		
 		changeUsernameButton.addActionListener(new ActionListener() {
