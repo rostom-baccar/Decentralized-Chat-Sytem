@@ -82,7 +82,7 @@ public class ClientHandler extends Thread {
 					request = (Message) in.readObject();
 					break;
 
-				case UsersList:
+				case UsersList: 
 
 					for (ClientHandler client : Server.getClients()) {
 						if (client!=this) {

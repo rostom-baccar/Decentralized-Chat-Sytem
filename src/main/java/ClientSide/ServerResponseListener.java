@@ -8,6 +8,7 @@ import Interface.ChatWindow;
 import Interface.MainWindow;
 import Model.ChatMessageType;
 import Model.Message;
+import Model.RemoteUser;
 
 //Thread for each client which listens constantly to what the server broadcasts
 //we only need an input attribute since we won't be sending the server any messages with these threads
@@ -52,8 +53,10 @@ public class ServerResponseListener extends Thread{
 					
 					String username = serverResponse.getArgument1();
 					String ipAdress = serverResponse.getArgument2();
+					RemoteUser remoteUser = new RemoteUser(username,ipAdress);
 //					MainWindow.getUsersList().addItem(username+" "+ipAdress);
-					MainWindow.getUsersList().addItem(username);
+					MainWindow.getStringUsersList().addItem(username);
+					MainWindow.getObjectUsersList().add(remoteUser);
 
 					break;
 
@@ -67,8 +70,10 @@ public class ServerResponseListener extends Thread{
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
 					String usernameConnected=serverResponse.getArgument1();
 					String ipAdressConnected=serverResponse.getArgument2();
+					RemoteUser connectedRemoteUser = new RemoteUser(usernameConnected,ipAdressConnected);
+					MainWindow.getObjectUsersList().add(connectedRemoteUser);
 //					MainWindow.getUsersList().addItem(usernameConnected+" "+ipAdressConnected);
-					MainWindow.getUsersList().addItem(usernameConnected);
+					MainWindow.getStringUsersList().addItem(usernameConnected);
 
 					break;
 
@@ -77,8 +82,10 @@ public class ServerResponseListener extends Thread{
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
 					String usernameDisconnected=serverResponse.getArgument1();
 					String ipAdressDisconnected=serverResponse.getArgument2();
+					RemoteUser disconnectedRemoteUser = new RemoteUser(usernameDisconnected,ipAdressDisconnected);
+					MainWindow.getObjectUsersList().remove(disconnectedRemoteUser);
 //					MainWindow.getUsersList().removeItem(usernameDisconnected+" "+ipAdressDisconnected);
-					MainWindow.getUsersList().removeItem(usernameDisconnected);
+					MainWindow.getStringUsersList().removeItem(usernameDisconnected);
 
 					break;
 
@@ -87,10 +94,8 @@ public class ServerResponseListener extends Thread{
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
 					String oldUsername=serverResponse.getArgument1();
 					String newUsername=serverResponse.getArgument2();
-					MainWindow.getUsersList().removeItem(oldUsername);
-					MainWindow.getUsersList().addItem(newUsername);
-
-
+					MainWindow.getStringUsersList().removeItem(oldUsername);
+					MainWindow.getStringUsersList().addItem(newUsername);
 
 					break;
 

@@ -1,88 +1,113 @@
 package Interface;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+
 import ClientSide.ServerResponseListener;
+import Interface.ChatWindow;
 import Model.ChatMessageType;
 import Model.Message;
+import Model.RemoteUser;
 
-public class MainWindow extends JPanel implements ActionListener {
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
-	private static ArrayList<ChatWindow> chatWindows = new ArrayList<ChatWindow>();
-	private static final long serialVersionUID = 1L;
-	private static boolean uniqueNewUsername=false;
-	private static JComboBox<String> UsersList = null;
-	private static JTextArea broadArea;
+public class MainWindow {
+
 	private static JFrame mainFrame;
+	private JTextField newUsernameField;
+	private JTextField broadField;
+	private static boolean uniqueNewUsername=false;
+	private static ArrayList<ChatWindow> chatWindows = new ArrayList<ChatWindow>();
 	private static String username;
 	private static String newUsername;
-	private JButton disconnectButton;
-	private JButton chatButton;
-	private JTextField broadField;
-	private JButton sendButton;
-	private JLabel groupChatLabel;
-	private JPanel mainPanel;
 	private ChatWindow chatWindow=null;
-	private JButton changeUsernameButton;
-	private JTextField newUsernameField;
 	private ObjectOutputStream out;
+	private static String[] stringInit= {};
+	private static ArrayList<RemoteUser> ObjectUsersList = new ArrayList<RemoteUser>();
+	private static JComboBox stringUsersList = new JComboBox<String>(stringInit);
+	private static JTextArea broadArea;
 
+	public static void main(String[] args) throws IOException {
+		MainWindow window = new MainWindow("rostom",null);
+	}
+
+	/**
+	 * Create the application.
+	 */
 	public MainWindow(String username, ObjectOutputStream out) throws IOException {
-
 		MainWindow.username=username;
-		this.out=out;  	
+		this.out=out;
+		initialize();
+	}
 
-		String[] init= {};
-		UsersList = new JComboBox<String>(init);
-		mainFrame = new JFrame (username);
-		mainPanel = new JPanel(new GridLayout(10,10));
-		broadArea = new JTextArea (5, 5);
-		broadArea.setEditable(false);
-		newUsernameField = new JTextField (5);
-		groupChatLabel = new JLabel ("GROUP CHAT");
-		disconnectButton = new JButton ("Disconnect");
-		chatButton = new JButton ("Chat");
-		sendButton = new JButton ("Send");
-		changeUsernameButton = new JButton ("Change Username");
-		broadField = new JTextField (5);
+	/**
+	 * Initialize the contents of the frame.
+	 * @throws IOException 
+	 */
+	private void initialize() throws IOException {
+		mainFrame = new JFrame(username);
+		mainFrame.setBounds(100, 100, 511, 474);
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.getContentPane().setLayout(null);
 
-		changeUsernameButton.addActionListener(this);
-		disconnectButton.addActionListener(this);
-		chatButton.addActionListener(this);
-		sendButton.addActionListener(this);
+		JButton changeUsernameButton = new JButton("Change Username");
 
-		changeUsernameButton.setBounds (355, 20, 150, 25);
-		chatButton.setBounds (390, 135, 115, 25);
-		disconnectButton.setBounds (390, 415, 115, 25);
-		sendButton.setBounds (390, 455, 115, 25);
-		broadField.setBounds (25, 455, 345, 25);
-		newUsernameField.setBounds (25, 20, 305, 25);
-		UsersList.setBounds (390, 95, 115, 25);
-		broadArea.setBounds (30, 95, 340, 340);
-		groupChatLabel.setBounds (160, 65, 100, 25);
+		changeUsernameButton.setBounds(338, 12, 151, 25);
+		mainFrame.getContentPane().add(changeUsernameButton);
 
-		mainFrame.add (changeUsernameButton);
-		mainFrame.add (chatButton);
-		mainFrame.add (disconnectButton);
-		mainFrame.add (sendButton);
-		mainFrame.add (broadField);
-		mainFrame.add (newUsernameField);
-		mainFrame.add (UsersList);
-		mainFrame.add (broadArea);
-		mainFrame.add (groupChatLabel);
+		newUsernameField = new JTextField();
+		newUsernameField.setBounds(20, 12, 308, 25);
+		mainFrame.getContentPane().add(newUsernameField);
+		newUsernameField.setColumns(10);
 
-		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-		mainFrame.setSize(new Dimension(2000, 500));
-		mainFrame.getContentPane().add (mainPanel, BorderLayout.CENTER);
-		mainFrame.pack();
-		mainFrame.setSize(540,540);
-		mainFrame.setVisible (true);
 
-		
+		stringUsersList.setBounds(358, 73, 131, 25);
+		mainFrame.getContentPane().add(stringUsersList);
+
+		JButton chatButton = new JButton("Chat");
+
+		chatButton.setBounds(358, 109, 131, 25);
+		mainFrame.getContentPane().add(chatButton);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(20, 73, 328, 317);
+		mainFrame.getContentPane().add(scrollPane);
+
+		broadArea = new JTextArea();
+		scrollPane.setViewportView(broadArea);
+
+		broadField = new JTextField();
+		broadField.setColumns(10);
+		broadField.setBounds(20, 401, 328, 25);
+		mainFrame.getContentPane().add(broadField);
+
+		JButton sendButton = new JButton("Send");
+		sendButton.setBounds(358, 401, 131, 25);
+		mainFrame.getContentPane().add(sendButton);
+
+		JButton disconnectButton = new JButton("Disconnect");
+		disconnectButton.setBounds(358, 366, 131, 25);
+		mainFrame.getContentPane().add(disconnectButton);
+
+		JLabel groupChatLabel = new JLabel("GROUP CHAT");
+		groupChatLabel.setBounds(140, 48, 112, 14);
+		mainFrame.getContentPane().add(groupChatLabel);
+		mainFrame.setVisible(true);
+
 		//When the window is close a disconnect query is sent 
 		mainFrame.addWindowListener(new WindowAdapter() {
 			@Override
@@ -95,65 +120,86 @@ public class MainWindow extends JPanel implements ActionListener {
 		//When someone new connects we update their users list
 		this.out.writeObject(Message.buildTypeMessage(ChatMessageType.UsersList));
 
+		changeUsernameButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				newUsername = newUsernameField.getText();
+				try {
+					out.writeObject(Message.buildMessage2(ChatMessageType.UsernameChange,null,username,newUsername));
+				} catch (IOException e1) {e1.printStackTrace();}
+
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e1) {e1.printStackTrace();}
+
+				if (uniqueNewUsername) {
+					mainFrame.setTitle(newUsername);
+					JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
+					username=newUsername;
+				}
+				uniqueNewUsername=false;
+			}
+		});
+
+		chatButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String remoteUser=(String) stringUsersList.getSelectedItem();
+				RemoteUser targetRemoteUser = findRemoteUser(remoteUser);
+//				String ipAdress = targetRemoteUser.getIpAdress();
+				chatWindow = new ChatWindow(username, remoteUser, out);
+				chatWindows.add(chatWindow);
+
+				if (ServerResponseListener.isConversationInitiator())
+				{
+					try {
+						out.writeObject(Message.buildMessage2(ChatMessageType.Initiator,null,username,remoteUser));
+					} catch (IOException e1) {e1.printStackTrace();}
+				}
+				else {
+					try {
+						out.writeObject(Message.buildMessage2(ChatMessageType.Recipient,null,username,remoteUser));
+					} catch (IOException e1) {e1.printStackTrace();}
+				}
+				ServerResponseListener.setConversationInitiator(true);
+			}
+
+		});
+
+		disconnectButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					out.writeObject(Message.buildTypeMessage(ChatMessageType.Disconnect));
+				} catch (IOException e1) {e1.printStackTrace();}
+				mainFrame.setVisible (false);
+			}
+		});
+
+		sendButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String message = broadField.getText();
+				try {
+					out.writeObject(Message.buildMessage(ChatMessageType.BroadMessage,message));
+				} catch (IOException e1) {e1.printStackTrace();}
+			}
+		});
 
 	}
 
-	public void actionPerformed(ActionEvent e) {
-
-		if(e.getSource() == disconnectButton) {
-			try {
-				out.writeObject(Message.buildTypeMessage(ChatMessageType.Disconnect));
-			} catch (IOException e1) {e1.printStackTrace();}
-			mainFrame.setVisible (false);
-		}
-
-		if(e.getSource() == sendButton) {
-			String message = broadField.getText();
-			try {
-				out.writeObject(Message.buildMessage(ChatMessageType.BroadMessage,message));
-			} catch (IOException e1) {e1.printStackTrace();}
-
-		}
-
-		if(e.getSource() == chatButton) {
-			String remoteUser=(String) UsersList.getSelectedItem();
-			chatWindow = new ChatWindow(username, remoteUser, out);
-			chatWindows.add(chatWindow);
-
-			if (ServerResponseListener.isConversationInitiator())
-			{
-				try {
-					out.writeObject(Message.buildMessage2(ChatMessageType.Initiator,null,username,remoteUser));
-				} catch (IOException e1) {e1.printStackTrace();}
+	private RemoteUser findRemoteUser(String remoteUser) {
+		RemoteUser target = null;
+		for (RemoteUser it : ObjectUsersList) {
+			if (it.getUsername().equals(remoteUser)) {
+				target = it;
+				break;
 			}
-			else {
-				try {
-					out.writeObject(Message.buildMessage2(ChatMessageType.Recipient,null,username,remoteUser));
-				} catch (IOException e1) {e1.printStackTrace();}
-			}
-			ServerResponseListener.setConversationInitiator(true);
 		}
-
-		if(e.getSource() == changeUsernameButton) {
-			newUsername = newUsernameField.getText();
-			try {
-				out.writeObject(Message.buildMessage2(ChatMessageType.UsernameChange,null,username,newUsername));
-			} catch (IOException e1) {e1.printStackTrace();}
-
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e1) {e1.printStackTrace();}
-
-			if (uniqueNewUsername) {
-				mainFrame.setTitle(newUsername);
-				JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
-				username=newUsername;
-			}
-			uniqueNewUsername=false;
-		}
+		return target;
 	}
 
 	//Getters and Setters
+
+	public static ArrayList<RemoteUser> getObjectUsersList() {
+		return ObjectUsersList;
+	}
 
 	public MainWindow getMainWindow() {
 		return this;
@@ -167,8 +213,8 @@ public class MainWindow extends JPanel implements ActionListener {
 		MainWindow.uniqueNewUsername = uniqueNewUsername;
 	}
 
-	public static JComboBox<String> getUsersList() {
-		return UsersList;
+	public static JComboBox<String> getStringUsersList() {
+		return stringUsersList;
 	}
 
 	public static JTextArea getBroadArea() {
