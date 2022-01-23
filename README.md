@@ -39,8 +39,3 @@ Professional Decentralized Chat System using Socket Programming
   - wants to chat with you
   - the person you want to chat with opens a Chat Window with you
 
-## Limitations / Aspects to improve
-- When a user changes their username while chatting with someone, they'll have to close that Chat Window and re-open it again with the same person in order to send / recieve messages from there on
-- The Dialog Boxes that notify the user that someone wants to chat with them or that someone has opened a Chat Window with them only work when no other user attemps to connect with you while connecting with someone
-- Database in the works
-- Other bugs that are yet to be discovered
