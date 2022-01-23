@@ -7,6 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+
 import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.JLabel;
 
 public class ChatWindow {
-
+  
 	private JFrame chatFrame;
 	private ObjectOutputStream out;
 	private JTextField chatField;
@@ -30,11 +31,6 @@ public class ChatWindow {
 	private String ipAdress;
 	JTextArea chatArea;
 
-
-
-	/**
-	 * Create the application.
-	 */
 	public ChatWindow(String username, String remoteUser, String ipAdress, ObjectOutputStream out) {
 		this.username=username;
 		this.remoteUser=remoteUser;
@@ -43,9 +39,6 @@ public class ChatWindow {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		chatFrame = new JFrame(username+" - "+remoteUser);
 		chatFrame.setBounds(100, 100, 326, 393);
@@ -99,7 +92,6 @@ public class ChatWindow {
 					
 					try {
 						out.writeObject(Message.buildMessage2(ChatMessageType.PrivateMessage,message,username,remoteUser));
-
 					} catch (IOException e1) {e1.printStackTrace();}
 				}
 			}

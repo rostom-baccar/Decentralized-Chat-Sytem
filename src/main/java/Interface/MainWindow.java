@@ -14,14 +14,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
-
 import ClientSide.Client;
 import ClientSide.ServerResponseListener;
 import Interface.ChatWindow;
 import Model.ChatMessageType;
 import Model.Message;
 import Model.RemoteUser;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
@@ -168,7 +166,7 @@ public class MainWindow {
 					ee.printStackTrace();
 					
 				}
-				
+
 				if (ServerResponseListener.isConversationInitiator())
 				{
 					try {

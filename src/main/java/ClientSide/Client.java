@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-
 import Database.Database;
 import Interface.LoginWindow;
 import Interface.MainWindow;
@@ -21,7 +20,7 @@ public class Client {
 	private static Message query;
 	private static Socket socket;
 	private static Database clientdb;
-	
+
 	public Client(String username) {
 		Client.username=username;
 	}
@@ -48,9 +47,8 @@ public class Client {
 		//Login Window
 		LoginWindow loginWindow = new LoginWindow(out);
 		
-		//Database creation
 		clientdb = new Database ();
-		
+
 		while (!uniqueUsername) {Thread.sleep(1);}
 		username=LoginWindow.getUsername();
 		LoginWindow.getLoginFrame().setVisible(false);
@@ -71,8 +69,8 @@ public class Client {
 	public static Socket getSocket() {
 		return socket;
 	}
-	
 	public static Database getClientdb() {
 		return clientdb;
 	}
+
 }
