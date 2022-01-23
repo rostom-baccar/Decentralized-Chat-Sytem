@@ -9,7 +9,6 @@ import javax.swing.*;
 import ClientSide.ServerResponseListener;
 import Model.ChatMessageType;
 import Model.Message;
-import Model.RemoteUser;
 
 public class MainWindow extends JPanel implements ActionListener {
 
@@ -31,8 +30,6 @@ public class MainWindow extends JPanel implements ActionListener {
 	private JButton changeUsernameButton;
 	private JTextField newUsernameField;
 	private ObjectOutputStream out;
-
-
 
 	public MainWindow(String username, ObjectOutputStream out) throws IOException {
 

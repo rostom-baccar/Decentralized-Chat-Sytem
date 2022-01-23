@@ -8,7 +8,6 @@ import Interface.ChatWindow;
 import Interface.MainWindow;
 import Model.ChatMessageType;
 import Model.Message;
-import Model.RemoteUser;
 
 //Thread for each client which listens constantly to what the server broadcasts
 //we only need an input attribute since we won't be sending the server any messages with these threads
@@ -68,7 +67,6 @@ public class ServerResponseListener extends Thread{
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
 					String usernameConnected=serverResponse.getArgument1();
 					String ipAdressConnected=serverResponse.getArgument2();
-					RemoteUser connectedUser = new RemoteUser(usernameConnected,ipAdressConnected);
 //					MainWindow.getUsersList().addItem(usernameConnected+" "+ipAdressConnected);
 					MainWindow.getUsersList().addItem(usernameConnected);
 
@@ -79,7 +77,6 @@ public class ServerResponseListener extends Thread{
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
 					String usernameDisconnected=serverResponse.getArgument1();
 					String ipAdressDisconnected=serverResponse.getArgument2();
-					RemoteUser disconnectedUser = new RemoteUser(usernameDisconnected,ipAdressDisconnected);
 //					MainWindow.getUsersList().removeItem(usernameDisconnected+" "+ipAdressDisconnected);
 					MainWindow.getUsersList().removeItem(usernameDisconnected);
 

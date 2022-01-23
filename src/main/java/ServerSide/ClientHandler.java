@@ -198,9 +198,7 @@ public class ClientHandler extends Thread {
 
 		case BroadUsernameChange :
 			for (ClientHandler client : Server.getClients()) {
-				if (client!=this) {
 					client.out.writeObject(Message.buildMessage2(type,"**"+message+"**",argument1,argument2));
-				}
 			}
 			break;
 
