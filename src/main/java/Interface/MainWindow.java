@@ -144,7 +144,7 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 				String remoteUser=(String) stringUsersList.getSelectedItem();
 				RemoteUser targetRemoteUser = findRemoteUser(remoteUser);
-//				String ipAdress = targetRemoteUser.getIpAdress();
+				String ipAdress = targetRemoteUser.getIpAdress();
 				chatWindow = new ChatWindow(username, remoteUser, out);
 				chatWindows.add(chatWindow);
 
