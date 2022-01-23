@@ -9,16 +9,17 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
-
+import ClientSide.Client;
 import ClientSide.ServerResponseListener;
 import Interface.ChatWindow;
 import Model.ChatMessageType;
 import Model.Message;
 import Model.RemoteUser;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
@@ -144,9 +145,27 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 				String remoteUser=(String) stringUsersList.getSelectedItem();
 				RemoteUser targetRemoteUser = findRemoteUser(remoteUser);
-//				String ipAdress = targetRemoteUser.getIpAdress();
-				chatWindow = new ChatWindow(username, remoteUser, out);
+				String ipAdress = targetRemoteUser.getIpAdress();
+				chatWindow = new ChatWindow(username, remoteUser,ipAdress, out);
 				chatWindows.add(chatWindow);
+
+				//Loading Chat History
+				try {
+					String RemoteipAddress = ipAdress;
+					String LocalipAddress = InetAddress.getLocalHost().getHostAddress();
+					ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,RemoteipAddress);
+					while (rs.next()){
+						if (rs.getString(1).equals(LocalipAddress)) {
+							chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
+						}else {
+							chatWindow.getChatArea().append("["+remoteUser+"]: "+rs.getString(3)+"\n");
+						}
+					}
+				} catch (Exception ee) {
+					System.out.print("Error while loading History ! \n");
+					ee.printStackTrace();
+					
+				}
 
 				if (ServerResponseListener.isConversationInitiator())
 				{
