@@ -1,211 +1,241 @@
 package Interface;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import ClientSide.Client;
+import ClientSide.ServerResponseListener;
+import Interface.ChatWindow;
+import Model.ChatMessageType;
+import Model.Message;
+import Model.RemoteUser;
 
-import Database.LocalDatabase;
-import Network.ClientHandler;
-import Network.Server;
-import Network.ServerResponseListener;
-import java.sql.*;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
-public class MainWindow extends JPanel implements ActionListener {
+public class MainWindow {
 
-	private static final long serialVersionUID = 1L;
-	private static JComboBox<String> UsersList = null;
-	private static JTextArea broadArea;
 	private static JFrame mainFrame;
-	private static String query;
+	private JTextField newUsernameField;
+	private JTextField broadField;
+	private static boolean uniqueNewUsername=false;
+	private static ArrayList<ChatWindow> chatWindows = new ArrayList<ChatWindow>();
 	private static String username;
 	private static String newUsername;
-	private static boolean uniqueNewUsername=false;
-	private JButton refreshButton;
-	private JButton disconnectButton;
-	private JButton chatButton;
-	private JTextField broadField;
-	private JButton sendButton;
-	private JLabel groupChatLabel;
-	private JPanel mainPanel;
 	private ChatWindow chatWindow=null;
-	private JButton changeUsernameButton;
-	private JTextField newUsernameField;
-	
-	private static LocalDatabase localdb;
+	private ObjectOutputStream out;
+	private static String[] stringInit= {};
+	private static ArrayList<RemoteUser> ObjectUsersList = new ArrayList<RemoteUser>();
+	private static JComboBox stringUsersList = new JComboBox<String>(stringInit);
+	private static JTextArea broadArea;
 
-	
+	public static void main(String[] args) throws IOException {
+		MainWindow window = new MainWindow("rostom",null);
+	}
 
-	public MainWindow(String username, LocalDatabase localdb) {
-		
-		this.username=username;
-		this.localdb=localdb ;
-		
-		String[] init= {};
-		UsersList = new JComboBox<String>(init);
-		mainFrame = new JFrame (username);
-		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-		mainPanel = new JPanel(new GridLayout(10,10));
-		broadArea = new JTextArea (5, 5);
-		newUsernameField = new JTextField (5);
-		groupChatLabel = new JLabel ("GROUP CHAT");
-		refreshButton = new JButton ("Refresh List");
-		disconnectButton = new JButton ("Disconnect");
-		chatButton = new JButton ("Chat");
-		sendButton = new JButton ("Send");
-		changeUsernameButton = new JButton ("Change Username");
-		broadField = new JTextField (5);
+	/**
+	 * Create the application.
+	 */
+	public MainWindow(String username, ObjectOutputStream out) throws IOException {
+		MainWindow.username=username;
+		this.out=out;
+		initialize();
+	}
 
-		changeUsernameButton.addActionListener(this);
-		refreshButton.addActionListener(this);
-		disconnectButton.addActionListener(this);
-		chatButton.addActionListener(this);
-		sendButton.addActionListener(this);
+	/**
+	 * Initialize the contents of the frame.
+	 * @throws IOException 
+	 */
+	private void initialize() throws IOException {
+		mainFrame = new JFrame(username);
+		mainFrame.setBounds(100, 100, 511, 474);
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.getContentPane().setLayout(null);
 
-		changeUsernameButton.setBounds (355, 20, 150, 25);
-		chatButton.setBounds (390, 175, 115, 25);
-		refreshButton.setBounds (390, 95, 115, 25);
-		disconnectButton.setBounds (390, 415, 115, 25);
-		sendButton.setBounds (390, 455, 115, 25);
-		broadField.setBounds (25, 455, 345, 25);
-		newUsernameField.setBounds (25, 20, 305, 25);
-		UsersList.setBounds (390, 135, 115, 25);
-		broadArea.setBounds (30, 95, 340, 340);
-		groupChatLabel.setBounds (160, 65, 100, 25);
+		JButton changeUsernameButton = new JButton("Change Username");
 
-		mainFrame.add (changeUsernameButton);
-		mainFrame.add (chatButton);
-		mainFrame.add (refreshButton);
-		mainFrame.add (disconnectButton);
-		mainFrame.add (sendButton);
-		mainFrame.add (broadField);
-		mainFrame.add (newUsernameField);
-		mainFrame.add (getUsersList());
-		mainFrame.add (getBroadArea());
-		mainFrame.add (groupChatLabel);
+		changeUsernameButton.setBounds(338, 12, 151, 25);
+		mainFrame.getContentPane().add(changeUsernameButton);
 
-		mainFrame.setSize(new Dimension(2000, 500));
-		mainFrame.getContentPane().add (mainPanel, BorderLayout.CENTER);
-		mainFrame.pack();
-		mainFrame.setSize(540,540);
-		mainFrame.setVisible (true);
+		newUsernameField = new JTextField();
+		newUsernameField.setBounds(20, 12, 308, 25);
+		mainFrame.getContentPane().add(newUsernameField);
+		newUsernameField.setColumns(10);
+
+
+		stringUsersList.setBounds(358, 73, 131, 25);
+		mainFrame.getContentPane().add(stringUsersList);
+
+		JButton chatButton = new JButton("Chat");
+
+		chatButton.setBounds(358, 109, 131, 25);
+		mainFrame.getContentPane().add(chatButton);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(20, 73, 328, 317);
+		mainFrame.getContentPane().add(scrollPane);
+
+		broadArea = new JTextArea();
+		scrollPane.setViewportView(broadArea);
+
+		broadField = new JTextField();
+		broadField.setColumns(10);
+		broadField.setBounds(20, 401, 328, 25);
+		mainFrame.getContentPane().add(broadField);
+
+		JButton sendButton = new JButton("Send");
+		sendButton.setBounds(358, 401, 131, 25);
+		mainFrame.getContentPane().add(sendButton);
+
+		JButton disconnectButton = new JButton("Disconnect");
+		disconnectButton.setBounds(358, 366, 131, 25);
+		mainFrame.getContentPane().add(disconnectButton);
+
+		JLabel groupChatLabel = new JLabel("GROUP CHAT");
+		groupChatLabel.setBounds(140, 48, 112, 14);
+		mainFrame.getContentPane().add(groupChatLabel);
+		mainFrame.setVisible(true);
+
+		//When the window is close a disconnect query is sent 
+		mainFrame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				try {
+					getMainWindow().out.writeObject(Message.buildTypeMessage(ChatMessageType.Disconnect));
+				} catch (IOException e1) {e1.printStackTrace();}			}
+		});
+
+		//When someone new connects we update their users list
+		this.out.writeObject(Message.buildTypeMessage(ChatMessageType.UsersList));
+
+		changeUsernameButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				newUsername = newUsernameField.getText();
+				try {
+					out.writeObject(Message.buildMessage2(ChatMessageType.UsernameChange,null,username,newUsername));
+				} catch (IOException e1) {e1.printStackTrace();}
+
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e1) {e1.printStackTrace();}
+
+				if (uniqueNewUsername) {
+					mainFrame.setTitle(newUsername);
+					JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
+					username=newUsername;
+				}
+				uniqueNewUsername=false;
+			}
+		});
+
+		chatButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String remoteUser=(String) stringUsersList.getSelectedItem();
+				RemoteUser targetRemoteUser = findRemoteUser(remoteUser);
+				String ipAdress = targetRemoteUser.getIpAdress();
+				chatWindow = new ChatWindow(username, remoteUser,ipAdress, out);
+				chatWindows.add(chatWindow);
+
+				//Loading Chat History
+				try {
+					String RemoteipAddress = ipAdress;
+					String LocalipAddress = InetAddress.getLocalHost().getHostAddress();
+					ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,RemoteipAddress);
+					while (rs.next()){
+						if (rs.getString(1).equals(LocalipAddress)) {
+							chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
+						}else {
+							chatWindow.getChatArea().append("["+remoteUser+"]: "+rs.getString(3)+"\n");
+						}
+					}
+				} catch (Exception ee) {
+					System.out.print("Error while loading History ! \n");
+					ee.printStackTrace();
+					
+				}
+				
+				if (ServerResponseListener.isConversationInitiator())
+				{
+					try {
+						out.writeObject(Message.buildMessage2(ChatMessageType.Initiator,null,username,remoteUser));
+					} catch (IOException e1) {e1.printStackTrace();}
+				}
+				else {
+					try {
+						out.writeObject(Message.buildMessage2(ChatMessageType.Recipient,null,username,remoteUser));
+					} catch (IOException e1) {e1.printStackTrace();}
+				}
+				ServerResponseListener.setConversationInitiator(true);
+			}
+
+		});
+
+		disconnectButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					out.writeObject(Message.buildTypeMessage(ChatMessageType.Disconnect));
+				} catch (IOException e1) {e1.printStackTrace();}
+				mainFrame.setVisible (false);
+			}
+		});
+
+		sendButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String message = broadField.getText();
+				try {
+					out.writeObject(Message.buildMessage(ChatMessageType.BroadMessage,message));
+				} catch (IOException e1) {e1.printStackTrace();}
+			}
+		});
 
 	}
 
-	public void actionPerformed(ActionEvent e) {
-
-		if(e.getSource() == disconnectButton) {
-			query="disconnect";
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e1){e1.printStackTrace();
+	private RemoteUser findRemoteUser(String remoteUser) {
+		RemoteUser target = null;
+		for (RemoteUser it : ObjectUsersList) {
+			if (it.getUsername().equals(remoteUser)) {
+				target = it;
+				break;
 			}
-			query=null;
 		}
-
-		if(e.getSource() == refreshButton) {
-			UsersList.removeAllItems();
-			query="active";
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e1){e1.printStackTrace();
-			}
-			query=null;
-			try {
-				Thread.sleep(250); //to give time for the server response listener to add the clients to the table
-			}
-			catch (InterruptedException e1) {e1.printStackTrace();}
-		}
-
-		if(e.getSource() == sendButton) {
-			String message = broadField.getText();
-			query="broad "+message;
-			query=null;
-
-		}
-
-		if(e.getSource() == chatButton) {
-			String remoteUser=(String) UsersList.getSelectedItem();
-//			if (ClientHandler.among(remoteUser)) {
-			chatWindow = new ChatWindow(username, remoteUser);
-			
-//			}
-			if (ServerResponseListener.isConversationInitiator())
-			{
-				query="*"+username+" "+remoteUser;
-			}
-			else {
-				query="$"+username+" "+remoteUser;
-			}
-			ServerResponseListener.setConversationInitiator(true);
-			query=null;
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e1) {e1.printStackTrace();}
-			String ipAddressRemoteUser=null;
-			
-			System.out.println("[Main Window] Waiting to get ip address");
-			while (ServerResponseListener.getRemoteIpAddress()==null) {
-				System.out.println("[Main Window] loop running");
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {e1.printStackTrace();}
-				ipAddressRemoteUser=ServerResponseListener.getRemoteIpAddress();
-			}
-			System.out.println("[Main Window] IP Address: "+ipAddressRemoteUser);
-			//
-			// Load historique //////////////////////////////////////////////////////////////
-			//
-			try {
-				String RemoteipAddress = ServerResponseListener.getRemoteIpAddress();
-				String LocalipAddress = InetAddress.getLocalHost().getHostAddress();
-				ResultSet rs = localdb.getHistory(LocalipAddress,RemoteipAddress);
-				while (rs.next()){
-					if (rs.getString(1).equals(LocalipAddress)) {
-						chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
-					}else {
-						chatWindow.getChatArea().append("["+remoteUser+"]: "+rs.getString(3)+"\n");
-					}
-				}
-			} catch (Exception ee) {
-				System.out.print("Error while loading History ! \n");
-				ee.printStackTrace();
-				
-			}
-
-		}
-
-		if(e.getSource() == changeUsernameButton) {
-			newUsername = newUsernameField.getText();
-
-
-			query="#"+username+" "+newUsername;
-			query=null;
-			try {
-				Thread.sleep(500);//To give time for the server to check the
-				//validity of the username
-			} catch (InterruptedException e1){e1.printStackTrace();
-			}
-			if (uniqueNewUsername) {
-				mainFrame.setTitle(newUsername);
-				JOptionPane.showMessageDialog(null,"Username changed from "+username+" to "+newUsername);
-				username=newUsername;
-			}
-			uniqueNewUsername=false;
-		}
+		return target;
 	}
 
 	//Getters and Setters
-	
+
+	public static ArrayList<RemoteUser> getObjectUsersList() {
+		return ObjectUsersList;
+	}
+
+	public MainWindow getMainWindow() {
+		return this;
+	}
+
+	public static ArrayList<ChatWindow> getChatWindows() {
+		return chatWindows;
+	}
 
 	public static void setUniqueNewUsername(boolean uniqueNewUsername) {
 		MainWindow.uniqueNewUsername = uniqueNewUsername;
 	}
 
-	public static JComboBox<String> getUsersList() {
-		return UsersList;
+	public static JComboBox<String> getStringUsersList() {
+		return stringUsersList;
 	}
 
 	public static JTextArea getBroadArea() {
@@ -216,16 +246,4 @@ public class MainWindow extends JPanel implements ActionListener {
 		return mainFrame;
 	}
 
-	public static String getQuery() {
-		return query;
-	}
-
-	public static void setQuery(String query) {
-		MainWindow.query = query;
-	}
-	
-	public static LocalDatabase getLocaldb() {
-		return localdb;
-	}
-	
 }

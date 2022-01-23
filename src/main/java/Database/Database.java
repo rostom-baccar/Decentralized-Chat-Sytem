@@ -2,54 +2,54 @@ package Database;
 
 import java.sql.* ;
 
-public class LocalDatabase {
+public class Database {
 	
-	private String dbaddr="jdbc:mysql://localhost:3306/demodb";
-	private String username="root";
-	private String mdp = "root";
 
-//  DB insa
-//	private String dbaddr="jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_018?";
-//	private String username="tp_servlet_018";
-//	private String mdp = "izu6uNgu";
+
+//  INSA Database
+	private String dbaddr="jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_018";
+	private String username="tp_servlet_018";
+	private String mdp = "izu6uNgu";
 	
+//	Local DB for tests
+//	private String dbaddr="jdbc:mysql://localhost:3306/demodb";
+//	private String username="root";
+//	private String mdp = "root";	
+	
+//	Attributs
 	private static Connection con;
 	private static Statement stmt ;
 	
 	
 	////// QUERIES \\\\\\
-	String sqlCreateTab = "CREATE TABLE IF NOT EXISTS chatsysDB"
+//	To create the Table
+	String sqlCreateTab = "CREATE TABLE IF NOT EXISTS msg_history"
 			+ "  (id			INT NOT NULL AUTO_INCREMENT,"
 			+ "   sender           VARCHAR(45) NOT NULL,"
 			+ "   receiver            VARCHAR(45) NOT NULL,"
 			+ "   message          VARCHAR(200) NULL,"
 			+ "   tstamp           DATETIME NULL,"
 			+ "   PRIMARY KEY (id)) " ;
-			
-//	String sqlGetMsg = "SELECT message FROM localdb WHERE sender = ?" ;
+				
+//	To insert a row into the table
+	String sqlInsert = "Insert into msg_history (sender, receiver,message,tstamp) values (?,?,?,?)" ;
 	
-	String sqlInsert = "Insert into chatsysDB (sender, receiver,message,tstamp) values (?,?,?,?)" ;
-	
-	// For local use
-//	String getChatHistory = "SELECT sender, receiver, message, tstamp " 
-//						  + "FROM chatsysDB "
-//						  + "WHERE sender = ? OR receiver = ?" 
-//						  + "ORDER BY tstamp ASC Limit ?";
-	
-	// For INSA DB
-	String sqlChatHistory = "SELECT sender, receiver, message, tstamp " 
-			  + "FROM chatsysDB "
+//	To Drop the table
+	String sqlDrop = "DROP TABLE msg_history" ;
+
+//	To get chat History
+	String getChatHistory = "SELECT sender, receiver, message, tstamp " 
+			  + "FROM msg_history "
 			  + "WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)" 
 			  + "ORDER BY tstamp ASC Limit ?";
-
-	String sqlDrop = "DROP TABLE chatsysDB ;" ;
 	
-	public LocalDatabase () {
+
+	public Database () {
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			LocalDatabase.con=DriverManager.getConnection(dbaddr,username,mdp);
-			LocalDatabase.stmt = con.createStatement();
+			this.con=DriverManager.getConnection(dbaddr,username,mdp);
+			this.stmt = con.createStatement();
 			System.out.println("Connected to Database. \n");
 			
 			stmt.execute(sqlCreateTab);
@@ -61,8 +61,7 @@ public class LocalDatabase {
 	}
 	
 	
-	
-	public int insertLine(String sender, String receiver, String message, String timestamp) {
+	public int insertRow(String sender, String receiver, String message, String timestamp) {
 		
 		try {
 			PreparedStatement pstmt = con.prepareStatement(sqlInsert);
@@ -72,15 +71,15 @@ public class LocalDatabase {
 			pstmt.setString(4, timestamp);
 			return pstmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
 		}
 	}
 	
+	
 	public ResultSet getHistory(String LocalUserIP ,String RemoteUserIP) {
 		try {
-			PreparedStatement pstmt = con.prepareStatement(sqlChatHistory);
+			PreparedStatement pstmt = con.prepareStatement(getChatHistory);
 			pstmt.setString(1, LocalUserIP);
 			pstmt.setString(2, RemoteUserIP);
 			pstmt.setString(3, RemoteUserIP);
@@ -88,19 +87,20 @@ public class LocalDatabase {
 			pstmt.setInt(5, 50);
 			return pstmt.executeQuery();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 
 	}
 	
-	public void dropDatabase() {	
-		try { 
-			LocalDatabase.stmt.executeUpdate(sqlDrop) ;
+	
+	public void dropDatabase() {
+		try {
+			this.stmt.executeUpdate(sqlDrop) ;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
 	
 }
