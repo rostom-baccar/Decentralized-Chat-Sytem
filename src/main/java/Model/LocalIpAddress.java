@@ -1,4 +1,4 @@
-package Tests;
+package Model;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -6,10 +6,9 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-public class ScrollTest {
+public class LocalIpAddress {
 
-	private static String[] stringInit= {};
-	public ScrollTest(){
+	public LocalIpAddress(){
 
 	}
 

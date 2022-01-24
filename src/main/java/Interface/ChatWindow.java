@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import ClientSide.Client;
 import Model.ChatMessageType;
+import Model.LocalIpAddress;
 import Model.Message;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -34,9 +35,7 @@ public class ChatWindow {
 	private JScrollPane scrollPane;
 	private JButton sendButton;
 
-	//	public ChatWindow(String username, String remoteUser, String ipAdress, ObjectOutputStream out) {
-	public ChatWindow(String username, String remoteUser, ObjectOutputStream out) {
-
+	public ChatWindow(String username, String remoteUser, String ipAdress, ObjectOutputStream out) {
 		this.username=username;
 		this.remoteUser=remoteUser;
 		this.out=out;
@@ -86,12 +85,12 @@ public class ChatWindow {
 
 					try {
 						String RemoteipAddress = ipAdress;
-						String LocalipAddress = InetAddress.getLocalHost().getHostAddress();			
+						String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();			
 						DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
 						LocalDateTime now = LocalDateTime.now();  
 						String tstamp = dtf.format(now);  
 
-						//						int num = Client.getClientdb().insertRow(LocalipAddress, RemoteipAddress, message, tstamp);
+						int num = Client.getClientdb().insertRow(LocalipAddress, RemoteipAddress, message, tstamp);
 					} catch (Exception e2) {e2.printStackTrace();}
 
 					try {
@@ -104,9 +103,7 @@ public class ChatWindow {
 	}
 
 	public static void main (String[] a) {
-//		new ChatWindow("Rostom", "Wissem", null, null);
-		new ChatWindow("Rostom", "Wissem", null);
-
+		new ChatWindow("Rostom", "Wissem", null,null);
 	}
 
 	//Setters and Getters
