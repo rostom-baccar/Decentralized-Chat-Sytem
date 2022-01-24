@@ -29,7 +29,10 @@ public class ChatWindow {
 	private String username;
 	private String remoteUser;
 	private String ipAdress;
-	JTextArea chatArea;
+	private JTextArea chatArea;
+	private JLabel privateChatLabel;
+	private JScrollPane scrollPane;
+	private JButton sendButton;
 
 	public ChatWindow(String username, String remoteUser, String ipAdress, ObjectOutputStream out) {
 		this.username=username;
@@ -45,11 +48,11 @@ public class ChatWindow {
 		chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		chatFrame.getContentPane().setLayout(null);
 		
-		JLabel privateChatLabel = new JLabel("[PRIVATE CHAT]  "+remoteUser);
+		privateChatLabel = new JLabel("[PRIVATE CHAT]  "+remoteUser);
 		privateChatLabel.setBounds(20, 11, 300, 25);
 		chatFrame.getContentPane().add(privateChatLabel);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 35, 274, 266);
 		chatFrame.getContentPane().add(scrollPane);
 		
@@ -61,7 +64,7 @@ public class ChatWindow {
 		chatFrame.getContentPane().add(chatField);
 		chatField.setColumns(10);
 		
-		JButton sendButton = new JButton("Send");
+		sendButton = new JButton("Send");
 		sendButton.setBounds(219, 312, 75, 25);
 		chatFrame.getContentPane().add(sendButton);
 				
