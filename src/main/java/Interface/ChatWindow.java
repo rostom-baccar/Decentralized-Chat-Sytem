@@ -7,13 +7,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-
-import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
-
 import ClientSide.Client;
 import Model.ChatMessageType;
 import Model.LocalIpAddress;

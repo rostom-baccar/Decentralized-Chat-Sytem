@@ -1,7 +1,5 @@
 package Model;
 
-import java.util.Iterator;
-
 public class RemoteUser {
 	
 	private String username;

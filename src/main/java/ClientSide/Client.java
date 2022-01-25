@@ -6,13 +6,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-
 import Database.Database;
-//import Database.Database;
-//import Database.Database;
 import Interface.LoginWindow;
 import Interface.MainWindow;
-import Model.Message;
 
 public class Client {
 
@@ -20,7 +16,6 @@ public class Client {
 	private final static String Server_IP="127.0.0.1"; //Put Server IP here
 	private static boolean uniqueUsername=false;
 	private static String username=null;
-	private static Message query;
 	private static Socket socket;
 	private static Database clientdb;
 
@@ -48,14 +43,16 @@ public class Client {
 		serverConnection.start();
 
 		//Login Window
-		LoginWindow loginWindow = new LoginWindow(out);
+		new LoginWindow(out);
 		
 		clientdb = new Database ();
 
 		while (!uniqueUsername) {Thread.sleep(1);}
 		username=LoginWindow.getUsername();
 		LoginWindow.getLoginFrame().setVisible(false);
-		MainWindow mainWindow = new MainWindow(username,out);
+		
+		//MainWindow
+		new MainWindow(username,out);
 		
 	}
 

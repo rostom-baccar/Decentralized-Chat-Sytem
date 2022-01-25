@@ -1,7 +1,5 @@
 package Interface;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -9,14 +7,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import ClientSide.Client;
 import ClientSide.ServerResponseListener;
-import Interface.ChatWindow;
 import Model.ChatMessageType;
 import Model.LocalIpAddress;
 import Model.Message;
@@ -40,11 +36,11 @@ public class MainWindow {
 	private ObjectOutputStream out;
 	private static String[] stringInit= {};
 	private static ArrayList<RemoteUser> ObjectUsersList = new ArrayList<RemoteUser>();
-	private static JComboBox stringUsersList = new JComboBox<String>(stringInit);
+	private static JComboBox<String> stringUsersList = new JComboBox<String>(stringInit);
 	private static JTextArea broadArea;
 
 	public static void main(String[] args) throws IOException {
-		MainWindow window = new MainWindow("rostom",null);
+		new MainWindow("rostom",null);
 	}
 
 	public MainWindow(String username, ObjectOutputStream out) throws IOException {

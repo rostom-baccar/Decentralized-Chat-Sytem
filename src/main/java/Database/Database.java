@@ -48,8 +48,8 @@ public class Database {
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			this.con=DriverManager.getConnection(dbaddr,username,mdp);
-			this.stmt = con.createStatement();
+			con=DriverManager.getConnection(dbaddr,username,mdp);
+			stmt = con.createStatement();
 			System.out.println("Connected to Database. \n");
 			
 			stmt.execute(sqlCreateTab);
@@ -96,7 +96,7 @@ public class Database {
 	
 	public void dropDatabase() {
 		try {
-			this.stmt.executeUpdate(sqlDrop) ;
+			stmt.executeUpdate(sqlDrop) ;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

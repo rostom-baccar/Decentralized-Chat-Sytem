@@ -2,7 +2,6 @@ package ClientSide;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.Socket;
 import javax.swing.JOptionPane;
 import Interface.ChatWindow;
 import Interface.MainWindow;
@@ -15,13 +14,11 @@ import Model.RemoteUser;
 
 public class ServerResponseListener extends Thread{
 
-	private Socket clientSocket;
-	private static Message message=null;
 	private static boolean conversationInitiator=true;
 	private static ObjectInputStream in;
 
 	public ServerResponseListener(ObjectInputStream in) throws IOException {
-		this.in=in;
+		ServerResponseListener.in=in;
 
 	}
 
@@ -156,13 +153,6 @@ public class ServerResponseListener extends Thread{
 		ServerResponseListener.conversationInitiator = conversationInitiator;
 	}
 
-	public static Message getMessage() {
-		return message;
-	}
-
-	public static void setMessage(Message message) {
-		ServerResponseListener.message = message;
-	}
 
 	public static boolean isConversationInitiator() {
 		return conversationInitiator;

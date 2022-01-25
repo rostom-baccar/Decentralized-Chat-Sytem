@@ -1,8 +1,6 @@
 package Model;
 
 import java.io.Serializable;
-import Interface.ChatWindow;
-
 
 public class Message implements Serializable {
 

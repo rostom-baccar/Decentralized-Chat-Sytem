@@ -5,10 +5,8 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
 import Model.ChatMessageType;
-import Model.LocalIpAddress;
 import Model.Message;
 
 //each client will have its own client handler with which it can communicate (like a server instance)
@@ -51,8 +49,6 @@ public class ClientHandler extends Thread {
 				System.out.println("[ClientHandler] Query argument1: "+request.getArgument1());
 				System.out.println("[ClientHandler] Query argument2: "+request.getArgument2());
 				System.out.println();
-
-				Message responseToClient;
 
 				switch(request.getType()) {
 
@@ -208,6 +204,8 @@ public class ClientHandler extends Thread {
 			for (ClientHandler client : Server.getClients()) {
 				client.out.writeObject(Message.buildMessage2(type,message,argument1,argument2));
 			}
+		default:
+			break;
 		}
 	}
 
