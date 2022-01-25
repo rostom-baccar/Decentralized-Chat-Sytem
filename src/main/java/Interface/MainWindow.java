@@ -136,32 +136,57 @@ public class MainWindow {
 			}
 		});
 
+//		chatButton.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				String remoteUser=(String) stringUsersList.getSelectedItem();
+//				RemoteUser targetRemoteUser = findRemoteUser(remoteUser);
+//				String ipAdress = targetRemoteUser.getIpAdress();
+//				chatWindow = new ChatWindow(username, remoteUser,ipAdress, out);
+//				chatWindows.add(chatWindow);
+//
+//				//Loading Chat History
+//				try {
+//					String RemoteipAddress = ipAdress;
+//					String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();
+//					
+//					ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,RemoteipAddress);
+//					while (rs.next()){
+//						if (rs.getString(1).equals(LocalipAddress)) {
+//							chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
+//						}else {
+//							chatWindow.getChatArea().append("["+remoteUser+"]: "+rs.getString(3)+"\n");
+//						}
+//					}
+//				} catch (Exception ee) {
+//					System.out.print("Error while loading History ! \n");
+//					ee.printStackTrace();
+//
+//				}
+//
+//				if (ServerResponseListener.isConversationInitiator())
+//				{
+//					try {
+//						out.writeObject(Message.buildMessage2(ChatMessageType.Initiator,null,username,remoteUser));
+//					} catch (IOException e1) {e1.printStackTrace();}
+//				}
+//				else {
+//					try {
+//						out.writeObject(Message.buildMessage2(ChatMessageType.Recipient,null,username,remoteUser));
+//					} catch (IOException e1) {e1.printStackTrace();}
+//				}
+//				ServerResponseListener.setConversationInitiator(true);
+//			}
+//
+//		});
+		
+		
 		chatButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String remoteUser=(String) stringUsersList.getSelectedItem();
 				RemoteUser targetRemoteUser = findRemoteUser(remoteUser);
 				String ipAdress = targetRemoteUser.getIpAdress();
-				chatWindow = new ChatWindow(username, remoteUser,ipAdress, out);
+				chatWindow = new ChatWindow(username, remoteUser, out);
 				chatWindows.add(chatWindow);
-
-				//Loading Chat History
-				try {
-					String RemoteipAddress = ipAdress;
-					String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();
-					
-					ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,RemoteipAddress);
-					while (rs.next()){
-						if (rs.getString(1).equals(LocalipAddress)) {
-							chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
-						}else {
-							chatWindow.getChatArea().append("["+remoteUser+"]: "+rs.getString(3)+"\n");
-						}
-					}
-				} catch (Exception ee) {
-					System.out.print("Error while loading History ! \n");
-					ee.printStackTrace();
-
-				}
 
 				if (ServerResponseListener.isConversationInitiator())
 				{

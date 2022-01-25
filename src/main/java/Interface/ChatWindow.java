@@ -35,7 +35,9 @@ public class ChatWindow {
 	private JScrollPane scrollPane;
 	private JButton sendButton;
 
-	public ChatWindow(String username, String remoteUser, String ipAdress, ObjectOutputStream out) {
+	//	public ChatWindow(String username, String remoteUser, String ipAdress, ObjectOutputStream out) {
+	public ChatWindow(String username, String remoteUser, ObjectOutputStream out) {
+
 		this.username=username;
 		this.remoteUser=remoteUser;
 		this.out=out;
@@ -90,7 +92,7 @@ public class ChatWindow {
 						LocalDateTime now = LocalDateTime.now();  
 						String tstamp = dtf.format(now);  
 
-						int num = Client.getClientdb().insertRow(LocalipAddress, RemoteipAddress, message, tstamp);
+						//						int num = Client.getClientdb().insertRow(LocalipAddress, RemoteipAddress, message, tstamp);
 					} catch (Exception e2) {e2.printStackTrace();}
 
 					try {
@@ -100,10 +102,13 @@ public class ChatWindow {
 			}
 		});
 
+		
 	}
 
 	public static void main (String[] a) {
-		new ChatWindow("Rostom", "Wissem", null,null);
+//		new ChatWindow("Rostom", "Wissem", null,null);
+		new ChatWindow("Rostom", "Wissem", null);
+
 	}
 
 	//Setters and Getters

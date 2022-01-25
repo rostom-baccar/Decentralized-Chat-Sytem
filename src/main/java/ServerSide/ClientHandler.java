@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import Model.ChatMessageType;
+import Model.LocalIpAddress;
 import Model.Message;
 
 //each client will have its own client handler with which it can communicate (like a server instance)
@@ -21,12 +22,12 @@ public class ClientHandler extends Thread {
 	private Socket clientSocket;
 	private String clientUsername; 
 	private boolean canBeAdded=false;
-	private String ipAdress;
+	private String ipAddress;
+//	private String ipAdress;
 
 	public ClientHandler(Socket clientSocket) throws IOException{
 		this.clientSocket=clientSocket;
-		this.ipAdress=InetAddress.getLocalHost().getHostAddress();
-
+		
 		InputStream inputStream = clientSocket.getInputStream();
 		in = new ObjectInputStream(inputStream);
 
@@ -35,7 +36,6 @@ public class ClientHandler extends Thread {
 	}
 
 	public void run() {
-		System.out.println("IP Adress: "+ipAdress);
 		Message request = null;
 		try {
 			request = (Message) in.readObject();
@@ -64,18 +64,21 @@ public class ClientHandler extends Thread {
 						request = (Message) in.readObject();
 					}
 					else {
-						this.canBeAdded=true;
 						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"You are connected"));
 						clientUsername=request.getContent(); //we save it so that each client handler knows its primary client
-						broadcast(ChatMessageType.BroadConnect,clientUsername+" just connected",clientUsername,ipAdress,null);
+						ipAddress = request.getArgument1();
+						broadcast(ChatMessageType.BroadConnect,clientUsername+" just connected",clientUsername,ipAddress,null);
+						System.out.println("[ClientHandler] "+clientUsername+" "+ipAddress);
+						this.canBeAdded=true;
 						request = (Message) in.readObject();
+
 
 					}
 					break;
 
 				case Disconnect:
-
-					broadcast(ChatMessageType.BroadDisconnect,clientUsername+" disconnected",clientUsername,ipAdress,null);
+					
+					broadcast(ChatMessageType.BroadDisconnect,clientUsername+" disconnected",clientUsername,ipAddress,null);
 					Server.getClients().remove(this);
 					this.canBeAdded=false;
 					this.clientSocket.close();
@@ -87,7 +90,7 @@ public class ClientHandler extends Thread {
 					for (ClientHandler client : Server.getClients()) {
 						if (client!=this) {
 							//we do not show the user's own nickname
-							out.writeObject(Message.buildMessage2(ChatMessageType.UsersList,null,client.clientUsername,this.ipAdress));
+							out.writeObject(Message.buildMessage2(ChatMessageType.UsersList,null,client.clientUsername,client.ipAddress));
 							Thread.sleep(10);
 						}
 					}
@@ -145,7 +148,7 @@ public class ClientHandler extends Thread {
 						ClientHandler targetThread=findThread(oldUsername);
 						if (targetThread!=null) {
 							targetThread.setClientUsername(newUsername);
-							broadcast(ChatMessageType.BroadUsernameChange,oldUsername+" has changed their username to "+newUsername,oldUsername,newUsername,this.ipAdress);
+							broadcast(ChatMessageType.BroadUsernameChange,oldUsername+" has changed their username to "+newUsername,oldUsername,newUsername,ipAddress);
 							out.writeObject(Message.buildTypeMessage(ChatMessageType.UsernameChange));
 						}
 					}
@@ -237,10 +240,5 @@ public class ClientHandler extends Thread {
 	public void setCanBeAdded(boolean canBeAdded) {
 		this.canBeAdded = canBeAdded;
 	}
-
-	public String getIpAdress() {
-		return ipAdress;
-	}
-
 
 }

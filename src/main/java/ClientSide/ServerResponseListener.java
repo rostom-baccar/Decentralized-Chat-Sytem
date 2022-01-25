@@ -52,8 +52,8 @@ public class ServerResponseListener extends Thread{
 				case UsersList:
 					
 					String username = serverResponse.getArgument1();
-					String ipAdress = serverResponse.getArgument2();
-					RemoteUser remoteUser = new RemoteUser(username,ipAdress);
+					String ipAddress = serverResponse.getArgument2();
+					RemoteUser remoteUser = new RemoteUser(username,ipAddress);
 //					MainWindow.getUsersList().addItem(username+" "+ipAdress);
 					MainWindow.getStringUsersList().addItem(username);
 					MainWindow.getObjectUsersList().add(remoteUser);
@@ -94,14 +94,13 @@ public class ServerResponseListener extends Thread{
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
 					String oldUsername=serverResponse.getArgument1();
 					String newUsername=serverResponse.getArgument2();
-					String ipAddress=serverResponse.getArgument3();
-					RemoteUser oldRemoteUser = new RemoteUser(oldUsername,ipAddress);
-					RemoteUser newRemoteUser = new RemoteUser(newUsername,ipAddress);
+					String ipAddress1=serverResponse.getArgument3();
+					RemoteUser oldRemoteUser = new RemoteUser(oldUsername,ipAddress1);
+					RemoteUser newRemoteUser = new RemoteUser(newUsername,ipAddress1);
 					MainWindow.getStringUsersList().removeItem(oldUsername);
 					MainWindow.getStringUsersList().addItem(newUsername);
 					MainWindow.getObjectUsersList().remove(oldRemoteUser);
 					MainWindow.getObjectUsersList().add(newRemoteUser);
-
 
 					break;
 

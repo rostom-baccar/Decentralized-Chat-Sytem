@@ -4,8 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.SocketException;
+
 import javax.swing.*;
 import Model.ChatMessageType;
+import Model.LocalIpAddress;
 import Model.Message;
 
 public class LoginWindow extends JPanel implements ActionListener{
@@ -18,10 +21,12 @@ public class LoginWindow extends JPanel implements ActionListener{
     private JPanel loginPanel;
     private JLabel typeUsernameLabel;
     private ObjectOutputStream out;
+    private String ipAddress;
 
-    public LoginWindow(ObjectOutputStream out) {
+    public LoginWindow(ObjectOutputStream out) throws SocketException {
     	
     	this.out=out;
+    	this.ipAddress=LocalIpAddress.getLocalAddress().getHostAddress();
     	
     	loginFrame=new JFrame ("Login Window");
         loginPanel = new JPanel(new GridLayout(10,10));
@@ -56,7 +61,7 @@ public class LoginWindow extends JPanel implements ActionListener{
 
 		username=usernameField.getText();
 		try {
-			out.writeObject(Message.buildMessage(ChatMessageType.Connect,username));
+			out.writeObject(Message.buildMessage1(ChatMessageType.Connect,username,ipAddress));
 		} catch (IOException e1) {e1.printStackTrace();}
 		System.out.println("[LoginWindow] Username: "+username);		
 	}
