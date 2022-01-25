@@ -81,7 +81,6 @@ public class MainWindow {
 		mainFrame.getContentPane().add(scrollPane);
 
 		broadArea = new JTextArea();
-		broadArea.setEditable(false);
 		scrollPane.setViewportView(broadArea);
 
 		broadField = new JTextField();
@@ -141,9 +140,9 @@ public class MainWindow {
 						ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,RemoteipAddress);
 						while (rs.next()){
 							if (rs.getString(1).equals(LocalipAddress)) {
-								chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
+								c.getChatArea().append("["+newUsername+"]: "+rs.getString(3)+"\n");
 							}else {
-								chatWindow.getChatArea().append("["+c.getRemoteUser()+"]: "+rs.getString(3)+"\n");
+								c.getChatArea().append("["+c.getRemoteUser()+"]: "+rs.getString(3)+"\n");
 							}
 						}
 					} catch (Exception ee) {

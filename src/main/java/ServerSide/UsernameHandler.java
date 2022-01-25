@@ -7,7 +7,7 @@ public class UsernameHandler extends Thread{
 	private ClientHandler clientThread;
 
 	public UsernameHandler(ClientHandler clientThread) {
-		this.clientThread = clientThread;
+		this.clientThread = clientThread; 
 
 	}
 
