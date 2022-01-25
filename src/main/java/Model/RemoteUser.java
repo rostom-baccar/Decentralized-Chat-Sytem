@@ -28,7 +28,5 @@ public class RemoteUser {
 		this.ipAdress = ipAdress;
 	}
 
-
-
 	
 }

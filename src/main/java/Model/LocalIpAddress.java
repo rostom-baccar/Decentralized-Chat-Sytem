@@ -12,6 +12,7 @@ public class LocalIpAddress {
 
 	}
 
+	//Function that returns the local IP address of the computer that is different from the loopback for INSA machines
 	public static InetAddress getLocalAddress() throws SocketException
 	{
 		Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();

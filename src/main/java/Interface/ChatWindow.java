@@ -29,19 +29,19 @@ public class ChatWindow {
 	private JTextField chatField;
 	private String username;
 	private String remoteUser;
-	private String ipAdress;
+	private String ipAddress;
 	private JTextArea chatArea;
 	private JLabel privateChatLabel;
 	private JScrollPane scrollPane;
 	private JButton sendButton;
 
-	//	public ChatWindow(String username, String remoteUser, String ipAdress, ObjectOutputStream out) {
-	public ChatWindow(String username, String remoteUser, ObjectOutputStream out) {
+	public ChatWindow(String username, String remoteUser, String ipAddress, ObjectOutputStream out) {
+		//	public ChatWindow(String username, String remoteUser, ObjectOutputStream out) {
 
 		this.username=username;
 		this.remoteUser=remoteUser;
 		this.out=out;
-		this.ipAdress=ipAdress;
+		this.ipAddress=ipAddress;
 		initialize();
 	}
 
@@ -86,13 +86,13 @@ public class ChatWindow {
 					chatArea.append("["+username+"]: "+message+"\n");
 
 					try {
-						String RemoteipAddress = ipAdress;
+						String RemoteipAddress = ipAddress;
 						String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();			
 						DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
 						LocalDateTime now = LocalDateTime.now();  
 						String tstamp = dtf.format(now);  
 
-						//						int num = Client.getClientdb().insertRow(LocalipAddress, RemoteipAddress, message, tstamp);
+						int num = Client.getClientdb().insertRow(LocalipAddress, RemoteipAddress, message, tstamp);
 					} catch (Exception e2) {e2.printStackTrace();}
 
 					try {
@@ -102,12 +102,12 @@ public class ChatWindow {
 			}
 		});
 
-		
+
 	}
 
 	public static void main (String[] a) {
-//		new ChatWindow("Rostom", "Wissem", null,null);
-		new ChatWindow("Rostom", "Wissem", null);
+		new ChatWindow("Rostom", "Wissem", null,null);
+		//		new ChatWindow("Rostom", "Wissem", null);
 
 	}
 

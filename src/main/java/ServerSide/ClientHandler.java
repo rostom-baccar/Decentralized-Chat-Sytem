@@ -23,7 +23,6 @@ public class ClientHandler extends Thread {
 	private String clientUsername; 
 	private boolean canBeAdded=false;
 	private String ipAddress;
-//	private String ipAdress;
 
 	public ClientHandler(Socket clientSocket) throws IOException{
 		this.clientSocket=clientSocket;
