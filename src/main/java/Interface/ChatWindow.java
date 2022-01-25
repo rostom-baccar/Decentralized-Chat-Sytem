@@ -42,8 +42,9 @@ public class ChatWindow {
 		initialize();
 	}
 
+
 	private void initialize() {
-		chatFrame = new JFrame(username+" - "+remoteUser);
+		chatFrame = new JFrame("[PRIVATE CHAT]");
 		chatFrame.setBounds(100, 100, 326, 393);
 		chatFrame.getContentPane().setLayout(null);
 
@@ -56,6 +57,7 @@ public class ChatWindow {
 		chatFrame.getContentPane().add(scrollPane);
 
 		chatArea = new JTextArea();
+		chatArea.setEditable(false);
 		scrollPane.setViewportView(chatArea);
 
 		chatField = new JTextField();
@@ -80,17 +82,24 @@ public class ChatWindow {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == sendButton) {
 					String message = chatField.getText();
-					chatArea.append("["+username+"]: "+message+"\n");
-
+					
 					try {
 						String RemoteipAddress = ipAddress;
 						String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();			
 						DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
 						LocalDateTime now = LocalDateTime.now();  
 						String tstamp = dtf.format(now);  
+						
+						DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");   
+						String tstamp1 = dtf.format(now);  
 
 						int num = Client.getClientdb().insertRow(LocalipAddress, RemoteipAddress, message, tstamp);
+						
+						chatArea.append("                                       "+tstamp1.substring(0,16)+"\n");
+						chatArea.append("["+username+"]: "+message+"\n");
 					} catch (Exception e2) {e2.printStackTrace();}
+					
+					
 
 					try {
 						out.writeObject(Message.buildMessage2(ChatMessageType.PrivateMessage,message,username,remoteUser));
@@ -129,4 +138,19 @@ public class ChatWindow {
 	public ChatWindow getChatWindow() {
 		return this;
 	}
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+	
+	public void setRemoteUsername(String remoteUser) {
+		this.remoteUser = remoteUser;
+	}
+
+
+	public void setPrivateChatLabel(String newUsername) {
+		JLabel newPrivateChatLabel = new JLabel("[PRIVATE CHAT]  "+newUsername);
+		this.privateChatLabel = newPrivateChatLabel;
+	}
+
 }

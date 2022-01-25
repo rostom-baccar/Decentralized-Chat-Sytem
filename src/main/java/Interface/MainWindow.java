@@ -7,6 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.SocketException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
@@ -80,6 +81,7 @@ public class MainWindow {
 		mainFrame.getContentPane().add(scrollPane);
 
 		broadArea = new JTextArea();
+		broadArea.setEditable(false);
 		scrollPane.setViewportView(broadArea);
 
 		broadField = new JTextField();
@@ -129,6 +131,27 @@ public class MainWindow {
 					username=newUsername;
 				}
 				uniqueNewUsername=false;
+						
+				for (ChatWindow c : chatWindows) {
+					c.getChatArea().setText("");
+					try {
+						String RemoteipAddress = c.getIpAddress();
+						String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();
+						
+						ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,RemoteipAddress);
+						while (rs.next()){
+							if (rs.getString(1).equals(LocalipAddress)) {
+								chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
+							}else {
+								chatWindow.getChatArea().append("["+c.getRemoteUser()+"]: "+rs.getString(3)+"\n");
+							}
+						}
+					} catch (Exception ee) {
+						System.out.print("Error while loading History ! \n");
+						ee.printStackTrace();
+					}
+					
+				}
 			}
 		});
 
@@ -259,6 +282,10 @@ public class MainWindow {
 
 	public static JFrame getMainFrame() {
 		return mainFrame;
+	}
+	
+	public static String getUsername() {
+		return username;
 	}
 
 }

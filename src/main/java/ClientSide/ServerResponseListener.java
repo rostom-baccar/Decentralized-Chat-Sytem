@@ -2,10 +2,15 @@ package ClientSide;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.sql.ResultSet;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.JOptionPane;
 import Interface.ChatWindow;
 import Interface.MainWindow;
 import Model.ChatMessageType;
+import Model.LocalIpAddress;
 import Model.Message;
 import Model.RemoteUser;
 
@@ -59,6 +64,10 @@ public class ServerResponseListener extends Thread{
 
 				case BroadMessage : 
 
+					LocalDateTime now = LocalDateTime.now();  
+					DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");   
+					String tstamp1 = dtf1.format(now);  					
+					MainWindow.getBroadArea().append("                                                    "+tstamp1.substring(0,16)+"\n");
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
 					break;
 
@@ -98,7 +107,32 @@ public class ServerResponseListener extends Thread{
 					MainWindow.getStringUsersList().addItem(newUsername);
 					MainWindow.getObjectUsersList().remove(oldRemoteUser);
 					MainWindow.getObjectUsersList().add(newRemoteUser);
+			
+			
+					ChatWindow chatWindowTarget = findRemoteChatWindow(oldUsername);
+					chatWindowTarget.setRemoteUsername(newUsername);
+				
+					chatWindowTarget.getChatArea().setText("");
+					
+					chatWindowTarget.setPrivateChatLabel(newUsername);
+					
+					try {
+						String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();
+						ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,ipAddress1);
+						while (rs.next()){
+							if (rs.getString(1).equals(LocalipAddress)) {
+								chatWindowTarget.getChatArea().append("["+MainWindow.getUsername()+"]: "+rs.getString(3)+"\n");
+							}else {
+								chatWindowTarget.getChatArea().append("["+newUsername+"]: "+rs.getString(3)+"\n");
+							}
+						}
+					} catch (Exception ee) {
+						System.out.print("Error while loading History ! \n");
+						ee.printStackTrace();
+					}
 
+
+					
 					break;
 
 				case Recipient:
@@ -116,11 +150,20 @@ public class ServerResponseListener extends Thread{
 
 					String sender = serverResponse.getArgument1();
 					String privateMessage=serverResponse.getContent();
-					ChatWindow chatWindowTarget=findChatWindow(sender);
-					chatWindowTarget.getChatArea().append("["+sender+"] "+privateMessage+"\n");
+					ChatWindow chatWindowTarget1=findRemoteChatWindow(sender);
+							
+						LocalDateTime now1 = LocalDateTime.now();  
+						DateTimeFormatter dtf11 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");   
+						String tstamp11 = dtf11.format(now1);  
+						
+						chatWindowTarget1.getChatArea().append("                                       "+tstamp11.substring(0,16)+"\n");
+						chatWindowTarget1.getChatArea().append("["+sender+"] "+privateMessage+"\n");
+					
+					// chatWindowTarget.getChatArea().append("["+sender+"] "+privateMessage+"\n");
 					break;
 
 				case UsernameChange :
+					
 					MainWindow.setUniqueNewUsername(true);
 					break;
 
@@ -138,7 +181,10 @@ public class ServerResponseListener extends Thread{
 
 	//Setters and Getters
 
-	private ChatWindow findChatWindow(String sender) {
+
+	
+	
+	private ChatWindow findRemoteChatWindow(String sender) {
 		ChatWindow chatWindowTarget = null;
 		for (ChatWindow chatWindow : MainWindow.getChatWindows()) {
 			if (chatWindow.getRemoteUser().equals(sender)) {

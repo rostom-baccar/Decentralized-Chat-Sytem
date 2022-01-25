@@ -14,5 +14,4 @@ public enum ChatMessageType {
 	BroadDisconnect,
 	BroadConnect,
 	BroadUsernameChange
-
 }

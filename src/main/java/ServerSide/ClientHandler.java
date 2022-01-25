@@ -147,6 +147,7 @@ public class ClientHandler extends Thread {
 							out.writeObject(Message.buildTypeMessage(ChatMessageType.UsernameChange));
 						}
 					}
+				
 				default:
 					request = (Message) in.readObject();
 					break;

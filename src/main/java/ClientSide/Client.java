@@ -13,7 +13,7 @@ import Interface.MainWindow;
 public class Client {
 
 	private final static int port = 5001;
-	private final static String Server_IP="127.0.0.1"; //Put Server IP here
+	private final static String Server_IP="10.1.5.74"; //Put Server IP here
 	private static boolean uniqueUsername=false;
 	private static String username=null;
 	private static Socket socket;
