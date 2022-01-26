@@ -81,6 +81,7 @@ public class MainWindow {
 		mainFrame.getContentPane().add(scrollPane);
 
 		broadArea = new JTextArea();
+		broadArea.setEditable(false);
 		scrollPane.setViewportView(broadArea);
 
 		broadField = new JTextField();

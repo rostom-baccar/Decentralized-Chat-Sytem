@@ -57,6 +57,7 @@ public class ChatWindow {
 		chatFrame.getContentPane().add(scrollPane);
 
 		chatArea = new JTextArea();
+		chatArea.setEditable(false);
 		scrollPane.setViewportView(chatArea);
 
 		chatField = new JTextField();
