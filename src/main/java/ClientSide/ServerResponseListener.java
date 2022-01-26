@@ -114,7 +114,6 @@ public class ServerResponseListener extends Thread{
 					ChatWindow chatWindowTarget = findRemoteChatWindow(oldUsername);
 					if (chatWindowTarget != null ) {
 						chatWindowTarget.setRemoteUsername(newUsername);
-						System.out.println("new usernameeee  "+newUsername);
 						chatWindowTarget.setPrivateChatLabel(newUsername);
 						chatWindowTarget.getChatArea().setText("");
 
@@ -122,14 +121,14 @@ public class ServerResponseListener extends Thread{
 							String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();
 							Database.LoadChatHistory(Client.getClientdb(),chatWindowTarget, LocalipAddress, ipAddress1,MainWindow.getUsername(), newUsername);
 
-//							ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,ipAddress1);
-//							while (rs.next()){
-//								if (rs.getString(1).equals(LocalipAddress)) {
-//									chatWindowTarget.getChatArea().append("["+MainWindow.getUsername()+"]: "+rs.getString(3)+"\n");
-//								}else {
-//									chatWindowTarget.getChatArea().append("["+newUsername+"]: "+rs.getString(3)+"\n");
-//								}
-//							}
+							//							ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,ipAddress1);
+							//							while (rs.next()){
+							//								if (rs.getString(1).equals(LocalipAddress)) {
+							//									chatWindowTarget.getChatArea().append("["+MainWindow.getUsername()+"]: "+rs.getString(3)+"\n");
+							//								}else {
+							//									chatWindowTarget.getChatArea().append("["+newUsername+"]: "+rs.getString(3)+"\n");
+							//								}
+							//							}
 						} catch (Exception ee) {
 							System.out.print("Error while loading History ! \n");
 							ee.printStackTrace();
@@ -155,14 +154,14 @@ public class ServerResponseListener extends Thread{
 					String privateMessage=serverResponse.getContent();
 					ChatWindow chatWindowTarget1=findRemoteChatWindow(sender);
 
-					if (chatWindowTarget1 != null) {
-						LocalDateTime now1 = LocalDateTime.now();  
-						DateTimeFormatter dtf11 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");   
-						String tstamp11 = dtf11.format(now1);  
 
-						chatWindowTarget1.getChatArea().append("                                                     "+tstamp11.substring(0,16)+"\n");
-						chatWindowTarget1.getChatArea().append("["+sender+"] "+privateMessage+"\n");
-					}
+					LocalDateTime now1 = LocalDateTime.now();  
+					DateTimeFormatter dtf11 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");   
+					String tstamp11 = dtf11.format(now1);  
+
+					chatWindowTarget1.getChatArea().append("                                                     "+tstamp11.substring(0,16)+"\n");
+					chatWindowTarget1.getChatArea().append("["+sender+"] "+privateMessage+"\n");
+
 					// chatWindowTarget.getChatArea().append("["+sender+"] "+privateMessage+"\n");
 					break;
 

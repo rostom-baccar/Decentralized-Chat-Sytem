@@ -156,6 +156,10 @@ public class MainWindow {
 					}
 					
 				}
+//				for (ChatWindow c : chatWindows) {
+//					c.getChatFrame().setVisible(false);
+//					chatWindows.remove(c);
+//				}
 				newUsernameField.setText("");
 			}
 		});

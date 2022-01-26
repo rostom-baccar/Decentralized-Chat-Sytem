@@ -154,4 +154,9 @@ public class ChatWindow {
 		this.privateChatLabel = newChatLabel;
 	}
 
+
+	public JFrame getChatFrame() {
+		return chatFrame;
+	}
+
 }

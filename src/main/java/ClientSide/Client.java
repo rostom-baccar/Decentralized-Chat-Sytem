@@ -9,7 +9,7 @@ import java.net.Socket;
 import Database.Database;
 import Interface.LoginWindow;
 import Interface.MainWindow;
-import Interface.ServerIpAddress;
+import Interface.ServerIPAddress;
 
 public class Client {
 
@@ -28,9 +28,9 @@ public class Client {
 	//Adding a try-catch clause for each line would make the code very hard to read
 	public static void main(String[] args) throws IOException, InterruptedException {
 		
-		new ServerIpAddress();
+		new ServerIPAddress();
 		while (Server_IP == null) {
-			Server_IP=ServerIpAddress.getServerIP();
+			Server_IP=ServerIPAddress.getServerIP();
 		}
 		
 		//Creating socket client from port and the Server IP. Note: The server uses the same port. 
