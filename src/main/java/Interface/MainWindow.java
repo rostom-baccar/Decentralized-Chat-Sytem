@@ -101,6 +101,7 @@ public class MainWindow {
 		JLabel groupChatLabel = new JLabel("GROUP CHAT");
 		groupChatLabel.setBounds(140, 48, 112, 14);
 		mainFrame.getContentPane().add(groupChatLabel);
+		mainFrame.getRootPane().setDefaultButton(sendButton);
 		mainFrame.setVisible(true);
 
 		//When the window is close a disconnect query is sent 

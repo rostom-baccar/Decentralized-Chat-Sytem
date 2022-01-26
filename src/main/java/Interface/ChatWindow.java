@@ -68,6 +68,8 @@ public class ChatWindow {
 		sendButton = new JButton("Send");
 		sendButton.setBounds(219, 312, 75, 25);
 		chatFrame.getContentPane().add(sendButton);
+		chatFrame.getRootPane().setDefaultButton(sendButton);
+
 
 		chatFrame.setVisible(true);
 
@@ -144,6 +146,12 @@ public class ChatWindow {
 	
 	public void setRemoteUsername(String remoteUser) {
 		this.remoteUser = remoteUser;
+	}
+
+
+	public void setPrivateChatLabel(String newUsername) {
+		JLabel newChatLabel = new JLabel("[PRIVATE CHAT]  "+newUsername);
+		this.privateChatLabel = newChatLabel;
 	}
 
 }

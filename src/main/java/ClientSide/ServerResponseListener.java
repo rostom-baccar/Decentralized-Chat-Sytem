@@ -114,7 +114,8 @@ public class ServerResponseListener extends Thread{
 					ChatWindow chatWindowTarget = findRemoteChatWindow(oldUsername);
 					if (chatWindowTarget != null ) {
 						chatWindowTarget.setRemoteUsername(newUsername);
-
+						System.out.println("new usernameeee  "+newUsername);
+						chatWindowTarget.setPrivateChatLabel(newUsername);
 						chatWindowTarget.getChatArea().setText("");
 
 						try {

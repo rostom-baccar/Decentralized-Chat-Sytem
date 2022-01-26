@@ -5,16 +5,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import Interface.KillServerWindow;
+
 public class Server {
  
 	final static int port = 5001;
 	private static ServerSocket serverSocket;
 	private static Socket clientSocket;
+	private static boolean runServer = true;
 	private static ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
 
 
 	public static void main(String[] args) throws InterruptedException {
 		
+		new KillServerWindow();
 		//Sockets
 		try {
 			serverSocket = new ServerSocket(port);
@@ -22,7 +26,7 @@ public class Server {
 			e.printStackTrace();
 		}
 		
-		while(true) {
+		while(runServer) {
 			
 			//Server accepts all connections 
 			try {
@@ -53,5 +57,13 @@ public class Server {
 
 	public static ArrayList<ClientHandler> getClients(){
 		return clients;
+	}
+
+	public static ServerSocket getServerSocket() {
+		return serverSocket;
+	}
+
+	public static void setRunServer(boolean runServer) {
+		Server.runServer = runServer;
 	}
 }
