@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JOptionPane;
+
+import Database.Database;
 import Interface.ChatWindow;
 import Interface.MainWindow;
 import Model.ChatMessageType;
@@ -67,7 +69,7 @@ public class ServerResponseListener extends Thread{
 					LocalDateTime now = LocalDateTime.now();  
 					DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");   
 					String tstamp1 = dtf1.format(now);  					
-					MainWindow.getBroadArea().append("                                                    "+tstamp1.substring(0,16)+"\n");
+					MainWindow.getBroadArea().append("                                                     "+tstamp1.substring(0,16)+"\n");
 					MainWindow.getBroadArea().append(serverResponse.getContent()+"\n");
 					break;
 
@@ -117,15 +119,16 @@ public class ServerResponseListener extends Thread{
 
 						try {
 							String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();
+							Database.LoadChatHistory(Client.getClientdb(),chatWindowTarget, LocalipAddress, ipAddress1,MainWindow.getUsername(), newUsername);
 
-							ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,ipAddress1);
-							while (rs.next()){
-								if (rs.getString(1).equals(LocalipAddress)) {
-									chatWindowTarget.getChatArea().append("["+MainWindow.getUsername()+"]: "+rs.getString(3)+"\n");
-								}else {
-									chatWindowTarget.getChatArea().append("["+newUsername+"]: "+rs.getString(3)+"\n");
-								}
-							}
+//							ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,ipAddress1);
+//							while (rs.next()){
+//								if (rs.getString(1).equals(LocalipAddress)) {
+//									chatWindowTarget.getChatArea().append("["+MainWindow.getUsername()+"]: "+rs.getString(3)+"\n");
+//								}else {
+//									chatWindowTarget.getChatArea().append("["+newUsername+"]: "+rs.getString(3)+"\n");
+//								}
+//							}
 						} catch (Exception ee) {
 							System.out.print("Error while loading History ! \n");
 							ee.printStackTrace();
@@ -151,13 +154,14 @@ public class ServerResponseListener extends Thread{
 					String privateMessage=serverResponse.getContent();
 					ChatWindow chatWindowTarget1=findRemoteChatWindow(sender);
 
-					LocalDateTime now1 = LocalDateTime.now();  
-					DateTimeFormatter dtf11 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");   
-					String tstamp11 = dtf11.format(now1);  
+					if (chatWindowTarget1 != null) {
+						LocalDateTime now1 = LocalDateTime.now();  
+						DateTimeFormatter dtf11 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");   
+						String tstamp11 = dtf11.format(now1);  
 
-					chatWindowTarget1.getChatArea().append("                                       "+tstamp11.substring(0,16)+"\n");
-					chatWindowTarget1.getChatArea().append("["+sender+"] "+privateMessage+"\n");
-
+						chatWindowTarget1.getChatArea().append("                                                     "+tstamp11.substring(0,16)+"\n");
+						chatWindowTarget1.getChatArea().append("["+sender+"] "+privateMessage+"\n");
+					}
 					// chatWindowTarget.getChatArea().append("["+sender+"] "+privateMessage+"\n");
 					break;
 

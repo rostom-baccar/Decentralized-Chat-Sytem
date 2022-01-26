@@ -1,20 +1,26 @@
 package Database;
 
 import java.sql.* ;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import ClientSide.Client;
+import Interface.ChatWindow;
+import Interface.MainWindow;
 
 public class Database {
 	
 
 
-//  INSA Database
-	private String dbaddr="jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_018";
-	private String username="tp_servlet_018";
-	private String mdp = "izu6uNgu";
+////  INSA Database
+//	private String dbaddr="jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_018";
+//	private String username="tp_servlet_018";
+//	private String mdp = "izu6uNgu";
 	
 //	Local DB for tests
-//	private String dbaddr="jdbc:mysql://localhost:3306/demodb";
-//	private String username="root";
-//	private String mdp = "root";	
+	private String dbaddr="jdbc:mysql://localhost:3306/demodb";
+	private String username="root";
+	private String mdp = "root";	
 	
 //	Attributs
 	private static Connection con;
@@ -73,6 +79,29 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
+		}
+	}
+	
+	public static void LoadChatHistory (Database clientdb, ChatWindow chatWindow, String LocalIpAddress, String RemoteIpAddress, String username, String remoteUser) {
+		try {
+			
+			
+			ResultSet rs = clientdb.getHistory(LocalIpAddress,RemoteIpAddress);
+			while (rs.next()){
+				if (rs.getString(1).equals(LocalIpAddress)) {
+					String tstamp = rs.getString(4) ;
+					chatWindow.getChatArea().append("                                                     "+tstamp.substring(0,16)+"\n");
+					chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
+				}else {
+					String tstamp = rs.getString(4) ;
+					chatWindow.getChatArea().append("                                                     "+tstamp.substring(0,16)+"\n");
+					chatWindow.getChatArea().append("["+remoteUser+"]: "+rs.getString(3)+"\n");
+				}
+			}
+		} catch (Exception ee) {
+			System.out.print("Error while loading History ! \n");
+			ee.printStackTrace();
+
 		}
 	}
 	

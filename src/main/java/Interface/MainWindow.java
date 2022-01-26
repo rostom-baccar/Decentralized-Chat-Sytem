@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import ClientSide.Client;
 import ClientSide.ServerResponseListener;
+import Database.Database;
 import Model.ChatMessageType;
 import Model.LocalIpAddress;
 import Model.Message;
@@ -138,20 +139,23 @@ public class MainWindow {
 						String RemoteipAddress = c.getIpAddress();
 						String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();
 						
-						ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,RemoteipAddress);
-						while (rs.next()){
-							if (rs.getString(1).equals(LocalipAddress)) {
-								c.getChatArea().append("["+newUsername+"]: "+rs.getString(3)+"\n");
-							}else {
-								c.getChatArea().append("["+c.getRemoteUser()+"]: "+rs.getString(3)+"\n");
-							}
-						}
+						
+						Database.LoadChatHistory(Client.getClientdb(), c , LocalipAddress, RemoteipAddress, newUsername, c.getRemoteUser());
+//						ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,RemoteipAddress);
+//						while (rs.next()){
+//							if (rs.getString(1).equals(LocalipAddress)) {
+//								c.getChatArea().append("["+newUsername+"]: "+rs.getString(3)+"\n");
+//							}else {
+//								c.getChatArea().append("["+c.getRemoteUser()+"]: "+rs.getString(3)+"\n");
+//							}
+//						}
 					} catch (Exception ee) {
 						System.out.print("Error while loading History ! \n");
 						ee.printStackTrace();
 					}
 					
 				}
+				newUsernameField.setText("");
 			}
 		});
 
@@ -162,20 +166,20 @@ public class MainWindow {
 				String ipAddress = targetRemoteUser.getIpAdress();
 				chatWindow = new ChatWindow(username, remoteUser,ipAddress, out);
 				chatWindows.add(chatWindow);
-
 				//Loading Chat History
+
 				try {
 					String RemoteipAddress = ipAddress;
 					String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();
-					
-					ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,RemoteipAddress);
-					while (rs.next()){
-						if (rs.getString(1).equals(LocalipAddress)) {
-							chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
-						}else {
-							chatWindow.getChatArea().append("["+remoteUser+"]: "+rs.getString(3)+"\n");
-						}
-					}
+					Database.LoadChatHistory(Client.getClientdb(),chatWindow, LocalipAddress, RemoteipAddress,username, remoteUser);
+//					ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,RemoteipAddress);
+//					while (rs.next()){
+//						if (rs.getString(1).equals(LocalipAddress)) {
+//							chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
+//						}else {
+//							chatWindow.getChatArea().append("["+remoteUser+"]: "+rs.getString(3)+"\n");
+//						}
+//					}
 				} catch (Exception ee) {
 					System.out.print("Error while loading History ! \n");
 					ee.printStackTrace();
@@ -199,29 +203,7 @@ public class MainWindow {
 		});
 		
 		
-//		chatButton.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				String remoteUser=(String) stringUsersList.getSelectedItem();
-//				RemoteUser targetRemoteUser = findRemoteUser(remoteUser);
-//				String ipAddress = targetRemoteUser.getIpAdress();
-//				chatWindow = new ChatWindow(username, remoteUser, out);
-//				chatWindows.add(chatWindow);
-//
-//				if (ServerResponseListener.isConversationInitiator())
-//				{
-//					try {
-//						out.writeObject(Message.buildMessage2(ChatMessageType.Initiator,null,username,remoteUser));
-//					} catch (IOException e1) {e1.printStackTrace();}
-//				}
-//				else {
-//					try {
-//						out.writeObject(Message.buildMessage2(ChatMessageType.Recipient,null,username,remoteUser));
-//					} catch (IOException e1) {e1.printStackTrace();}
-//				}
-//				ServerResponseListener.setConversationInitiator(true);
-//			}
-//
-//		});
+
 
 		disconnectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -238,7 +220,9 @@ public class MainWindow {
 				try {
 					out.writeObject(Message.buildMessage(ChatMessageType.BroadMessage,message));
 				} catch (IOException e1) {e1.printStackTrace();}
+				broadField.setText("");
 			}
+			
 		});
 
 	}

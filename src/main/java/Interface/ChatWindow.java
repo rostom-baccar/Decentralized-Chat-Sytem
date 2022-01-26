@@ -80,7 +80,7 @@ public class ChatWindow {
 
 		sendButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() == sendButton) {
+				if(e.getSource() == sendButton) { 
 					String message = chatField.getText();
 					
 					try {
@@ -90,12 +90,10 @@ public class ChatWindow {
 						LocalDateTime now = LocalDateTime.now();  
 						String tstamp = dtf.format(now);  
 						
-						DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");   
-						String tstamp1 = dtf.format(now);  
 
 						int num = Client.getClientdb().insertRow(LocalipAddress, RemoteipAddress, message, tstamp);
 						
-						chatArea.append("                                       "+tstamp1.substring(0,16)+"\n");
+						chatArea.append("                                                     "+tstamp.substring(0,16)+"\n");
 						chatArea.append("["+username+"]: "+message+"\n");
 					} catch (Exception e2) {e2.printStackTrace();}
 					
@@ -105,6 +103,7 @@ public class ChatWindow {
 						out.writeObject(Message.buildMessage2(ChatMessageType.PrivateMessage,message,username,remoteUser));
 					} catch (IOException e1) {e1.printStackTrace();}
 				}
+				chatField.setText("");
 			}
 		});
 

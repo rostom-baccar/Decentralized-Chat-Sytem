@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
-
+ 
 	final static int port = 5001;
 	private static ServerSocket serverSocket;
 	private static Socket clientSocket;
