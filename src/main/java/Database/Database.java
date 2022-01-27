@@ -47,10 +47,7 @@ public class Database {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			con=DriverManager.getConnection(dbaddr,username,mdp);
 			stmt = con.createStatement();
-			System.out.println("Connected to Database. \n");
-			
 			stmt.execute(sqlCreateTab);
-			System.out.println("Table created. \n");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

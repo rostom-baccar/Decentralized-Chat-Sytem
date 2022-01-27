@@ -34,11 +34,7 @@ public class ServerResponseListener extends Thread{
 			Message serverResponse = (Message) in.readObject();
 
 			while(serverResponse!=null) {
-				System.out.println("[ServerResponseListener] Query type: "+serverResponse.getType());
-				System.out.println("[ServerResponseListener] Query content: "+serverResponse.getContent());
-				System.out.println("[ServerResponseListener] Query argument1: "+serverResponse.getArgument1());
-				System.out.println("[ServerResponseListener] Query argument2: "+serverResponse.getArgument2());
-				System.out.println();
+
 				switch( (ChatMessageType) serverResponse.getType()) {
 
 				case Notification:
@@ -141,9 +137,7 @@ public class ServerResponseListener extends Thread{
 
 				case PrivateMessage :
 
-					String sender = serverResponse.getArgument1();
-					System.out.println(sender);
-					
+					String sender = serverResponse.getArgument1();					
 					String privateMessage=serverResponse.getContent();
 					ChatWindow chatWindowTarget1=findRemoteChatWindow(sender);
 

@@ -63,7 +63,6 @@ public class LoginWindow extends JPanel implements ActionListener{
 		try {
 			out.writeObject(Message.buildMessage1(ChatMessageType.Connect,username,ipAddress));
 		} catch (IOException e1) {e1.printStackTrace();}
-		System.out.println("[LoginWindow] Username: "+username);		
 	}
 
 

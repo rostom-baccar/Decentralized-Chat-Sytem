@@ -44,11 +44,7 @@ public class ClientHandler extends Thread {
 
 			while(request!=null) {
 
-				System.out.println("[ClientHandler] Query type: "+request.getType());
-				System.out.println("[ClientHandler] Query content: "+request.getContent());
-				System.out.println("[ClientHandler] Query argument1: "+request.getArgument1());
-				System.out.println("[ClientHandler] Query argument2: "+request.getArgument2());
-				System.out.println();
+
 
 				switch(request.getType()) {
 
@@ -63,7 +59,6 @@ public class ClientHandler extends Thread {
 						clientUsername=request.getContent(); //we save it so that each client handler knows its primary client
 						ipAddress = request.getArgument1();
 						broadcast(ChatMessageType.BroadConnect,clientUsername+" just connected",clientUsername,ipAddress,null);
-						System.out.println("[ClientHandler] "+clientUsername+" "+ipAddress);
 						this.canBeAdded=true;
 						request = (Message) in.readObject();
 
@@ -142,7 +137,9 @@ public class ClientHandler extends Thread {
 					else {
 						ClientHandler targetThread=findThread(oldUsername);
 						if (targetThread!=null) {
+							Server.getClients().remove(targetThread);
 							targetThread.setClientUsername(newUsername);
+							Server.getClients().add(targetThread);
 							broadcast(ChatMessageType.BroadUsernameChange,oldUsername+" has changed their username to "+newUsername,oldUsername,newUsername,ipAddress);
 							out.writeObject(Message.buildTypeMessage(ChatMessageType.UsernameChange));
 						}

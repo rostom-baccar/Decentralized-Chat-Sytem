@@ -146,12 +146,11 @@ public class MainWindow {
 						System.out.print("Error while loading History ! \n");
 						ee.printStackTrace();
 					}
+					stringUsersList.removeItem(username);
 					
 				}
-//				for (ChatWindow c : chatWindows) {
-//					c.getChatFrame().setVisible(false);
-//					chatWindows.remove(c);
-//				}
+
+				
 				newUsernameField.setText("");
 			}
 		});
