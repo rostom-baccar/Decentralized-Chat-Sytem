@@ -11,31 +11,33 @@ Professional Decentralized Chat System using Socket Programming
 - Ideally more that two computers on that Local Network (in order to properly test all the app features)
 
 ## User Manual
-- Identify the IP Adress of the computer that will act as the Server
-- Assign that value to the Server_IP attribute in the Client class. You'll have to do that with every computer that you want to use as Client
-- Run Jenkins Pipeline 
-- Open a terminal in the Folder that contains the generated jar file
+Our application runs on a single server that needs to be started before creating any clients <br />
+In order to test our app, please follow these steps:
+- Open the Server.jar file on the Server machine
+- Open the Client.jar file on each Client machine <br />
 
-  - Use this command to run the Server
-  ```
-  java -cp INSA-POO-Project-Chat-Sytem-4IR-0.0.1-SNAPSHOT.jar ServerSide.Server
-  ```
-  
-  - Use this command to create a Client
-  ```
-  java -cp INSA-POO-Project-Chat-Sytem-4IR-0.0.1-SNAPSHOT.jar ClientSide.Client
-  ```
+If you encounter problems using the JAR files, you can always clone the repository and follow these steps:
+- Execute the Server class on the Server machine
+- Execute the Client class on each Client machine
 
 ## App Features
+Server Side
+- Kill the server at any time <br />
+
+Client side
 - Disconnect at any time
 - Edit username while being connected (it has to be unique)
+- Get the names of all the connected users at any time
 - Private Chat with multiple users
+- The private chats display the history of all the messages you exchanged with a certain user
+- The Chat Windows reload with the new username when a user changes their username
 - Group Chat with all the connected users
-- Get the names of all connected people at any time
 - Getting notified when someone:
   - connects
   - disconnects
   - changes their username
   - wants to chat with you
   - the person you want to chat with opens a Chat Window with you
+
+
 
