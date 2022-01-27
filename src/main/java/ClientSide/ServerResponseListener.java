@@ -121,14 +121,6 @@ public class ServerResponseListener extends Thread{
 							String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();
 							Database.LoadChatHistory(Client.getClientdb(),chatWindowTarget, LocalipAddress, ipAddress1,MainWindow.getUsername(), newUsername);
 
-							//							ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,ipAddress1);
-							//							while (rs.next()){
-							//								if (rs.getString(1).equals(LocalipAddress)) {
-							//									chatWindowTarget.getChatArea().append("["+MainWindow.getUsername()+"]: "+rs.getString(3)+"\n");
-							//								}else {
-							//									chatWindowTarget.getChatArea().append("["+newUsername+"]: "+rs.getString(3)+"\n");
-							//								}
-							//							}
 						} catch (Exception ee) {
 							System.out.print("Error while loading History ! \n");
 							ee.printStackTrace();
@@ -151,9 +143,10 @@ public class ServerResponseListener extends Thread{
 				case PrivateMessage :
 
 					String sender = serverResponse.getArgument1();
+					System.out.println(sender);
+					
 					String privateMessage=serverResponse.getContent();
 					ChatWindow chatWindowTarget1=findRemoteChatWindow(sender);
-
 
 					LocalDateTime now1 = LocalDateTime.now();  
 					DateTimeFormatter dtf11 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");   

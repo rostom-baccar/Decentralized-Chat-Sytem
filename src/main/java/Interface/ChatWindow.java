@@ -159,4 +159,9 @@ public class ChatWindow {
 		return chatFrame;
 	}
 
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 }

@@ -136,20 +136,14 @@ public class MainWindow {
 						
 				for (ChatWindow c : chatWindows) {
 					c.getChatArea().setText("");
+					c.setUsername(newUsername);
 					try {
 						String RemoteipAddress = c.getIpAddress();
 						String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();
 						
 						
 						Database.LoadChatHistory(Client.getClientdb(), c , LocalipAddress, RemoteipAddress, newUsername, c.getRemoteUser());
-//						ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,RemoteipAddress);
-//						while (rs.next()){
-//							if (rs.getString(1).equals(LocalipAddress)) {
-//								c.getChatArea().append("["+newUsername+"]: "+rs.getString(3)+"\n");
-//							}else {
-//								c.getChatArea().append("["+c.getRemoteUser()+"]: "+rs.getString(3)+"\n");
-//							}
-//						}
+
 					} catch (Exception ee) {
 						System.out.print("Error while loading History ! \n");
 						ee.printStackTrace();
@@ -177,14 +171,7 @@ public class MainWindow {
 					String RemoteipAddress = ipAddress;
 					String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();
 					Database.LoadChatHistory(Client.getClientdb(),chatWindow, LocalipAddress, RemoteipAddress,username, remoteUser);
-//					ResultSet rs = Client.getClientdb().getHistory(LocalipAddress,RemoteipAddress);
-//					while (rs.next()){
-//						if (rs.getString(1).equals(LocalipAddress)) {
-//							chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
-//						}else {
-//							chatWindow.getChatArea().append("["+remoteUser+"]: "+rs.getString(3)+"\n");
-//						}
-//					}
+
 				} catch (Exception ee) {
 					System.out.print("Error while loading History ! \n");
 					ee.printStackTrace();
