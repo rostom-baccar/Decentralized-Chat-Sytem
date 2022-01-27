@@ -2,16 +2,11 @@ package Interface;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.SocketException;
 
 import javax.swing.*;
-import Model.ChatMessageType;
-import Model.LocalIpAddress;
-import Model.Message;
 
-public class ServerIPAddress extends JPanel implements ActionListener{
+public class ServerIPAddressWindow extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	private static String ServerIP;
@@ -19,14 +14,14 @@ public class ServerIPAddress extends JPanel implements ActionListener{
     private JButton ServerIPButton;
     private JTextField ServerIPField;
     private JPanel ServerIPPanel;
-    private JLabel typeUsernameLabel;
+    private JLabel typeIPLabel;
 
-    public ServerIPAddress() throws SocketException {
+    public ServerIPAddressWindow() throws SocketException {
     	
     	
     	ServerIPFrame=new JFrame ("Server IP");
     	ServerIPPanel = new JPanel(new GridLayout(10,10));
-        typeUsernameLabel = new JLabel("Type Server IP Address");
+        typeIPLabel = new JLabel("Type Server IP Address");
 
         ServerIPButton = new JButton ("SEND");
 		ServerIPField = new JTextField (5);
@@ -35,9 +30,9 @@ public class ServerIPAddress extends JPanel implements ActionListener{
 
 		ServerIPButton.setBounds (77, 75, 85, 23);
         ServerIPField.setBounds (22, 45, 190, 23);
-        typeUsernameLabel.setBounds (72, 10, 100, 25); 
+        typeIPLabel.setBounds (50, 10, 200, 25); 
        
-        ServerIPFrame.add (typeUsernameLabel);
+        ServerIPFrame.add (typeIPLabel);
         ServerIPFrame.add (ServerIPField);
         ServerIPFrame.add (ServerIPButton);
         
@@ -67,7 +62,7 @@ public class ServerIPAddress extends JPanel implements ActionListener{
 
 
 	public static void setServerIP(String username) {
-		ServerIPAddress.ServerIP = username;
+		ServerIPAddressWindow.ServerIP = username;
 	}
 
 }

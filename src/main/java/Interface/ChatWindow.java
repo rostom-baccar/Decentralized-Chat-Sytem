@@ -93,9 +93,9 @@ public class ChatWindow {
 						String tstamp = dtf.format(now);  
 						
 
-						int num = Client.getClientdb().insertRow(LocalipAddress, RemoteipAddress, message, tstamp);
+						Client.getClientdb().insertRow(LocalipAddress, RemoteipAddress, message, tstamp);
 						
-						chatArea.append("                                                     "+tstamp.substring(0,16)+"\n");
+						chatArea.append("                                                "+tstamp.substring(0,16)+"\n");
 						chatArea.append("["+username+"]: "+message+"\n");
 					} catch (Exception e2) {e2.printStackTrace();}
 					

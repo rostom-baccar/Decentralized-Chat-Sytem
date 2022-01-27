@@ -3,13 +3,7 @@ package Interface;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.SocketException;
-
 import javax.swing.*;
-import Model.ChatMessageType;
-import Model.LocalIpAddress;
-import Model.Message;
 import ServerSide.ClientHandler;
 import ServerSide.Server;
 
@@ -32,8 +26,8 @@ public class KillServerWindow extends JPanel implements ActionListener{
         
         killButton.addActionListener(this);
 
-        killButton.setBounds (77, 75, 85, 23);
-        killLabel.setBounds (72, 10, 100, 25); 
+        killButton.setBounds (77, 60, 85, 23);
+        killLabel.setBounds (72, 25, 100, 25); 
        
         killFrame.add (killLabel);
         killFrame.add (killButton);
@@ -50,6 +44,7 @@ public class KillServerWindow extends JPanel implements ActionListener{
     }
 
 
+	@SuppressWarnings("deprecation")
 	public void actionPerformed(ActionEvent event) {
 		try {
 			Server.getServerSocket().close();

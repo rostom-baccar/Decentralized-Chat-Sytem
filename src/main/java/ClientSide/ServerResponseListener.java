@@ -2,7 +2,6 @@ package ClientSide;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -152,8 +151,8 @@ public class ServerResponseListener extends Thread{
 					DateTimeFormatter dtf11 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");   
 					String tstamp11 = dtf11.format(now1);  
 
-					chatWindowTarget1.getChatArea().append("                                                     "+tstamp11.substring(0,16)+"\n");
-					chatWindowTarget1.getChatArea().append("["+sender+"] "+privateMessage+"\n");
+					chatWindowTarget1.getChatArea().append("                                                "+tstamp11.substring(0,16)+"\n");
+					chatWindowTarget1.getChatArea().append("["+sender+"]: "+privateMessage+"\n");
 
 					// chatWindowTarget.getChatArea().append("["+sender+"] "+privateMessage+"\n");
 					break;
