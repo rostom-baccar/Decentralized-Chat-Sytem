@@ -145,7 +145,7 @@ public class ServerResponseListener extends Thread{
 					DateTimeFormatter dtf11 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");   
 					String tstamp11 = dtf11.format(now1);  
 
-					chatWindowTarget1.getChatArea().append("                                                "+tstamp11.substring(0,16)+"\n");
+					chatWindowTarget1.getChatArea().append("                                    "+tstamp11.substring(0,16)+"\n");
 					chatWindowTarget1.getChatArea().append("["+sender+"]: "+privateMessage+"\n");
 
 					// chatWindowTarget.getChatArea().append("["+sender+"] "+privateMessage+"\n");

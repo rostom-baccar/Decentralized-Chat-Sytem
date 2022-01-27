@@ -78,11 +78,11 @@ public class Database {
 			while (rs.next()){
 				if (rs.getString(1).equals(LocalIpAddress)) {
 					String tstamp = rs.getString(4) ;
-					chatWindow.getChatArea().append("                                                "+tstamp.substring(0,16)+"\n");
+					chatWindow.getChatArea().append("                                    "+tstamp.substring(0,16)+"\n");
 					chatWindow.getChatArea().append("["+username+"]: "+rs.getString(3)+"\n");
 				}else {
 					String tstamp = rs.getString(4) ;
-					chatWindow.getChatArea().append("                                                "+tstamp.substring(0,16)+"\n");
+					chatWindow.getChatArea().append("                                    "+tstamp.substring(0,16)+"\n");
 					chatWindow.getChatArea().append("["+remoteUser+"]: "+rs.getString(3)+"\n");
 				}
 			}
