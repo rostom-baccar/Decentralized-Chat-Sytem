@@ -1,6 +1,5 @@
 # INSA-POO-Project-Chat-Sytem-4IR
 Professional Decentralized Chat System using Socket Programming
-## [APP STILL IN DEVELOPMENT]
 
 ## Authors
 - Rostom BACCAR 4IR B1
