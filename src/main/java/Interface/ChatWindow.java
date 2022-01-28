@@ -149,12 +149,6 @@ public class ChatWindow {
 	}
 
 
-	public void setPrivateChatLabel(String newUsername) {
-		JLabel newChatLabel = new JLabel("[PRIVATE CHAT]  "+newUsername);
-		this.privateChatLabel = newChatLabel;
-	}
-
-
 	public JFrame getChatFrame() {
 		return chatFrame;
 	}

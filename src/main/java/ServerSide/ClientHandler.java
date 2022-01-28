@@ -24,7 +24,7 @@ public class ClientHandler extends Thread {
 
 	public ClientHandler(Socket clientSocket) throws IOException{
 		this.clientSocket=clientSocket;
-		
+
 		InputStream inputStream = clientSocket.getInputStream();
 		in = new ObjectInputStream(inputStream);
 
@@ -67,7 +67,7 @@ public class ClientHandler extends Thread {
 					break;
 
 				case Disconnect:
-					
+
 					broadcast(MessageType.BroadDisconnect,clientUsername+" disconnected",clientUsername,ipAddress,null);
 					Server.getClients().remove(this);
 					this.canBeAdded=false;
@@ -108,13 +108,7 @@ public class ClientHandler extends Thread {
 					String remoteUser1=request.getArgument2();
 					ClientHandler remoteClientHandler1=findThread(remoteUser1);
 
-					if (remoteClientHandler1!=null) {
-						Message responseToRemoteUser = new Message(MessageType.Initiator,initiator+" wants to chat. Open a Chat Window with them!");
-						remoteClientHandler1.out.writeObject(responseToRemoteUser);
-					}
-					else {
-						out.writeObject(Message.buildMessage(MessageType.Notification,"Sorry, the user you are trying to chat with is not connected!"));
-					}
+					remoteClientHandler1.out.writeObject(Message.buildMessage(MessageType.Initiator,initiator+" wants to chat. Open a Chat Window with them!"));
 					request = (Message) in.readObject();
 					break;
 
@@ -144,7 +138,7 @@ public class ClientHandler extends Thread {
 							out.writeObject(Message.buildTypeMessage(MessageType.UsernameChange));
 						}
 					}
-				
+
 				default:
 					request = (Message) in.readObject();
 					break;
@@ -194,7 +188,7 @@ public class ClientHandler extends Thread {
 
 		case BroadUsernameChange :
 			for (ClientHandler client : Server.getClients()) {
-					client.out.writeObject(Message.buildMessage3(type,"**"+message+"**",argument1,argument2, argument3));
+				client.out.writeObject(Message.buildMessage3(type,"**"+message+"**",argument1,argument2, argument3));
 			}
 			break;
 

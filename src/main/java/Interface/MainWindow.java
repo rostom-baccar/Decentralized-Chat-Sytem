@@ -133,8 +133,10 @@ public class MainWindow {
 				uniqueNewUsername=false;
 						
 				for (ChatWindow c : chatWindows) {
+					
 					c.getChatArea().setText("");
 					c.setUsername(newUsername);
+					
 					try {
 						String RemoteipAddress = c.getIpAddress();
 						String LocalipAddress = LocalIpAddress.getLocalAddress().getHostAddress();

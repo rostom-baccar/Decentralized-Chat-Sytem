@@ -44,7 +44,7 @@ public class Client {
 		InputStream inputStream = socket.getInputStream();
 		ObjectInputStream in = new ObjectInputStream(inputStream);
 
-		//Receiving: we use a thread because we need a while loop in order to receive information, which is a blocking process
+		//Receiving: we use a thread because we need a while loop in order to receive information
 		ServerResponseListener serverConnection = new ServerResponseListener(in);
 		serverConnection.start();
 		
@@ -57,6 +57,8 @@ public class Client {
 		
 		//MainWindow
 		new MainWindow(username,out);
+		
+		//Database
 		clientdb = new Database ();
 	}
 
