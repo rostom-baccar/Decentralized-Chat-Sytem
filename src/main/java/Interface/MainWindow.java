@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 import ClientSide.Client;
 import ClientSide.ServerResponseListener;
 import Database.Database;
-import Model.ChatMessageType;
+import Model.MessageType;
 import Model.LocalIpAddress;
 import Model.Message;
 import Model.RemoteUser;
@@ -107,18 +107,18 @@ public class MainWindow {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				try {
-					getMainWindow().out.writeObject(Message.buildTypeMessage(ChatMessageType.Disconnect));
+					getMainWindow().out.writeObject(Message.buildTypeMessage(MessageType.Disconnect));
 				} catch (IOException e1) {e1.printStackTrace();}			}
 		});
 
 		//When someone new connects we update their users list
-		this.out.writeObject(Message.buildTypeMessage(ChatMessageType.UsersList));
+		this.out.writeObject(Message.buildTypeMessage(MessageType.UsersList));
 
 		changeUsernameButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				newUsername = newUsernameField.getText();
 				try {
-					out.writeObject(Message.buildMessage2(ChatMessageType.UsernameChange,null,username,newUsername));
+					out.writeObject(Message.buildMessage2(MessageType.UsernameChange,null,username,newUsername));
 				} catch (IOException e1) {e1.printStackTrace();}
 
 				try {
@@ -178,12 +178,12 @@ public class MainWindow {
 				if (ServerResponseListener.isConversationInitiator())
 				{
 					try {
-						out.writeObject(Message.buildMessage2(ChatMessageType.Initiator,null,username,remoteUser));
+						out.writeObject(Message.buildMessage2(MessageType.Initiator,null,username,remoteUser));
 					} catch (IOException e1) {e1.printStackTrace();}
 				}
 				else {
 					try {
-						out.writeObject(Message.buildMessage2(ChatMessageType.Recipient,null,username,remoteUser));
+						out.writeObject(Message.buildMessage2(MessageType.Recipient,null,username,remoteUser));
 					} catch (IOException e1) {e1.printStackTrace();}
 				}
 				ServerResponseListener.setConversationInitiator(true);
@@ -197,7 +197,7 @@ public class MainWindow {
 		disconnectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					out.writeObject(Message.buildTypeMessage(ChatMessageType.Disconnect));
+					out.writeObject(Message.buildTypeMessage(MessageType.Disconnect));
 				} catch (IOException e1) {e1.printStackTrace();}
 				mainFrame.setVisible (false);
 			}
@@ -207,7 +207,7 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 				String message = broadField.getText();
 				try {
-					out.writeObject(Message.buildMessage(ChatMessageType.BroadMessage,message));
+					out.writeObject(Message.buildMessage(MessageType.BroadMessage,message));
 				} catch (IOException e1) {e1.printStackTrace();}
 				broadField.setText("");
 			}

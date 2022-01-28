@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import ClientSide.Client;
-import Model.ChatMessageType;
+import Model.MessageType;
 import Model.LocalIpAddress;
 import Model.Message;
 import javax.swing.JScrollPane;
@@ -102,7 +102,7 @@ public class ChatWindow {
 					
 
 					try {
-						out.writeObject(Message.buildMessage2(ChatMessageType.PrivateMessage,message,username,remoteUser));
+						out.writeObject(Message.buildMessage2(MessageType.PrivateMessage,message,username,remoteUser));
 					} catch (IOException e1) {e1.printStackTrace();}
 				}
 				chatField.setText("");

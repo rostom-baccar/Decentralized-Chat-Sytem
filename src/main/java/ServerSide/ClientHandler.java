@@ -6,7 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import Model.ChatMessageType;
+import Model.MessageType;
 import Model.Message;
 
 //each client will have its own client handler with which it can communicate (like a server instance)
@@ -51,14 +51,14 @@ public class ClientHandler extends Thread {
 				case Connect:
 
 					if (!unique(request.getContent())) {
-						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Username already taken, please choose another one"));
+						out.writeObject(Message.buildMessage(MessageType.Notification,"Username already taken, please choose another one"));
 						request = (Message) in.readObject();
 					}
 					else {
-						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"You are connected"));
+						out.writeObject(Message.buildMessage(MessageType.Notification,"You are connected"));
 						clientUsername=request.getContent(); //we save it so that each client handler knows its primary client
 						ipAddress = request.getArgument1();
-						broadcast(ChatMessageType.BroadConnect,clientUsername+" just connected",clientUsername,ipAddress,null);
+						broadcast(MessageType.BroadConnect,clientUsername+" just connected",clientUsername,ipAddress,null);
 						this.canBeAdded=true;
 						request = (Message) in.readObject();
 
@@ -68,7 +68,7 @@ public class ClientHandler extends Thread {
 
 				case Disconnect:
 					
-					broadcast(ChatMessageType.BroadDisconnect,clientUsername+" disconnected",clientUsername,ipAddress,null);
+					broadcast(MessageType.BroadDisconnect,clientUsername+" disconnected",clientUsername,ipAddress,null);
 					Server.getClients().remove(this);
 					this.canBeAdded=false;
 					this.clientSocket.close();
@@ -80,7 +80,7 @@ public class ClientHandler extends Thread {
 					for (ClientHandler client : Server.getClients()) {
 						if (client!=this) {
 							//we do not show the user's own nickname
-							out.writeObject(Message.buildMessage2(ChatMessageType.UsersList,null,client.clientUsername,client.ipAddress));
+							out.writeObject(Message.buildMessage2(MessageType.UsersList,null,client.clientUsername,client.ipAddress));
 							Thread.sleep(10);
 						}
 					}
@@ -98,7 +98,7 @@ public class ClientHandler extends Thread {
 
 				case BroadMessage:
 
-					broadcast(ChatMessageType.BroadMessage,"["+clientUsername+"] "+request.getContent(),null,null,null);
+					broadcast(MessageType.BroadMessage,"["+clientUsername+"] "+request.getContent(),null,null,null);
 					request = (Message) in.readObject();
 					break;
 
@@ -109,11 +109,11 @@ public class ClientHandler extends Thread {
 					ClientHandler remoteClientHandler1=findThread(remoteUser1);
 
 					if (remoteClientHandler1!=null) {
-						Message responseToRemoteUser = new Message(ChatMessageType.Initiator,initiator+" wants to chat. Open a Chat Window with them!");
+						Message responseToRemoteUser = new Message(MessageType.Initiator,initiator+" wants to chat. Open a Chat Window with them!");
 						remoteClientHandler1.out.writeObject(responseToRemoteUser);
 					}
 					else {
-						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Sorry, the user you are trying to chat with is not connected!"));
+						out.writeObject(Message.buildMessage(MessageType.Notification,"Sorry, the user you are trying to chat with is not connected!"));
 					}
 					request = (Message) in.readObject();
 					break;
@@ -123,7 +123,7 @@ public class ClientHandler extends Thread {
 					String recipient=request.getArgument1();
 					String remoteUser2=request.getArgument2();
 					ClientHandler remoteClientHandler2=findThread(remoteUser2);
-					remoteClientHandler2.out.writeObject(Message.buildMessage(ChatMessageType.Recipient,recipient+" has opened a chat. You can now chat with them!"));
+					remoteClientHandler2.out.writeObject(Message.buildMessage(MessageType.Recipient,recipient+" has opened a chat. You can now chat with them!"));
 					request = (Message) in.readObject();
 					break;
 
@@ -132,7 +132,7 @@ public class ClientHandler extends Thread {
 					String oldUsername=request.getArgument1();
 					String newUsername=request.getArgument2();
 					if (!unique(newUsername)) {
-						out.writeObject(Message.buildMessage(ChatMessageType.Notification,"Someone is already connected with this username. Please choose another one"));
+						out.writeObject(Message.buildMessage(MessageType.Notification,"Someone is already connected with this username. Please choose another one"));
 					}
 					else {
 						ClientHandler targetThread=findThread(oldUsername);
@@ -140,8 +140,8 @@ public class ClientHandler extends Thread {
 							Server.getClients().remove(targetThread);
 							targetThread.setClientUsername(newUsername);
 							Server.getClients().add(targetThread);
-							broadcast(ChatMessageType.BroadUsernameChange,oldUsername+" has changed their username to "+newUsername,oldUsername,newUsername,ipAddress);
-							out.writeObject(Message.buildTypeMessage(ChatMessageType.UsernameChange));
+							broadcast(MessageType.BroadUsernameChange,oldUsername+" has changed their username to "+newUsername,oldUsername,newUsername,ipAddress);
+							out.writeObject(Message.buildTypeMessage(MessageType.UsernameChange));
 						}
 					}
 				
@@ -181,7 +181,7 @@ public class ClientHandler extends Thread {
 	}
 
 	//for changing username
-	private void broadcast(ChatMessageType type, String message, String argument1, String argument2, String argument3) throws IOException {
+	private void broadcast(MessageType type, String message, String argument1, String argument2, String argument3) throws IOException {
 		//we send a message to all the clientHandlers that are active
 		switch(type) {
 

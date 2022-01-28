@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import Database.Database;
 import Interface.ChatWindow;
 import Interface.MainWindow;
-import Model.ChatMessageType;
+import Model.MessageType;
 import Model.LocalIpAddress;
 import Model.Message;
 import Model.RemoteUser;
@@ -35,7 +35,7 @@ public class ServerResponseListener extends Thread{
 
 			while(serverResponse!=null) {
 
-				switch( (ChatMessageType) serverResponse.getType()) {
+				switch( (MessageType) serverResponse.getType()) {
 
 				case Notification:
 

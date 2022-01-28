@@ -5,13 +5,13 @@ import java.io.Serializable;
 public class Message implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private ChatMessageType type;
+	private MessageType type;
 	private String content;
 	private String argument1;
 	private String argument2;
 	private String argument3;
 
-	public Message(ChatMessageType type) {
+	public Message(MessageType type) {
 		this.type = type;
 		this.content = null;
 		this.argument1=null;
@@ -19,7 +19,7 @@ public class Message implements Serializable {
 		this.argument3=null;
 	}
 
-	public Message(ChatMessageType type, String content) {
+	public Message(MessageType type, String content) {
 		this.type = type;
 		this.content = content;
 		this.argument1=null;
@@ -27,7 +27,7 @@ public class Message implements Serializable {
 		this.argument3=null;
 	}
 	
-	public Message(ChatMessageType type, String content, String argument1) {
+	public Message(MessageType type, String content, String argument1) {
 		this.type = type;
 		this.content = content;
 		this.argument1=argument1;
@@ -35,7 +35,7 @@ public class Message implements Serializable {
 		this.argument3=null;
 	}
 	
-	public Message(ChatMessageType type, String content, String argument1, String argument2) {
+	public Message(MessageType type, String content, String argument1, String argument2) {
 		this.type = type;
 		this.content = content;
 		this.argument1=argument1;
@@ -43,7 +43,7 @@ public class Message implements Serializable {
 		this.argument3=null;
 	}
 
-	public Message(ChatMessageType type, String content, String argument1, String argument2, String argument3) {
+	public Message(MessageType type, String content, String argument1, String argument2, String argument3) {
 		this.type = type;
 		this.content = content;
 		this.argument1=argument1;
@@ -51,38 +51,38 @@ public class Message implements Serializable {
 		this.argument3=argument3;
 	}
 		
-	public static Message buildTypeMessage(ChatMessageType type) {
+	public static Message buildTypeMessage(MessageType type) {
 		Message message = new Message(type);
 		return message;
 	}
 	
-	public static Message buildMessage(ChatMessageType type, String content) {
+	public static Message buildMessage(MessageType type, String content) {
 		Message message = new Message(type,content);
 		return message;
 	}
 	
-	public static Message buildMessage1(ChatMessageType type, String content, String argument1) {
+	public static Message buildMessage1(MessageType type, String content, String argument1) {
 		Message message = new Message(type,content,argument1);
 		return message;
 	}
 	
-	public static Message buildMessage2(ChatMessageType type, String content, String argument1, String argument2) {
+	public static Message buildMessage2(MessageType type, String content, String argument1, String argument2) {
 		Message message = new Message(type,content,argument1,argument2);
 		return message;
 	}
 	
-	public static Message buildMessage3(ChatMessageType type, String content, String argument1, String argument2, String argument3) {
+	public static Message buildMessage3(MessageType type, String content, String argument1, String argument2, String argument3) {
 		Message message = new Message(type,content,argument1,argument2,argument3);
 		return message;
 	}
 	
 	//Getters and Setters
 
-	public ChatMessageType getType() {
+	public MessageType getType() {
 		return type;
 	}
 
-	public void setType(ChatMessageType type) {
+	public void setType(MessageType type) {
 		this.type = type;
 	}
 

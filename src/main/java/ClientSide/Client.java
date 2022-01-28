@@ -50,8 +50,6 @@ public class Client {
 		
 		//Login Window
 		new LoginWindow(out);
-		
-		clientdb = new Database ();
 
 		while (!uniqueUsername) {Thread.sleep(1);}
 		username=LoginWindow.getUsername();
@@ -59,7 +57,7 @@ public class Client {
 		
 		//MainWindow
 		new MainWindow(username,out);
-		
+		clientdb = new Database ();
 	}
 
 	//Setters and Getters

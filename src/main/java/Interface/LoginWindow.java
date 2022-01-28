@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.SocketException;
 
 import javax.swing.*;
-import Model.ChatMessageType;
+import Model.MessageType;
 import Model.LocalIpAddress;
 import Model.Message;
 
@@ -61,7 +61,7 @@ public class LoginWindow extends JPanel implements ActionListener{
 
 		username=usernameField.getText();
 		try {
-			out.writeObject(Message.buildMessage1(ChatMessageType.Connect,username,ipAddress));
+			out.writeObject(Message.buildMessage1(MessageType.Connect,username,ipAddress));
 		} catch (IOException e1) {e1.printStackTrace();}
 	}
 

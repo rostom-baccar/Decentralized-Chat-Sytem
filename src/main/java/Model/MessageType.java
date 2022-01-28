@@ -1,6 +1,6 @@
 package Model;
 
-public enum ChatMessageType {
+public enum MessageType {
 	
 	Connect,
 	Disconnect,
