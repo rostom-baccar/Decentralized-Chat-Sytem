@@ -148,7 +148,6 @@ public class ServerResponseListener extends Thread{
 					chatWindowTarget1.getChatArea().append("                                    "+tstamp11.substring(0,16)+"\n");
 					chatWindowTarget1.getChatArea().append("["+sender+"]: "+privateMessage+"\n");
 
-					// chatWindowTarget.getChatArea().append("["+sender+"] "+privateMessage+"\n");
 					break;
 
 				case UsernameChange :

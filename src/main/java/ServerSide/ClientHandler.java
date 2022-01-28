@@ -98,7 +98,7 @@ public class ClientHandler extends Thread {
 
 				case BroadMessage:
 
-					broadcast(MessageType.BroadMessage,"["+clientUsername+"] "+request.getContent(),null,null,null);
+					broadcast(MessageType.BroadMessage,"["+clientUsername+"]: "+request.getContent(),null,null,null);
 					request = (Message) in.readObject();
 					break;
 
